@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="content">
 		<!--头部-->
 		<headers title="提现"  />
 		<div class="card">
@@ -16,7 +16,7 @@
 				<p class="jin">提现资产</p>
 				<div class="moe">
 					<span class="hei"></span>
-					<input type="number" v-model="tx_data.num" />
+					<input type="number" v-model="tx_number" />
 				</div>
 				<!-- <div class="tx"> -->
 				<!-- <span>手续费：1%</span> -->
@@ -24,10 +24,7 @@
 				<!-- </div> -->
 			</div>
 		</div>
-        <div class="title">
-            到账方式
-        </div>
-        <van-radio-group v-model="tx_data.type">
+        <!-- <van-radio-group v-model="tx_data.type">
   <van-cell-group>
     <van-cell title="微信" clickable @click="tx_data.type = '1'">
       <template #right-icon>
@@ -45,20 +42,20 @@
       </template>
     </van-cell>
   </van-cell-group>
-</van-radio-group>
+</van-radio-group> -->
 
-				<template v-if="tx_data.type!=3">
+				<!-- <template v-if="tx_data.type!=3">
 						<div class="title">
 						请上传收款码
 					</div>
 					<van-uploader v-model="fileList"  :max-count="1" />
-				</template>
+				</template> -->
 
-				<template v-else>
+				<template>
 					<div class="title">
-						请选择提现的银行卡
+						请选择到账方式
 					</div>
-					<van-cell  title="银行卡" to="/card?tx=true" :value="data.bank[0]&&data.bank[0].bank_num" is-link />
+					<van-cell  :title="types" to="/card?tx=true" :value="data.bank[0]&&data.bank[0].bank_num" is-link />
 					<!-- <van-cell v-else title="银行卡" to="/card?tx=true" :value="data.bank.bank_num" is-link /> -->
 				</template>
 
@@ -70,17 +67,24 @@
 					<van-icon name="arrow" color="#ccc" size="18" class="r" />
 				</div>
 			</router-link> -->
+			<div class="checked-box">
+				<van-checkbox v-model="checked">使用悦信分抵扣手续费</van-checkbox>
+			</div>
+
+			<div class="checked-box m-t-10">
+				当前手续费:<span class="red">{{shouxv}}</span>
+			</div>
+			
 			<button class="btntj" @click="submit()">提交申请</button>
-			<!-- <div class="xxxx">
+			<div class="xxxx">
 				<p class="withdraw-foot-p">温馨提示：</p>
 				<p class="withdraw-foot-dl">
-					<p>1.提现金额须大于 {{tx.min}}积分，小于{{tx.max}} 积分</p>
+					<p>1.提现金额须大于 {{tx.min}}余额，小于{{tx.max}} 余额</p>
 					<p>2.提现收取{{tx.fee}}%的手续费</p>
 					<p>3.手续费在到账金额中扣除；</p>
-					<p>4.仅限周末进行提现申请；</p>
 					<p>5.提现审核一般周一到账。</p>
 				</p>
-			</div> -->
+			</div>
 		</div>
 	</div>
 </template>
@@ -89,6 +93,7 @@ import {mapState} from 'vuex'
 	export default{
         data(){
             return{
+				checked:false,
                 user:{
 					type:'1'
 				},
@@ -97,16 +102,47 @@ import {mapState} from 'vuex'
 				id:this.$route.query.id||'',
 				data:{
 					bank:[]
-				}
+				},
+				tx:{},
+				tx_number:''
             }
-		},
-		computed: {
-			...mapState(['tx_data'])
 		},
 		created() {
 			console.log(this.tx_data)
 			console.log(this.data)
 			this.getdata()
+		},
+		computed:{
+			types(){
+				let str=''
+				if(this.data.bank[0]&&this.data.bank[0].bank_name=='支付宝'){
+					str='支付宝'
+				}else if(this.data.bank[0]&&this.data.bank[0].bank_name=='微信'){
+					str='微信'
+				}else{
+					str='银行卡'
+				}
+				return str
+			},
+			shouxv(){
+				let res=0
+				let shou=this.tx_number*0.2
+				let one=shou*0.01
+				let max=this.data.trust_score/this.data.score_deduction
+				
+				let dikou=shou*(max/100)
+				if(this.checked){
+					if(max<1){ // 不抵扣
+					res=shou
+					return res
+				}
+				console.log(shou,max,one)
+					res=shou-max*one
+				}else{
+					res=shou
+				}
+				return res
+			}
 		},
         methods: {
 			getdata(){
@@ -118,13 +154,18 @@ import {mapState} from 'vuex'
 				}).then(res=>{
 					this.data=res
 					console.log(this.data)
+					this.tx=this.data.config
 				})
 			},
             submit(){
+				console.log(this.id,this.tx_data)
 				this.ajax({
 					url:'index/my/withdrawals',
-					bank_id:this.id,
-					money:this.tx_data.num
+					data:{
+						bank_id:this.id,
+					money:this.tx_number,
+					is_deduction:this.checked?1:0
+					}
 				}).then(res=>{
 					this.showtitle('申请提现成功').then(res=>{
 						this.$router.push('/user')
@@ -135,6 +176,13 @@ import {mapState} from 'vuex'
     }
 </script>
 <style scoped>
+.red{
+	color: red !important;
+}
+.checked-box{
+	box-sizing: border-box;
+	padding: 0 15px;
+}
 .title{
     box-sizing: border-box;
     padding: 0 20px;
@@ -192,6 +240,7 @@ import {mapState} from 'vuex'
 	}
 	
 	.moe input{
+		width: 100%;
 		border:0;
 		height:44px;
 	}

@@ -6,25 +6,27 @@
                 
                
                <div class="item-box">
-                   <div class="item" v-for="(item,index) in 10" :key="index">
+                   <div class="item" v-for="(item,index) in data" :key="index"
+                   @click="godetail(item)"
+                   >
                        <div class="top">
-                           <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=" alt="">
+                           <img :src="item.original_img" alt="">
                        </div>
                        <div class="bottom">
                            <div class="text1">
-                               日式单人沙发北欧甜品店奶茶店咖啡店休闲区64cm
+                               {{item.goods_name}}
                            </div>
-                           <div class="text2-box">
+                           <!-- <div class="text2-box">
                                <div class="text2-item" v-for="(item,index) in 2" :key="index">
                                    上海推荐
                                </div>
-                           </div>
+                           </div> -->
                            <div class="text3">
                                <span class="text3-red">
-                                   ￥700.00
+                                   ￥{{item.shop_price}}
                                </span>
                                <span class="text3-gray">
-                                   ￥799.00
+                                   ￥{{item.market_price}}
                                </span>
                            </div>
                        </div>
@@ -40,14 +42,48 @@
         data(){
             return{
                 title:this.$route.query.title||'分类列表',
-                data:[]
+                data:[],
+                id:this.$route.query.meun_id||'',
+                from:this.$route.query.from||''
             }
         },
         created() {
-           
+            if(this.from=='baiyi'){
+                this.getdata_baiyi()
+            }else if(this.from=='duihuan'){
+                this.getdata_duihuan()
+            }else{
+                this.getdata()
+            }
         },
         methods: {
-            
+            getdata_baiyi(){
+                this.ajax({
+                    url:'index/index/get_butie'
+                }).then(res=>{
+                    this.data=res.data
+                })
+            },
+            getdata_duihuan(){
+                this.ajax({
+                    url:'index/index/get_yuepingjuan'
+                }).then(res=>{
+                    this.data=res.data
+                })
+            },
+            godetail(item){
+                this.$router.push('/shop_detail?id='+item.goods_id)
+            },
+            getdata(){
+                this.ajax({
+                    url:'index/index/get_menu_product',
+                    data:{
+                        m_id:this.id
+                    }
+                }).then(res=>{
+                    this.data=res.data
+                })
+            }
         },
     }
 </script>

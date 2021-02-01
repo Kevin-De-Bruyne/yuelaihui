@@ -7,39 +7,102 @@ import router from './router'
 
 import axios from 'axios'
 
+Vue.prototype.axios=axios
+
 import store from './store'
 
 
+import animated from 'animate.css'
+
+Vue.use(animated)
+
+import infiniteScroll from 'vue-infinite-scroll'
+Vue.use(infiniteScroll)
+
+import VueLazyload from 'vue-lazyload'
+
+Vue.use(VueLazyload, {
+  loading: require('./assets/images/cart_nodata.png'),//加载中图片，一定要有，不然会一直重复加载占位图
+  error: require('./assets/images/default_header.png'),  //加载失败图片
+  lazyComponent: true,
+  attempt:1
+});
+
+
+Vue.directive('scroll', {
+  inserted: function (el, binding) {
+    let f = function (evt) { 
+     let s= binding.value(evt, el) 
+      if (s) {
+        window.removeEventListener('scroll', f)
+      }
+    }
+    window.addEventListener('scroll', f)
+  }
+})
+
+
+
 router.beforeEach((to, from, next) => {
+  
   console.log(router.history)
   document.documentElement.scrollTop=0
   next()
   
 })
 
+
+let a=require('./test')
+
+
+console.log(a={c:1})
+
+
+
+
+
 import tabbar from '@/components/tabbar'
 import header from '@/components/header'
 import nodata from '@/components/nodata'
+import swiper from '@/components/swiper/swiper'
+import SwiperItem from '@/components/swiper/swiper_item'
+import scroll from '@/components/scroll'
 
 Vue.component('tabbar',tabbar)
 Vue.component('headers',header)
 Vue.component('nodata',nodata)
+Vue.component('swiper',swiper)
+Vue.component('SwiperItem',SwiperItem)
+Vue.component('scroll',scroll)
 
 import NutUI from '@nutui/nutui';
 import '@nutui/nutui/dist/nutui.css';
 
 NutUI.install(Vue);
 
-import Vant, { Toast } from 'vant';
 import 'vant/lib/index.css';
 
 
 
+import mytoast from  '@/components/toast'
+
+mytoast.install(Vue)
+
+import mydialog from  '@/components/dialog'
+
+mydialog.install(Vue)
+
+import custoast from  '@/components/custoast'
+
+console.log(custoast)
+
+custoast.install(Vue)
+
 NutUI.install(Vue);
 
-import {Swipe, SwipeItem ,Cell ,CellGroup ,Button ,Switch
+import {Toast,Swipe, SwipeItem ,Cell ,CellGroup ,Button ,Switch
   ,RadioGroup,Radio , CheckboxGroup ,Checkbox ,Tabs , Tab , Stepper , NumberKeyboard , Popup , Dialog ,SwipeCell 
-  , Uploader
+  , Uploader ,Circle , ShareSheet , Rate ,Icon,Progress
 } from 'vant'
 
 Vue.use(Swipe)
@@ -53,6 +116,9 @@ Vue.use(Swipe)
 .use(CheckboxGroup)
 .use(Checkbox)
 .use(Tabs)
+.use(Toast)
+.use(Circle)
+.use(ShareSheet)
 .use(Tab)
 .use(Stepper)
 .use(NumberKeyboard)
@@ -60,12 +126,19 @@ Vue.use(Swipe)
 .use(Dialog)
 .use(SwipeCell)
 .use(Uploader)
+.use(Rate)
+.use(Icon)
+.use(Progress)
+
+Vue.prototype.$toast=Toast
 
 Vue.prototype.$dialog=Dialog
 
 let first = null;
 
 function plusReady() {
+  
+  
   plus.navigator.setStatusBarBackground('#eb2c34'); 
 
   // 监听“返回”按钮事件
@@ -86,7 +159,7 @@ function plusReady() {
         router.go(-1)
     } 
     return
-  }); // 在这里调用plus api
+  }); 
   }
 
   if (window.plus) {
@@ -94,8 +167,13 @@ function plusReady() {
   } else {
   document.addEventListener('plusready', plusReady, false);
   }
+    // let baseurl='http://newa.com/'
     // let baseurl='http://ylh.test/'
-    let baseurl='http://47.96.8.140/'
+    // let baseurl='http://yuelaihuism.com/'
+    let baseurl='http://mall.yuelaihuism.com/'
+    // let baseurl=''
+    Vue.prototype.baseURL=baseurl
+    // let baseurl='http://47.96.8.140/'
    axios.defaults.baseURL=baseurl
 
    Vue.prototype.ajax=({url,data={},headers={},methods='post'})=>{

@@ -23,16 +23,24 @@
                     <div class="item" v-for="(item,index) in data.goods" :key="index" 
                     @click="godetail(item)"
                     >
-                    <div class="container">
-                        <div class="top">
-                            <img :src="item.original_img" alt="">
-                        </div>
-                        <div class="bottom">
+                    <div class="left-box">
+                        <img :src="item.original_img" alt="">
+                    </div>
+                    <div class="right-box">
+                        <div class="text1">
                             {{item.goods_name}}
                         </div>
+                        <div class="text2-box">
+                            <div class="text2-1">
+                                ￥{{item.shop_price}}
+                            </div>
+                            <div class="text2-2">
+                                ￥{{item.market_price}}
+                            </div>
+                        </div>
                     </div>
-                        
                     </div>
+                    
                 </div>
             </div>
         </div>
@@ -78,7 +86,7 @@ export default {
                     name:'日常百货'
                 }
             ],
-            cate_id:2
+            cate_id:''
         }
     },
     created() {
@@ -144,6 +152,7 @@ export default {
        bottom: 60px;
        width: 100%;
        .left{
+           overflow: scroll;
            height: 100%;
            font-size: 14px;
            width: 30%;
@@ -166,19 +175,55 @@ export default {
            }
        }
        .right{
+           overflow: scroll;
            width: 70%;
            background: white;
           
            .item-box{
-                display: flex;
-           flex-wrap: wrap;
            }
            .item{
-               width: 33%;
                 display: flex;
-                align-items: center;
-                justify-content: center;
-                margin: 0 0 15px 0;
+                margin: 0 0 5px 5px;
+                .left-box{
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 100px;
+                    height: 100px;
+                    margin: 0 10px 0 0 ;
+                    flex: 0 0 auto;
+                    img{
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                    }
+                }
+                .right-box{
+                    flex: 1;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                    .text1{
+                        font-size: 14px;
+                        text-overflow: -o-ellipsis-lastline;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+  -webkit-box-orient: vertical;
+                    }
+                    .text2-box{
+                        .text2-1{
+                            font-size: 16px;
+                        }
+                        .text2-2{
+                            text-decoration: line-through;
+                            color: #999;
+                            align-self: flex-end;
+                        }
+                    }
+                }
                 .container{
                     text-align: center;
                     width: 100%;

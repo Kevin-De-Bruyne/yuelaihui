@@ -1,5 +1,5 @@
 <template>
-    <div class="content-box">
+    <div class="content-box" ref="content-box">
         <div class="red-bg" :style="{'height':red_height+'px'}" ref="red_bg" />
 
         <div class="sreach-box" >
@@ -18,14 +18,16 @@
         </div>
         <div class="content">
             <div class="swiper_box">
-            <van-swipe class="top_swipe" :autoplay="3000" indicator-color="white">
+            <van-swipe class="top_swipe" indicator-color="white">
             <van-swipe-item v-for="(item,index) in data.slideshows" :key="index">
                 <img :src="item.img" alt="">
             </van-swipe-item>
         </van-swipe>
         </div>
         <div class="nav-box" ref="nav_box">
-            <div class="item" v-for="(item,index) in data.navs" :key="index">
+            <div class="item" v-for="(item,index) in data.navs" :key="index"
+            @click="gourl(item)"
+            >
                 <div class="top">
                     <img :src="item.icon" alt="">
                 </div>
@@ -35,13 +37,40 @@
             </div>
         </div>
 
-        <div class="gray-box">
+        <div class="baoyou-box">
+            <div class="item">
+                <span class="iconfont icon-renzheng2"></span>
+                100%正品
+            </div>
+            <div class="item">
+                <span class="iconfont icon-baoyou"></span>
+                全国包邮
+            </div>
+            <div class="item">
+                <span class="iconfont icon-fahuo"></span>
+                拒绝延误
+            </div>
+        </div>
+
+        <div class="gray-box" >
             <div class="white-box white-box1">
                 <!-- @click="$router.push('/cate_list?title=精品推荐')" -->
-                <div class="title-box" >
+                <div class="new-box">
+                        <div class="left">
+                            快报
+                            <span class="iconfont icon-laba1"></span>
+                        </div>
+                        <div class="right" @click="$router.push('/gonggao')">
+                            更多
+                        </div>
+                    </div>
+                    <div class="pd-box">
+                        <div class="title-box" >
+                    
                     <div class="left">
-                        <span class="red m-r-20 text1">精品推荐</span>
-                        <span class="text2">最新上架商品优先推荐</span>
+                        <!-- <span class="red m-r-20 text1">百亿大补贴</span>
+                        <span class="text2">最新上架商品优先推荐</span> -->
+                        <img @click="$router.push('/cate_list?from=baiyi')" src="../assets/images/baiyi.jpg" alt="">
                     </div>
                     <!-- <div class="right">
                         <span class="iconfont icon-youjiantou-01">
@@ -51,7 +80,7 @@
 
                 <div class="shop-box">
                     <div class="item" v-for="(item,index) in data.new_goods" :key="index"
-                    @click="$router.push('/shop_detail?id='+item.goods_id)"
+                    @click="godetail(item.goods_id)"
                     >
                         <div class="top">
                             <img :src="item.original_img" alt="">
@@ -66,6 +95,8 @@
                         </div>
                     </div>
                 </div>
+                    </div>
+                
             </div>
             <!-- <div class="white-box white-box2">
                 <div class="left">
@@ -78,16 +109,17 @@
              -->
             <div class="shop-box">
                 <div class="title">
-                     <span class="title-icon"></span>
-                    <span class="text">爆品排行</span>
+                     <!-- <span class="title-icon"></span>
+                    <span class="text">悦品卷兑换专区</span> -->
+                     <img @click="$router.push('/cate_list?from=duihuan')" src="../assets/images/duihuan.jpg" alt="">
                 </div>
                
                <div class="item-box">
-                   <div class="item" v-for="(item,index) in data.hot_goods" :key="index"
-                   @click="godetail(item)"
+                   <div class="item" v-for="(item,index) in data.convert" :key="index"
+                   @click="godetail(item.goods_id)"
                    >
-                       <div class="top">
-                           <img :src="item.original_img" alt="">
+                       <div class="top" :style="{'backgroundImage':`url('${item.original_img}')`}">
+                           <!-- <img :src="item.original_img" alt=""> -->
                        </div>
                        <div class="bottom">
                            <div class="text1">
@@ -132,14 +164,28 @@ export default {
     created() {
         this.getdata()
     },
-
     mounted() {
-        document.addEventListener('scroll',this.add_scroll)
+        let box=this.$refs['content-box']
+        console.log(box)
+        box.addEventListener('scroll',this.add_scroll)
     },
     destroyed(){
-        document.removeEventListener('scroll',this.add_scroll)
+        let box=this.$refs['content-box']
+        box.removeEventListener('scroll',this.add_scroll)
     },
     methods: {
+        gourl(item){
+            if(!item.menu_url){
+                return
+            }
+            if(item.menu_url.indexOf('cate_list')!=-1){
+                this.$router.push(item.menu_url+'?'+'meun_id='+item.menu_id)
+            }else if(item.menu_url.indexOf('/')==0){
+                this.$router.push(item.menu_url)
+            }else{
+                window.location.href=item.menu_url
+            }
+        },
         getdata(){
             this.ajax({
                 url:'index/index/index'
@@ -147,11 +193,12 @@ export default {
                 this.data=res.data
             })
         },
-        godetail(){
-            this.$router.push('/shop_detail')
+        godetail(id){
+            this.$router.push('/shop_detail?id='+id)
         },
         add_scroll(){
-            let doscollTop=document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop
+            console.log('jifjaifjiaf')
+            let doscollTop=this.$refs['content-box'].scrollTop
             let jvli= this.$refs.nav_box.offsetTop-this.$refs.red_bg.offsetHeight
 
             if(doscollTop>jvli){
@@ -176,11 +223,37 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.baoyou-box{
+    display: flex;
+    height: 30px;
+    line-height: 30px;
+    margin: 20px 0 10px 0;
+    .item{
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        border-right: 1px solid #eee;
+        color: #AAAAAA;
+    }
+    .iconfont{
+        color: red;
+        margin: 0 5px 0 0;
+        font-size: 24px;
+    }
+    .item:last-child{
+        border: none !important;
+    }
+}
 .shop-box{
     .title{
-        height: 50px;
         font-size: 16px;
         font-weight: bold;
+        margin: 0 0 10px 0;
+        img{
+            box-shadow: -1px 3px 8px 1px #aaa;
+        }
         .title-icon{
             background: rgb(223,37,25);
             margin: 0 10px 0 0;
@@ -189,6 +262,9 @@ export default {
             height: 15px;
             width: 3px;
             border-radius: 3px;
+        }
+        .text{
+            color: rgb(223,37,25);
         }
     }
     .item-box{
@@ -202,7 +278,11 @@ export default {
             background: white;
             margin: 0 0 10px 0;
             .top{
-                height: 230px;
+                // height: 230px;
+                padding-bottom: 100%;
+                width: 100%;
+                background-size: cover;
+                // background-position: -50% -50%;
                 img{
                     width: 100%;
                     height: 100%;
@@ -274,10 +354,48 @@ export default {
         }
     }
     .white-box1{
+        padding: 0 !important;
+        .pd-box{
+            padding:  15px;
+            box-sizing: border-box;
+        }
+        .new-box{
+                display: flex;
+                border-bottom: 1px solid #eee;
+                line-height: 40px;
+                justify-content:space-between;
+                box-sizing: border-box;
+                padding: 0 10px;
+                .left{
+                    display: flex;
+                    align-items: center;
+                    font-size: 14px;
+                    font-weight: bold;
+                    .iconfont{
+                        color: rgb(224,36,24);
+                        margin: 0 0 0 10px;
+                        font-size: 12px;
+                    }
+                }
+                .right{
+                    font-size: 12px;
+                    color: #AAAAAA;
+                    position: relative;
+                }
+                .right:before{
+                    content: '';
+                    width: 1px;
+                    height: 10px;
+                    background: #AAAAAA;
+                    position: absolute;
+                    left: -10px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                }
+            }
         .title-box{
-            display: flex;
-            justify-content: space-between;
             margin: 0 0 20px 0;
+            
             .red{
                 color: rgb(224,36,24);
             }
@@ -336,10 +454,12 @@ export default {
     display: flex;
     padding: 20px 0 10px 0;
     background: white;
+    flex-wrap: wrap;
     .item{
-        flex: 1;
+        width: 25%;
         text-align: center;
         font-size: 14px;
+        margin: 0 0 10px 0;
         .top{
             width: 40px;
             height: 40px;
@@ -385,6 +505,7 @@ export default {
                 height: 100%;
                 color: #999;
                 font-size: 14px;
+                width: 100%;
             }
             .iconfont{
                 margin: 0 20px 0 0;
@@ -409,17 +530,19 @@ export default {
     }
     .swiper_box{
         box-sizing: border-box;
-        padding: 0 10px;
         position: relative;
         z-index: 2;
          .top_swipe{
-        height: 200px;
+        // height: 200px;
         width: 100%;
-
+        .van-swipe-item{
+            height: auto !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
         img{
             border-radius: 6px;
-            width: 100%;
-            height: 100%;
         }
     }
     }

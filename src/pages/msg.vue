@@ -6,7 +6,7 @@
             <div class="item" v-for="(item,index) in data" :key="index">
                 <div class="left">
                     <div class="text1">
-                        {{item.type_name}}
+                        {{item.title}}
                     </div>
                     <div class="text2" v-html="item.content">
 
@@ -15,6 +15,7 @@
                 <div class="right">
                     {{item.create_time}}
                 </div>
+                <!-- <span class="iconfont icon-youjiantou-01"></span> -->
             </div>
         </div>
 

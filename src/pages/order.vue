@@ -56,6 +56,12 @@
                             确认收货
                         </div>
                     </div>
+
+                    <div class="right" v-if="item.msg=='待评价'">
+                        <div class="butn butn2 m-l-20" @click="pingjia(item)">
+                            去评价
+                        </div>
+                    </div>
                     
                 </div>
             </div>
@@ -90,7 +96,7 @@
         data(){
             return{
                 tabbar_index:Number(this.$route.query.index)+1||0,
-                tabbar:['全部','待付款','待发货','待收货','已完成'],
+                tabbar:['全部','待付款','待发货','待收货','待评价','已评价'],
                 data:[],
                 ipt_arr:[],
                 pwd_arr:['','','','','',''],
@@ -105,6 +111,9 @@
             this.getdata()
         },
         methods: {
+            pingjia(item){
+                this.$router.push(`/pinglun_submit?order_id=${item.order_id}&rec_id=${item.goods[0].rec_id}&goods_id=${item.goods[0].goods_id}&img=${item.goods[0].original_img}`)
+            },
             shouhuo_confirm(item){
                 this.$dialog.confirm({
                     title:'提示',
@@ -180,12 +189,12 @@
                 this.$router.push('/order_detail?id='+item.order_id)
             },
             getdata(){
-                let index=0
-                if(this.tabbar_index==4){
-                    index=this.tabbar_index+1
-                }else{
-                    index=this.tabbar_index
-                }
+                let index=this.tabbar_index
+                // if(this.tabbar_index==4){
+                //     index=this.tabbar_index+1
+                // }else{
+                //     index=this.tabbar_index
+                // }
                 this.ajax({
                     url:'index/my/order_list',
                     data:{
@@ -290,6 +299,7 @@
                     padding:  10px;
                     .shop-item{
                         display: flex;
+                        margin: 0 0 10px 0;
                         .left{
                             width: 80px;
                             height: 80px;
@@ -300,8 +310,7 @@
                             border-radius: 6px;
                             overflow: hidden;
                             img{
-                                width: 100%;
-                                height:100%;
+                                
                             }
                         }
                         .container{

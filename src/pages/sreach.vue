@@ -127,9 +127,18 @@ export default{
         getdata(){
             if(this.keyword){
                 let {keyword_arr}=this
-                 keyword_arr.push(this.keyword)
+                let chongfu=null
+                keyword_arr.forEach(item=>{
+                    if(this.keyword==item){
+                        chongfu=true
+                        return
+                    }
+                })
+                if(!chongfu){
+                    keyword_arr.push(this.keyword)
                  let datas=JSON.stringify(keyword_arr)
                 localStorage.setItem('keyword',datas)
+                }
             }
             
             this.ajax({

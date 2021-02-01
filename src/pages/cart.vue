@@ -1,14 +1,18 @@
 <template>
-    <div class="content">
+    <div class="content" v-cloak>
         <headers title="购物车" noback="true">
-            <div class="slot-box" @click="bj=!bj">
+            <!-- <div class="slot-box" @click="bj=!bj">
                 <span v-if="!bj">编辑</span>
                 <span v-else>完成</span>
-            </div>
+            </div> -->
         </headers>
-
-        <div class="item-box" v-if="true&&data.length">
+        <template v-if="onload">
+            
+        
+        <div class="item-box" v-if="data.length">
+            
             <div class="item" v-for="(item,index) in data[0].cart" :key="index">
+                <van-swipe-cell>
                 <div class="shop-box">
                     <div class="shop-item">
                         <div class="icon-box"
@@ -19,7 +23,7 @@
                             </div>
                         </div>
                         <div class="left">
-                            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=" alt="">
+                            <img :src="item.original_img" alt="">
                         </div>
                         <div class="container">
                             <div class="text1-box">
@@ -36,7 +40,13 @@
                         </div>
                     </div>
                 </div>
+                <template #right>
+                <van-button square @click="deleteshop(item)" text="删除" type="danger" class="delete-button" />
+            </template>
+                 </van-swipe-cell >
             </div>
+             
+           
             <div class="bj-bottom" v-if="!bj">
                 <div class="left">
                    
@@ -65,12 +75,13 @@
             </div>
         </div>
 
-
-
         <div class="nodata-box" v-else>
-            <nodata text="您的购物车空空如也" />
+            <img src="../assets/images/cart_nodata.png" alt="">
         </div>
-        
+        <!-- <div class="nodata-box" >
+            <nodata text="您的购物车空空如也" />
+        </div> -->
+        </template>
 
         
         <tabbar />
@@ -81,7 +92,7 @@
 export default {
     data(){
         return{
-            
+            onload:false,
             checked:false,
             data:[],
             bj:false,
@@ -109,6 +120,16 @@ export default {
         this.getdata()
     },
     methods: {
+        deleteshop(item){
+            this.ajax({
+                url:'index/cart/delete',
+                data:{
+                    id:item.id
+                }
+            }).then(res=>{
+                this.getdata()
+            })
+        },
         submit(){
             let id=''
             this.data[0].cart.forEach((item,index)=>{
@@ -127,7 +148,7 @@ export default {
             this.$router.push('/conorder?info='+data)
         },
         countchange(item){
-            console.log(item)
+            
             this.ajax({
                 url:'index/cart/cart_num_cz',
                 data:{
@@ -141,9 +162,13 @@ export default {
                 url:'index/cart/cart'
             }).then(res=>{
                 this.data=res.cart_list
-                this.data[0].cart.forEach((item,index)=>{
+                if(this.data.length){
+                    this.data[0].cart.forEach((item,index)=>{
                     this.$set(item,'checked',false)
                 })
+                }
+                
+                this.onload=true
             })
         },
         delates(){
@@ -168,6 +193,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.delete-button{
+    height: 100%;
+}
 .bj-bottom{
     position: fixed;
     bottom: 60px;
@@ -327,5 +355,7 @@ export default {
        bottom: 60px;
        width: 100%;
        display: flex;
+       align-items: center;
+       justify-content: center;
    }
 </style>

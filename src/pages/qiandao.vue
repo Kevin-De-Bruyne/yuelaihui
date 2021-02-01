@@ -22,7 +22,7 @@
             <div class="title">
                 <div class="left">
                     已连续签到
-                <span class="red">1</span>
+                <span class="red">{{data.sign_count}}</span>
                 天
                 </div>
                 <div class="right">

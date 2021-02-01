@@ -66,8 +66,15 @@
         },
         methods:{
             loginout(){
+                if(!this.checked){
+                    this.showtitle('请勾选注销协议')
+                    return
+                }
                 this.ajax({
-                    url:'index/my/removalAccount'
+                    url:'index/my/removalAccount',
+                    data:{
+                        type:1
+                    }
                 }).then(res=>{
                     this.showtitle('申请注销成功!').then(res=>{
                         this.$router.go(-1)

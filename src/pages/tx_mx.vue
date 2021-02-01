@@ -7,14 +7,20 @@
             <div class="item" v-for="(item,index) in data" :key="index">
                 <div class="left">
                     <div class="text1">
-                        {{item.desc}}
+                        {{item.bank_name}}
                     </div>
                     <div class="text2">
-                        {{item.type_name}}
+                        {{item.status_name}}
                     </div>
                 </div>
                 <div class="right">
-                    +{{item.user_money}}
+                    
+                    <div class="text1 m-b-10">
+                        {{item.money}}
+                    </div>
+                    <div class="text2">
+                        {{item.create_time}}
+                    </div>
                 </div>
             </div>
         </div>

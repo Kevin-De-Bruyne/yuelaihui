@@ -13,10 +13,10 @@
             </div>
             <div class="item-box">
                 <div class="item">
-                    <input type="text" placeholder="请输入真实姓名">
+                    <input type="text" v-model="user.name" placeholder="请输入真实姓名">
                 </div>
                 <div class="item">
-                    <input type="text" placeholder="请输入身份证号">
+                    <input type="text" v-model="user.card" placeholder="请输入身份证号">
                 </div>
                 <!-- <div class="item">
                     <div class="ipt-box">
@@ -26,7 +26,7 @@
                 </div> -->
             </div>
              <div class="butn-box m-t-40">
-            <van-button block color="rgb(224,36,25)" round>
+            <van-button block color="rgb(224,36,25)" @click="submit()" round>
                 确定
             </van-button>
         </div>
@@ -39,9 +39,42 @@
 export default {
     data(){
         return{
-            address_text:''
+            address_text:'',
+            user:{}
         }
-    }
+    },
+    methods: {
+        submit(){
+            // this.axios.post(this.baseUrl+'index/my/aliInit',{
+            //      cert_id:0,
+            //         cert_name:this.user.name,
+            //         cert_no:this.user.card,
+            //         token:localStorage.getItem('token')
+            // }).then(res=>{
+            //     console.log(res)
+            // })
+            this.ajax({
+                url:'index/my/aliInit',
+                data:{
+                    cert_id:0,
+                    cert_name:this.user.name,
+                    cert_no:this.user.card
+                }
+            }).then(res=>{
+                let box=document.createElement('div')
+                box.innerHTML=res.data
+                document.body.append(box)
+                let form=document.forms[0]
+                form.submit()
+                console.log(form)
+                this.showtitle('提交成功').then(res=>{
+                    this.$rotuer.go(-1)
+                })
+            }).catch(err=>{
+                console.log(err)
+            })
+        }
+    },
 }
 </script>
 

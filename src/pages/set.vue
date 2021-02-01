@@ -3,9 +3,29 @@
         <headers title="设置" />
 
         <van-cell-group>
+            <div class="upload-box">
+                <div class="title">
+                    我的头像
+                </div>
+                    <van-uploader :preview-full-image="false"  
+                ref="upload_head" :after-read="img_upload"
+                  v-model="header_list" max-count="1" >
+
+                  <img  slot="preview-cover" 
+                  v-if="header_list.length" @click="upload_head()"
+                   :src="header_list[0].content" alt="">
+                  <div slot="default">
+                       <img  src="../assets/images/default_header.png" alt="">
+                  </div>
+                </van-uploader>
+            </div>
+
+            <van-cell title="昵称" :value="data.nick_name" @click="name_show=true" is-link />
+
             <van-cell title="关于我们" to="/guanyu" is-link >
 
             </van-cell>
+            
              <van-cell title="协议" to="/xieyi" is-link >
                 
             </van-cell>
@@ -27,11 +47,17 @@
             </van-cell>
         </van-cell-group>
 
+        
+
         <div class="butn-box">
             <van-button @click="loginout" type="primary" size="large" round color="rgb(68,68,68)" block>
             退出登录    
         </van-button>
         </div> 
+
+        <van-dialog @confirm="confirm_name()" v-model="name_show" title="设置我的昵称" show-cancel-button>
+            <input type="text" v-model="nickname" class="name_ipt" placeholder="请输入您的昵称">
+        </van-dialog>
     </div>
 </template>
 
@@ -39,10 +65,61 @@
 export default {
     data(){
         return{
-
+            header_list:[],
+            nickname:'',
+            name_show:false,
+            data:{}
         }
     },
+    created() {
+        this.getdata()
+    },
     methods: {
+        img_upload(e){
+            console.log(e)
+            console.log(this.header_list)
+            this.ajax({
+                url:'index/my/edit',
+                data:{
+                    key:'avatar',
+                    value:this.header_list[0].content
+                }
+            }).then(res=>{
+                this.showtitle('操作成功')
+            })
+        },
+        getdata(){
+            this.ajax({
+                url:'index/my/user_info'
+            }).then(res=>{
+                this.data=res.data
+                if(this.data.avatar){
+                    this.header_list.push({
+                    content:this.data.avatar
+                })
+                }
+            })
+        },
+        confirm_name(){
+            this.ajax({
+                url:'index/my/edit',
+                data:{
+                    key:'nick_name',
+                    value:this.nickname,
+
+                }
+            }).then(res=>{
+                this.showtitle('操作成功')
+                this.getdata()
+            })
+        },
+        upload_head(){
+            this.header_list.shift()
+            console.log(this.header_list)
+            this.$nextTick(()=>{
+                this.$refs.upload_head.chooseFile()
+            })
+        },
         loginout(){
             this.$dialog.confirm({
                 title:'悦莱惠',
@@ -59,6 +136,36 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.name_ipt{
+    text-align: center;
+    height: 60px;
+    font-size: 16px;
+    width: 100%;
+}
+.upload-box{
+    text-align: center;
+    img{
+        width: 100%;
+        height:100%;
+    }
+    .title{
+        text-align: center;
+        line-height: 20px;
+        margin: 0 0 10px 0;
+        font-size: 16px;
+    }
+    /deep/.van-uploader{
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        overflow: hidden;
+        /deep/img{
+            width: 100%;
+            height: 100%;
+            
+        }
+    }
+}
  .content{
      background: rgb(242,242,242);
      min-height: 100vh;

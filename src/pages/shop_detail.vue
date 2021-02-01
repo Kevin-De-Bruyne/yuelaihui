@@ -2,7 +2,7 @@
     <div class="content">
         <headers title="详情">
             <div class="slot-box">
-                <span class="iconfont icon-fenxiang_2"></span>
+                <span class="iconfont icon-fenxiang_2" @click="share()"></span>
             </div>
         </headers>
 
@@ -12,21 +12,29 @@
             </van-swipe-item>
              <template #indicator>
     <div class="custom-indicator">
-      {{ current + 1 }}/{{data.goods_info.details_img.length}}
+      {{ current + 1 }}/{{data.goods_info&&data.goods_info.details_img&&data.goods_info.details_img.length}}
     </div>
   </template>
         </van-swipe>
     
     <div class="white-box white-box1">
         <div class="text1-box m-t-10 m-b-10">
-            <span class="text1 m-r-10">
-                ￥{{data.goods_info&&data.goods_info.shop_price}}
-            </span>
-            <span class="text2 m-r-10">
-                ￥{{data.goods_info.shop_price}}
-            </span>
-            <span class="text3">
-                赠送优品券2708.00
+            <template v-if="data.goods_info.partition_id==4">
+                <span class="text1 m-r-10">
+                    悦品券{{data.goods_info&&data.goods_info.shop_price}}
+                </span>
+            </template>
+            <template v-else>
+                <span class="text1 m-r-10">
+                    ￥{{data.goods_info&&data.goods_info.shop_price}}
+                </span>
+                <span class="text2 m-r-10">
+                    ￥{{data.goods_info.market_price}}
+                </span>
+            </template>
+            
+            <span class="text3" v-if="data.goods_info.coupon&&data.goods_info.coupon!=0">
+                赠送悦品券{{data.goods_info.coupon}}
             </span>
         </div>
         <div class="text2-box">
@@ -46,8 +54,14 @@
             退货无忧
         </span>
     </div>
+
+    <van-tabs v-model="active">
+        <van-tab title="商品详情"></van-tab>
+        <van-tab title="商品评论"></van-tab>
+    </van-tabs>
     
-    <div class="white-box">
+    <div v-show="active==0">
+        <div class="white-box">
         <div class="title">
             商品详情
         </div>
@@ -55,6 +69,48 @@
             
         </div>
     </div>
+    </div>
+    
+    <div v-show="active==1">
+        <div class="fiver-two" >
+							<p class="f-t-top">宝贝评价({{data.comment&&data.comment.length}})</p>
+							<div class="f-t-detail" v-for="(item,com_index) in data.comment" :key="com_index">
+								<div class="f-t-d-top">
+									<div class="f-t-d-t-left">
+										<img :src="item.avatar" />
+										<span>{{item.username}}</span>
+										<van-rate
+										  	v-model="item.goods_rank"
+										  	:size="12"
+										  	color="#ee0a24"
+										  	void-icon="star"
+										  	void-color="#eee"
+										  	class="rate"
+										  	readonly 
+										/>
+									</div>
+									<span class="f-t-d-t-right">{{item.add_time}}</span>
+								</div>
+								<div class="f-t-d-center">
+									<p>{{item.content}}</p>
+									<img v-for="(Image,img_index) in item.img" :src="Image" :key="img_index" />
+								</div>
+								<div class="f-t-d-bottom">
+									<ul>
+										<!-- <li @click="tohref(com_index)">
+											<van-icon name="chat-o" size="20px" class="b_icon" />
+											<span>回复({{item.son_num}})</span>
+										</li> -->
+										<li @click="zan_num(item)">
+											<van-icon name="good-job-o" size="20px" class="b_icon" />
+											<span>点赞({{item.zan_num}})</span>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+    </div>
+    
 
     <div class="botttom-filex">
         <div class="left">
@@ -72,10 +128,21 @@
             @click="bottom_click()"
             >
                 <div class="top">
-                    <span class="iconfont icon-shoucang1" :class="{'like_class':data.is_collect}" ></span>
+                    <span class="iconfont icon-shoucang2"  v-if="!data.is_collect" ></span>
+                    <span class="iconfont icon-shoucang1 like_class"  v-else></span>
                 </div>
                 <div class="bottom">
                     收藏
+                </div>
+            </div>
+            <div class="item"
+            @click="$router.push('/fuwu')"
+            >
+                <div class="top">
+                    <span class="iconfont icon-icon_kefu"  ></span>
+                </div>
+                <div class="bottom">
+                    客服
                 </div>
             </div>
         </div>
@@ -96,15 +163,18 @@
                 <div class="shop-box">
                     <div class="shop-item">
                         <div class="left">
-                            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=" alt="">
+                            <img :src="(guige_now&&guige_now.original_img)||(data.goods_info&&data.goods_info.details_img[0])" alt="">
                         </div>
                         <div class="container">
-                            <div class="text1-box">
+                            <div class="text1-box" v-if="is_guige">
+                                ￥{{guige_now.shop_price}}
+                            </div>
+                            <div class="text1-box" v-else>
                                 ￥{{data.goods_info.shop_price}}
                             </div>
                             <div class="text2-box">
-                                <div class="left-text">
-                                    已选择：白色
+                                <div class="left-text" v-if="is_guige">
+                                    {{now_spec?'已选择：':'未选择'}}{{now_spec}}
                                 </div>
                                 <div class="right-text">
                                     
@@ -117,7 +187,7 @@
         </div>
         <div class="items1" v-for="(item,index) in data.spec_list" :key="item.name">
             <div class="title m-b-20">
-                颜色
+                {{item.name }}
             </div>
             <div class="choise-box">
                 <div class="choise-item" v-for="(x,y) in item.spec_item" :key="y"
@@ -141,6 +211,16 @@
          </div>
         </div>
     </van-popup>
+
+    <van-share-sheet
+    @select="share_select"
+  v-model="showShare"
+  title="立即分享给好友"
+  :options="options"
+/>
+<div class="test_z">
+    {{test_z}}
+</div>
     </div>
 </template>
 
@@ -149,6 +229,17 @@ import Toast from '../../../Z付回收/WX_WeChat/vant/toast/toast'
 export default {
     data(){
         return{
+            active:0,
+            test_z:{},
+            options: [
+                [
+          { name: '微信好友', icon: 'wechat',type:'微信' ,ex:'WXSceneSession' },
+          { name: '微信朋友圈', icon: 'wechat',type:'微信' ,ex:'WXSceneTimeline' },
+        //   { name: '新浪微博', icon: 'weibo',type:'新浪微博' },
+        //   { name: 'QQ', icon: 'qq',type:'QQ' },
+        ]
+        ],
+            showShare:false,
             buy_for:'',
             current:0,
             shop_count:1,
@@ -162,21 +253,171 @@ export default {
                     color:'#000'
                 },
                 {
-                    icon:'icon-shoucang',
+                    icon:'icon-shoucang2',
                     name:'收藏',
                     color:'#000'
                 }
             ],
             id:this.$route.query.id,
+            guige_id_cart:'',
             data:{
                 goods_info:{}
-            }
+            },
+            share_arr:[]
         }
     },
     created() {
-        this.getdata()
+        setInterval(() => {
+            this.zzz=!this.zzz
+        }, 1000);
+        let s=function(){
+            let num=1
+            return function(name){
+                num++
+                console.log(num,name)
+            }
+        }
+        let b=s()
+        b('b1')
+        b('b1')
+        let b2=s()
+        b2('b2')
+        if(window.plus){
+       
+        }
+            this.getdata()
+        
+        
+    },
+    computed: {
+        now_spec(){
+            let s=''
+            if(this.data.spec_list&&this.data.spec_list.length){
+                this.data.spec_list.forEach(item=>{
+                    item.spec_item.forEach(x=>{
+                        if(s){
+                            if(x.checked){
+                                s+='-'+x.item
+                            }
+                        }else{
+                            if(x.checked){
+                                s+=x.item
+                            }
+                        }
+                    })
+                })
+            }
+            console.log(s)
+            return s
+        },
+        is_guige(){
+            return !!this.data.spec_list.length
+        },
+        guige_now(){
+            let id=''
+            let id_arr=[]
+            let price=''
+
+            if(this.data.spec_list&&this.data.spec_list.length){
+                this.data.spec_list.forEach((item,index)=>{
+                item.spec_item.forEach((x,y)=>{
+                    console.log(x)
+                        if(x.checked){
+                            console.log(x,'我被选中了')
+                            id_arr.push(x.id)
+                        }
+                })
+            })
+
+            id=id_arr.sort().join('_')
+
+            console.log(id)
+
+            this.data.spec_goods_price.forEach((item,index)=>{
+                console.log(item.key)
+                if(item.key==id){
+                    price=item
+                    this.guige_id_cart=item.item_id
+                }
+            })
+            }
+            
+            
+            console.log(price,this.data.goods_info.price_section)
+
+
+
+            return price||this.data.goods_info.price_section
+        }
     },
     methods: {
+        zan_num(item){
+            this.ajax({
+                url:'index/goods/dianzan',
+                data:{
+                    comment_id:item.comment_id
+                }
+            }).then(res=>{
+                this.getdata()
+            })
+        },
+        share_select(e){
+          console.log(this.baseURL+'vue/#/xiazai')
+          console.log(this.data.goods_info.original_img)
+           if(!plus){
+                this.showtitle('请在app内打开')
+                return 
+            }
+                   plus.share.getServices(
+    res=>{
+      window.shar_arr=res
+      window.shar_arr.forEach(item=>{
+                if(e.type==item.description){
+                    if(item.nativeClient){ //如果手机内安装了对应的应用
+                    let msg={
+                        href: this.baseURL+'vue/#/xiazai',
+                            title: '悦莱惠',
+                            content: this.data.goods_info.goods_name,
+                            thumbs: [this.data.goods_info.original_img],//图片
+                            pictures:[this.data.goods_info.original_img] ,
+                            extra: {
+                                scene: e.ex||''
+                            }
+                    }
+                    console.log(item)
+                        item.send(msg,(z)=>{
+                            this.showtitle('分享成功')
+                            this.test_z=z
+                            console.log(z);
+                            this.showShare=false
+                            this.ajax({
+                                url:'index/task/mall_share'
+                            }).then(res=>{
+                                this.showtitle('分享成功2')
+                            })
+                        },err=>{
+                            this.showtitle('分享失败')
+                        })
+                    }else{
+                        this.showtitle(`手机内未安装${e.name}`)
+                    }
+                }
+            
+        })
+        console.log(res)
+    },err=>{
+        console.log('获取分享列表失败')
+    })
+            console.log(e,window.shar_arr)
+        
+
+            
+
+            console.log(e)
+        },
+        share(){
+            this.showShare=true
+        },
         changeche(item,index){
             this.data.spec_list[index].spec_item.forEach(item=>{
                 item.checked=false
@@ -184,7 +425,12 @@ export default {
             item.checked=true
         },
         submit(){
+            if(this.data.spec_list.length&&this.guige_price==this.data.goods_info.price_section){
+                this.showtitle('请选择商品规格')
+                return 
+            }
             this.guige_show=false
+            
             let goods_id=this.data.goods_info.goods_id
              let id=''
             this.data.spec_list.forEach(item=>{
@@ -194,6 +440,13 @@ export default {
                     }
                 })
             })
+            if(id){
+                id=id.slice(0,id.length-1)
+            }
+            let guige_name=''
+            if(this.data.spec_list.length){
+                guige_name=this.data.spec_list[this.choise_index].name
+            }
             if(this.buy_for=='购物'){
                
             this.ajax({
@@ -201,9 +454,10 @@ export default {
                 data:{
                     goods_id:goods_id,
                     goods_num:this.shop_count,
-                    spec_key_name:this.data.spec_list[this.choise_index].name,
+                    spec_key_name:guige_name,
                     spec_key:id,
-                    selected:1
+                    selected:1,
+                    item_id:this.guige_id_cart
                 }
             }).then(res=>{
                 this.showtitle('添加成功')
@@ -213,9 +467,11 @@ export default {
                 let data={
                         goods_id:goods_id,
                         goods_num:this.shop_count,
+                        spec_key_name:guige_name,
                         spec_key:id,
                         cart_id:'',
-                        action:1
+                        action:1,
+                        item_id:this.guige_id_cart
                     }
                 console.log(data)
                 data=JSON.stringify(data)
@@ -269,8 +525,114 @@ export default {
 </script>
 
 <style lang="scss" scoped >
+.test_z{
+    position: fixed;
+    background: black;
+    color: white;
+    padding: 20px;
+    bottom: 70px;
+    left: 20px;
+}
+.content{
+    padding: 50px 0 50px 0 !important;
+}
+
+	.fiver-two{
+		float:left;
+		width:100%;
+		background:#fff;
+	}
+	.f-t-top{
+        box-sizing: border-box;
+		float:left;
+		width:100%;
+		line-height:50px;
+		font-size:14px;
+		padding:0 3%;
+		border-bottom:1px solid #f6f6f6;
+	}
+	.f-t-detail{
+        box-sizing: border-box;
+		float:left;
+		width:100%;
+		padding:12px 3%;
+		border-bottom:1px solid #f6f6f6;
+	}
+	.f-t-d-top{
+		float:left;
+		width:100%;
+		line-height:42px;
+	}
+	.f-t-d-t-left{
+		float:left;
+		width:58%;
+	}
+	.f-t-d-t-left img{
+		float:left;
+		width:40px;
+		height:40px;
+		border-radius:50%;
+		margin:1px 0;
+		background:#ddd;
+		margin-right:4px;
+	}
+	.f-t-d-t-left span{
+		float:left;
+		color:#999;
+	}.rate{
+		float:left;
+		margin-top:15px;
+		margin-left:4px;
+	}
+	.f-t-d-t-right{
+		float:left;
+		width:42%;
+		text-align:right;
+	}
+	.f-t-d-center{
+		float:left;
+		width:100%;
+	}
+	.f-t-d-center p{
+		float:left;
+		width:100%;
+		line-height:20px;
+		font-size:14px;
+		padding:5px 0;
+	}
+	.f-t-d-center img{
+		float:left;
+		width:23.5%;
+		margin-right:2%;
+	}
+	.f-t-d-center img:nth-child(5){
+		float:left;
+		margin-right:0%;
+	}
+	.f-t-d-bottom{
+		float:left;
+		width:100%;
+		margin-top:5px;
+	}
+	.f-t-d-bottom li{
+		float:right;
+		min-width:78px;
+		line-height:24px;
+		padding-left:16px;
+	}.b_icon{
+		float:left;
+		margin-top:2px;
+		margin-right:2px;
+	}
+	.f-t-d-bottom li span{
+		color:#999;
+	}
 .choise-style{
     border: 1px solid rgb(223,37,25) !important;
+}
+/deep/.van-swipe__track{
+    align-items: center;
+    justify-content: center;
 }
 .like_class{
     color: red !important;
@@ -372,13 +734,14 @@ export default {
     height: 50px;
     box-sizing: border-box;
     padding: 5px;
+    z-index: 999;
     background: white;
     bottom: 0;
     left: 0;
     display: flex;
     .left{
         display: flex;
-        width: 30%;
+        width: 40%;
         .item{
             flex: 1;
             color: #000;
@@ -401,10 +764,13 @@ export default {
         }
     }
     .right{
-        width: 70%;
+        width: 60%;
         display: flex;
         /deep/.van-button{
             height: 100% !important;
+        }
+        /deep/.van-button--normal{
+            padding: 0 !important;
         }
     }
 }
@@ -412,7 +778,7 @@ export default {
     background: white;
     margin: 0 0 10px 0;
     box-sizing: border-box;
-    padding: 10px;
+    padding: 10px 10px 10px 10px;
     .title{
         font-weight: bold;
         font-size: 16px;

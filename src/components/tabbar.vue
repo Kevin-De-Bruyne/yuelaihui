@@ -37,6 +37,12 @@ export default {
             ]
         }
     },
+    created() {
+        console.log('我被创建了')
+    },
+    destroyed() {
+        console.log('我被摧毁了')
+    },
     methods: {
         gotabbar(item){
             if(this.$route.path==item.path){
@@ -56,7 +62,7 @@ export default {
     position: fixed;
     bottom: 0;
     left: 0;
-    width: 100%;
+    width: 100vw;
     background: white;
     display: flex;
     height: 60px;

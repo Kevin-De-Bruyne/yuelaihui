@@ -1,6 +1,6 @@
 <template>
     <div class="content">
-        <img class="logo-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=" alt="">
+        <img class="logo-img" src="../assets/images/logo.png" alt="">
         
         <div class="pd-box">
             <div class="ipt-box">
@@ -83,7 +83,7 @@ export default {
 .logo-img{
     display: block;
     margin: 70px auto;
-    border-radius: 50%;
+    // border-radius: 50%;
     width: 100px;
     height: 100px;
 }

@@ -2,11 +2,16 @@
     <div class="content">
         <headers title="意见与反馈" />
         <div class="pd-box">
+
+
             <div class="white-box white-box1">
             <div class="title">
-                请选择反馈问题的类型
+                请选择反馈标题
             </div>
-            <div class="item-box">
+            <div class="ipt-box">
+                <input v-model="title" type="text" placeholder="请输入标题">
+            </div>
+            <!-- <div class="item-box">
                 <div class="item" >
                     <div class="top">
                         <van-checkbox v-model="radio1" 
@@ -28,7 +33,7 @@
                         用的不爽丶功能建议
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
 
         <div class="white-box white-box2">
@@ -53,7 +58,8 @@ export default {
         return{
             radio1:true,
             radio2:false,
-            content:''
+            content:'',
+            title:''
         }
     },
     watch: {
@@ -80,7 +86,7 @@ export default {
            this.ajax({
                url:'index/customer/opinionto',
                data:{
-                   title:'反馈标题',
+                   title:this.title,
                    content:this.content
                }
            }).then(res=>{
@@ -94,6 +100,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.ipt-box{
+    display: flex;
+    height: 35px;
+    input{
+        flex: 1;
+        height: 100%;
+        box-sizing: border-box;
+        padding: 0 10px;
+        font-size: 12px;
+    }
+}
 .butn-box{
     box-sizing: border-box;
     padding: 0 10px;

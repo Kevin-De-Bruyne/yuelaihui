@@ -22,8 +22,8 @@
                 </div>
             </div>
 
-            <div class="item-box">
-                <div class="item" v-for="item in keyword_arr" :key="item">
+            <div class="item-box" >
+                <div class="item" v-for="item in keyword_arr" :key="item" @click="submit(item)">
                     {{item}}
                 </div>
             </div>
@@ -56,8 +56,8 @@
                 })
                
             },
-            submit(){
-                 this.$router.push('/sreach?keyword='+this.keyword)
+            submit(item){
+                 this.$router.push('/sreach?keyword='+(item||this.keyword))
             }
         },
     }

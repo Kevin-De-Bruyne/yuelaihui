@@ -19,7 +19,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="bottom">
+                <!-- <div class="bottom">
                     <div class="left">
                         <div class="text1">
                             固定消费额度
@@ -36,7 +36,7 @@
                             {{data.temporary}}
                         </div>
                     </div>
-                </div>
+                </div> -->
                 
             </div>
         </div>
@@ -54,7 +54,7 @@
             <van-cell title="直推总收益" :value="data.push">
                 
             </van-cell>
-            <van-cell title="分红总收益" :value="data.divi">
+            <van-cell title="补贴总收益" :value="data.divi">
                 
             </van-cell>
             <van-cell title="我的悦品卷可用额度" :value="data.coupon">
@@ -63,7 +63,7 @@
             <van-cell title="提现明细" to="/tx_mx" is-link>
                 
             </van-cell>
-            <van-cell :title="data.isSavePwd==1?'支付密码修改':'支付密码设置'" @click="password_show=true" :value="data.isSavePwd==1?'修改密码':'设置密码'" is-link>
+            <van-cell :title="data.isSavePwd==1?'忘记支付密码':'支付密码设置'" @click="password_show=true" :value="data.isSavePwd==1?'修改密码':'设置密码'" is-link>
                 
             </van-cell>
         </van-cell-group>
@@ -104,7 +104,8 @@ export default {
             data:{},
             pwd_type:'',
             pwd:'',
-            pwd_old:''
+            pwd_old:'',
+            nosetpwd:this.$route.query.setpwd||false
         }
     },
     watch: {
@@ -128,6 +129,9 @@ export default {
             }).then(res=>{
                 this.data=res.data
                 this.pwd_type=this.data.isSavePwd
+                if(this.nosetpwd){
+                    this.password_show=true
+                }
             })
         },
         ipt_none(e){
@@ -188,7 +192,11 @@ export default {
                     value:this.pwd                    
                 }
             }).then(res=>{
-                this.showtitle('设置密码成功')
+                this.showtitle('设置密码成功').then(res=>{
+                    if(this.nosetpwd){
+                        this.$router.go(-1)
+                    }
+                })
                 
                 this.password_show=false
             })
@@ -252,11 +260,11 @@ export default {
         margin: 0 0 10px 0;
         color: white;
         .card-box{
-            height: 160px;
+            height: 80px;
             background: rgb(234,61,47);
             border-radius: 10px;
             .top{
-                border-bottom: 1px solid rgba(255,255,255,0.5);
+                // border-bottom: 1px solid rgba(255,255,255,0.5);
                 display: flex;
                 box-sizing: border-box;
                 padding: 0 10px;

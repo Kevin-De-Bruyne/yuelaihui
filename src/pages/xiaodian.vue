@@ -13,7 +13,7 @@
                             {{data.level_name}}
                         </div>
                     </div>
-                    <div class="right">
+                    <div class="right" @click="$router.push('/xiaodian_xiaoshou')">
                         <div class="text1">
                             总销售额 
                         </div>
@@ -23,7 +23,7 @@
                     </div>
                 </div>
                 <div class="bottom">
-                    <div class="left">
+                    <div class="left" @click="$router.push('/xiaodian_shouyi')">
                         <div class="text1">
                             店铺收益
                         </div>
@@ -31,12 +31,12 @@
                             {{data.income}}
                         </div>
                     </div>
-                    <div class="right">
+                    <div class="right" @click="$router.push('/butie')">
                         <div class="text1">
-                            店铺分红期限
+                            我的补贴
                         </div>
                         <div class="text2">
-                            {{data.divi_per}}
+                            <!-- {{data.divi_per}} -->
                         </div>
                     </div>
                 </div>
@@ -44,9 +44,9 @@
         </div>
 
         <van-cell-group>
-            <van-cell title="店铺明细" to="xiaodian_mx" is-link>
-
-            </van-cell>
+            <van-cell title="店铺明细" to="xiaodian_mx" is-link/>
+            <van-cell title="我的客户" to="team_mx" is-link />
+            <!-- <van-cell title="我的补贴" to="butie" is-link /> -->
             
             
                 
@@ -73,6 +73,15 @@
             
 
         </van-popup>
+
+        <div class="butn-box">
+            <van-button round block class="m-t-40" 
+            @click="shenji()"
+            color="rgb(234,61,47)">
+            我的店铺    
+        </van-button>
+        </div>
+        
     </div>
 </template>
 
@@ -102,6 +111,17 @@ export default {
        this.getdata()
     },
     methods: {
+        shenji(){
+            this.$router.push('/dianpu')
+            return
+            this.ajax({
+                url:'index/my/get_commission'
+            }).then(res=>{
+                this.showtitle('操作成功').then(res=>{
+                    this.getdata()
+                })
+            })
+        },
         getdata(){
             this.ajax({
                 url:'index/my/get_shop_info'
@@ -149,6 +169,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.butn-box{
+    box-sizing: border-box;
+    padding: 0 10px;
+}
 .popup-box-my{
     background: white;
     .title-box{

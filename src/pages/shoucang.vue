@@ -3,8 +3,9 @@
         <headers title="商品收藏" />
 
          <div class="item-box">
-             <van-swipe-cell v-for="(item,index) in data" :key="index">
-                <div class="item" >
+             <van-swipe-cell v-for="(item,index) in data" :key="index"
+             >
+                <div class="item"  @click="godetail(item)">
                 <div class="shop-box">
                     <div class="shop-item">
                         <div class="left">
@@ -16,7 +17,7 @@
                             </div>
                             <div class="text2-box">
                                 <div class="left-text">
-                                    ￥{{item.market_price}}
+                                    ￥{{item.shop_price}}
                                 </div>
                                 <div class="right-text">
                                 </div>
@@ -46,6 +47,9 @@
             this.getdata()
         },
         methods: {
+            godetail(item){
+                this.$router.push('/shop_detail?id='+item.goods_id)
+            },
             delates(item){
                 this.ajax({
                     url:'index/product/del_collect',

@@ -1,5 +1,5 @@
 <template>
-    <div class="content">
+    <div class="user">
         <div class="header">
             <span class="title">
                 个人中心
@@ -20,16 +20,16 @@
                     <div class="text1 m-t-5 m-b-5">
                         等级：{{data.level}}
                     </div>
-                    <div class="text2" @click="data.user_agent=='无'&&$router.push('/shimin')">
+                    <div class="text2" @click="data.is_certification<=0&&$router.push('/shimin')">
                         <span class="iconfont icon-renzheng1"></span>
-                        {{data.user_agent=='无'?'未认证':'已认证'}}
+                        {{data.is_certification<=0?'未认证':'已认证'}}
                     </div>
                 </div>
-                <div class="butn-box">
+                <!-- <div class="butn-box">
                     <div class="butn" @click="shenqing()">
                         申请临时额度
                     </div>
-                </div>
+                </div> -->
             </div>
             <div class="right-cz" @click="$router.push('/mingxi_cz')">
                悦信分：{{data.trust}}
@@ -44,12 +44,12 @@
                         我的钱包
                     </div>
                 </div>
-                <div class="item" @click="$router.push('/youhuijuan')">
+                <div class="item" @click="$router.push('/xiaodian')">
                     <div class="top">
                         {{data.coupon_count}}
                     </div>
                     <div class="bottom">
-                        悦品券
+                        我的小店
                     </div>
                 </div>
             </div>
@@ -194,7 +194,11 @@ export default {
                 },
                 {
                     icon:'icon-yiwancheng',
-                    name:'已完成'
+                    name:'待评价'
+                },
+                {
+                    icon:'icon-yiwancheng',
+                    name:'已评价'
                 }
             ],
             fuwu_arr:[
@@ -204,9 +208,9 @@ export default {
                     path:'/msg'
                 },
                 {
-                    icon:'icon-dianpu',
-                    name:'我的小店',
-                    path:'/xiaodian'
+                    icon:'icon-icon_coupon',
+                    name:'悦品券',
+                    path:'/youhuijuan'
                 },
                 {
                     icon:'icon-shouhuodizhi',
@@ -249,7 +253,6 @@ export default {
                 url:'index/my/get_user_info'
             }).then(res=>{
                 this.data=res.data
-                this.data.avatar=res.url+this.data.avatar
             })
         },
         gourl(item){
@@ -369,9 +372,9 @@ export default {
         }
     }
 }
-.content{
+
+.user{
     background: rgb(242,242,242);
-    min-height: 100vh;
     padding: 0 0 70px 0;
 }
 .car-box{

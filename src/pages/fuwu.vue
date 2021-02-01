@@ -1,9 +1,7 @@
 <template>
     <div class="content">
-        <headers title="客服联系方式" />
-        <div v-html="data">
-
-        </div>
+        <headers title="悦莱惠客服" />
+        <iframe src="https://29501.ahc.ink/chat.html" class="kefu"></iframe>
     </div>
 </template>
 
@@ -26,11 +24,20 @@
                 })
             }
         },
+        mounted() {
+            
+        },
     }
 </script>
 <style lang="scss" scoped>
     .content{
         box-sizing: border-box;
         padding: 50px 0 0 0;
+        height: 100vh;
+    }
+    .kefu{
+        height: calc(100% - 3px);
+        width: 100%;
+        border: none;
     }
 </style>

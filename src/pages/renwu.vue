@@ -13,14 +13,14 @@
                             {{data.trust_score}}
                         </div>
                     </div>
-                    <div class="right">
+                    <!-- <div class="right">
                         <div class="text1">
                             我的临时额度
                         </div>
                         <div class="text2">
                             {{data.temporary_quota}}
                         </div>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="top">
                     <div class="text">
@@ -47,17 +47,17 @@
                             </div>
                         </div>
                     </div>
-                    <!-- <div class="right">
-                        <div class="butn2"  v-if="item.task_notes_id==0">
-                            未完成
+                    <div class="right">
+                        <div class="butn1"  v-if="item.finish==0" @click="gotest(item)">
+                            去完成
                         </div>
-                        <div class="butn1" @click="lingqv(item)" v-else-if="item.receive==0">
-                            领取
-                        </div>
-                        <div class="butn2" v-else>
+                        <div class="butn2" v-else-if="item.finish==1">
                             已完成
                         </div>
-                    </div> -->
+                        <!-- <div class="butn1" @click="lingqv(item)" v-else-if="item.finish==1">
+                            领取
+                        </div> -->
+                    </div>
                 </div>
                 <!-- <div class="item" >
                     <div class="left">
@@ -179,6 +179,23 @@ export default {
         this.getdata()
     },
     methods: {
+        gotest(item){
+            if(item.name.indexOf('签到')!==-1){
+                this.goqiandao()
+                return
+            }
+            if(item.name.indexOf('邀请')!==-1){
+                this.$router.push('/tuiguang')
+                return 
+            }
+            if(item.name.indexOf('分享')!==-1||item.name.indexOf('购买')!==-1){
+                this.$router.push('/')
+                return
+            }
+        },
+        goqiandao(){
+            this.$router.push('/qiandao')
+        },
         lingqv(item){
             this.ajax({
                 url:'index/task/getTaskReward',
@@ -195,7 +212,7 @@ export default {
         },
         getdata(){
             this.ajax({
-                url:'index/task'
+                url:'index/task/index'
             }).then(res=>{
                 this.data=res.data
             })

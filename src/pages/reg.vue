@@ -26,8 +26,17 @@
 
         <div class="check-box">
             <van-checkbox v-model="checked" checked-color="#e02418"></van-checkbox>
-            我已阅读并同意《****注册协议》及《服务条款》
+            我已阅读并同意
+            <span class="red" @click="open_xieyi(0)">《隐私协议》</span>
+             及
+            <span class="red" @click="open_xieyi(1)">《服务条款》</span>
+           
         </div>
+
+        <van-popup position="bottom" v-model="xieyi_show">
+            <div class="pop-box" v-html="xieyi">
+            </div>
+        </van-popup>
 
         <van-button round color="#e02418" class="m-t-40" block @click="submit()">
             注册
@@ -44,10 +53,24 @@ export default {
             codetext:'获取验证码',
             user:{
                 yaoqin_code:this.$route.query.p_id||''
-            }
+            },
+            xieyi:'',
+            xieyi_show:false
         }
     },
     methods: {
+        open_xieyi(type){
+            this.ajax({
+                url:'index/my/get_xieyi',
+                data:{
+                    type
+                }
+            }).then(res=>{
+                console.log(res)
+                this.xieyi=res.data.user_xieyi||res.data.yinsi_xieyi
+                this.xieyi_show=true
+            })
+        },
         submit(){
             let {user}=this
             
@@ -96,6 +119,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.pop-box{
+    box-sizing: border-box;
+    padding: 15px;
+    height: 400px;
+    overflow-y: scroll;
+}
+.red{
+    color: rgb(224,36,24) !important;
+}
 .check-box{
     margin: 30px 0 0 0;
     display: flex;

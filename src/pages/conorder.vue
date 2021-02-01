@@ -42,7 +42,7 @@
                             </div>
                             <div class="text2-box">
                                 <div class="left-text">
-                                    ￥{{item.goods_price}}
+                                    ￥{{item.shop_price}}
                                 </div>
                                 <div class="right-text">
                                     x{{item.goods_num}}
@@ -88,28 +88,60 @@
                 请选择支付方式
             </div>
         </div>
-        <van-radio-group v-model="pay_type">
-  <van-cell-group>
-    <van-cell title="余额" clickable @click="pay_type = '1'">
-      <template #right-icon>
-        <van-radio checked-color="rgb(224,36,24)" name="1" />
-      </template>
-    </van-cell>
-    <van-cell title="支付宝" clickable @click="pay_type = '2'">
-      <template #right-icon>
-        <van-radio checked-color="rgb(224,36,24)" name="2" />
-      </template>
-    </van-cell>
-    <van-cell title="微信" clickable @click="pay_type = '3'">
-      <template #right-icon>
-        <van-radio checked-color="rgb(224,36,24)" name="3" />
-      </template>
-    </van-cell>
-  </van-cell-group>
-</van-radio-group>
-<van-cell title="悦品卷" class="m-t-10" @click="youhui_show=true" :value-class="{'red':youhui_name}" :value="youhui_name||'未选择'" is-link>
+        <template v-if="is_duihuan">
+            <van-radio-group v-model="pay_type">
+            <van-cell-group>
+               
+                 <van-cell title="余额" clickable @click="pay_type = '1'">
+                    <template #right-icon>
+                        <van-radio checked-color="rgb(224,36,24)" name="1" />
+                    </template>
+                    </van-cell>
+                    <van-cell title="支付宝" clickable @click="pay_type = '2'">
+                    <template #right-icon>
+                        <van-radio checked-color="rgb(224,36,24)" name="2" />
+                    </template>
+                    </van-cell>
+                    <van-cell title="微信" clickable @click="pay_type = '3'">
+                    <template #right-icon>
+                        <van-radio checked-color="rgb(224,36,24)" name="3" />
+                    </template>
+                    </van-cell>
+                <van-cell title="悦品券兑换" clickable @click="pay_type = '4'">
+                    <template #right-icon>
+                        <van-radio checked-color="rgb(224,36,24)" name="4" />
+                    </template>
+                </van-cell>
+            </van-cell-group>
+            </van-radio-group>
+        </template>
+        <template v-else>
+                 <van-radio-group v-model="pay_type">
+                <van-cell-group>
+                    <van-cell title="余额" clickable @click="pay_type = '1'">
+                    <template #right-icon>
+                        <van-radio checked-color="rgb(224,36,24)" name="1" />
+                    </template>
+                    </van-cell>
+                    <van-cell title="支付宝" clickable @click="pay_type = '2'">
+                    <template #right-icon>
+                        <van-radio checked-color="rgb(224,36,24)" name="2" />
+                    </template>
+                    </van-cell>
+                    <van-cell title="微信" clickable @click="pay_type = '3'">
+                    <template #right-icon>
+                        <van-radio checked-color="rgb(224,36,24)" name="3" />
+                    </template>
+                    </van-cell>
+                </van-cell-group>
+                </van-radio-group>
+        </template>
+       
+<!-- <van-cell title="悦品卷" class="m-t-10" @click="youhui_show=true" 
+ v-if="is_duihuan"
+:value-class="{'red':youhui_name}" :value="youhui_name||'未选择'" is-link>
      
-</van-cell>
+</van-cell> -->
 <van-popup v-model="youhui_show" position="bottom">
    <div class="youhui_box">
        <div class="title">
@@ -207,6 +239,11 @@
                 pay_pwd:''
             }
         },
+        computed:{
+            is_duihuan(){
+                return this.data.dis&&this.data.goods[0].goods[0].partition_id==4
+            }
+        },
         created() {
             this.getdata()
         },
@@ -262,7 +299,19 @@
             this.ipt_index--
         },
             submit(next){
-                if(this.pay_type==1&&!next){
+                if(!this.data.user_address.city_name){
+                    this.showtitle('请先填写地址').then(res=>{
+                        this.$router.push('/addres_add')
+                    })
+                    return
+                }
+                if(this.data.tradpwd_status==0){
+                    this.showtitle('请先设置交易密码!').then(res=>{
+                        this.$router.push('/qianbao?setpwd=true')
+                    })
+                    return 
+                }
+                if((this.pay_type==1||this.pay_type==4)&&!next){
                     this.password_show=true
                     return
                 }
@@ -279,15 +328,81 @@
                         action:info.action||1,
                         user_note:this.user.beizhu,
                         is_use:!!this.youhui_id,
-                        id:this.youhui_id,
+                        couponId:this.youhui_id,
                         is_kp:0,
                         paypwd:this.pay_pwd,
                         total_amount:this.data.total_amount
                     }
                 }).then(res=>{
-                    this.showtitle('支付成功').then(res=>{
-                        this.$router.replace('/order')
-                    })
+                    if(this.pay_type==1||this.pay_type==4){
+                        this.showtitle('支付成功').then(res=>{
+                            this.$router.replace('/order')
+                        })
+                    }
+                    if(this.pay_type==2){
+                        this.axios.post('index/pay/recharge',{
+                            order_id:res.order_id,
+                            token:localStorage.getItem('token')
+                            }).then(res2=>{
+                           var channel=null,
+                            aliChannel=null
+                            console.log(res2)
+                            plus.payment.getChannels((channels)=>{
+                    aliChannel=channels[0];
+                    //我把这个方法放在这里面没放外面，放外面会出现aliChannel还是null 无法调用支付宝
+									plus.nativeUI.showWaiting();
+					                        plus.nativeUI.closeWaiting();
+					                        channel = aliChannel;
+									
+					                            plus.payment.request(channel, res2.data, (result)=> {
+                                                    console.log(JSON.stringify(result));
+                                                    
+					                                this.showtitle('支付成功').then(res=>{
+                                                        this.$router.replace('/order')
+                                                    })
+					                            }, (e)=> {
+					                                console.log(JSON.stringify(e));
+					                                
+					                                alert("付费失败");
+					                            });
+					                        
+					                    },err=>{
+                                            console.log('获取支付通道失败')
+                                        });
+                        })
+                    }
+                    if(this.pay_type==3){
+                        this.axios.post('index/pay/weixinpay',{
+                            order_id:res.order_id,
+                            token:localStorage.getItem('token')
+                        }).then(res=>{
+                            console.log(res)
+                                var channel=null,
+                            aliChannel=null
+                            plus.payment.getChannels((channels)=>{
+                    aliChannel=channels[1];
+                    //我把这个方法放在这里面没放外面，放外面会出现aliChannel还是null 无法调用支付宝
+									plus.nativeUI.showWaiting();
+					                        plus.nativeUI.closeWaiting();
+					                        channel = aliChannel;
+					                        plus.payment.request(channel, res.data, (result)=> {
+                                                    console.log(JSON.stringify(result));
+                                                    this.showtitle('支付成功').then(res=>{
+                                                        this.$router.replace('/order')
+                                                    })
+					                            }, (e)=> {
+					                                console.log(JSON.stringify(e));
+					                                
+					                                alert("付费失败");
+					                            });
+					                    },err=>{
+                                            console.log('获取支付通道失败')
+                                        });
+                        })
+                    }
+                    // this.showtitle('支付成功').then(res=>{
+                    //     this.$router.replace('/order')
+                    // })
                 }).catch(e=>{
                 })
             },
@@ -307,6 +422,9 @@
                     }
                 }).then(res=>{
                     this.data=res
+                    // console.log(this.data.goods[0].goods[0].partition_id)
+                    this.is_duihuan&&(this.pay_type='4')
+                    console.log(this.pay_type)
                     this.htp=res.url
                 })
             }
