@@ -1,87 +1,81 @@
 <template>
     <div class="content">
-        <div class="red-bg"></div>
-        <div class="header">
-            <div class="container">
-                <span class="iconfont icon-zuojiantou" @click="goback()"></span>
-            <div class="text">签到专区</div>
+        <div class="header-box">
+            <div class="header">
+                <span class="iconfont icon-zuojiantou"
+                @click="$router.go(-1)"
+                ></span>
+                签到专区
             </div>
-        </div>
-
-        <div class="float-box">
-
-      
-
-        <div class="chenzhang-box">
-            <div class="icon-box">
-                <span class="iconfont icon-star"></span>
-            </div>
-            悦信分：{{data.trust}}
-        </div>
-        <div class="white-box white-box1">
-            <div class="title">
-                <div class="left">
-                    已连续签到
-                <span class="red">{{data.sign_count}}</span>
-                天
-                </div>
-                <div class="right">
-                    <div class="butn1" @click="qiandao()" v-if="!data.isSign">
-                        点击签到
+            <div class="user-box">
+                <div class="left-box">
+                    <div class="img-box">
+                        <img :src="data.avatar" alt="">
+                    </div>
+                    <div class="text-box">
+                        <div class="text1">
+                            糖小豆
+                        </div>
                     </div>
                 </div>
+                <div class="right-box">
+                    <div class="xin-box">
+                        {{data.trust}}
+                    </div>
 
+                </div>
             </div>
+        </div>
 
+        <div class="card-box">
+            <div class="time-box">
+                <div class="left-box">
+                    <div class="text1">
+                        04
+                    </div>
+                </div>
+                <div class="right-box">
+                    <div class="text1">
+                        周四    
+                    </div>
+                    <div class="text2">
+                        2021
+                        <span class="">二月</span>
+                    </div>
+                </div>
+            </div>
             <div class="item-box">
-                <div class="item" v-for="(item,index) in week_arr" :key="index" 
-                :class="{'week_action':item.isSin}"
-                >
-                    <div class="container">
-                        <div class="top">
-                        +1
-                    </div>
-                    <div class="bottom">
+                <div class="item" v-for="(item,index) in week_arr" :key="index">
+                    <div class="top">
                         {{item.week}}
                     </div>
+                    <div class="bottom">
+                        <span class="iconfont icon-gou1" v-if="item.isSin"></span>
+                        <span class="dian-icon" v-else></span>
                     </div>
                 </div>
             </div>
-
-            <!-- <div class="rule-box">
-                <div class="left">
-                    <span class="iconfont icon-yiwen m-r-5"></span>
-                    签到规则
-                </div>
-                <div class="right">
-                    签到提醒
-                    <van-switch 
-                    active-color="rgb(220,38,25)" inactive-color="white"
-                    v-model="qiandao_checked" size="16px" />
-                </div>
-            </div> -->
+            <div class="butn" @click="qiandao()">
+                立即签到
+            </div>
         </div>
-        <div class="white-box white-box2">
+
+        <div class="white-box">
             <div class="title">
-                日常任务
+                做任务赚积分
             </div>
             <div class="item-box">
-                <div class="item" v-for="(item,index) in data.tasks" :key="index"
-                
-                >
+                <div class="item" v-for="(item,index) in data.tasks" :key="index">
                     <div class="left">
                         <div class="text1">
                             {{item.name}}
                         </div>
                         <div class="text2">
-                            天天领悦信分,0元购换好物
-                        </div>
-                        <div class="text3">
                             悦信分+{{item.reward}}
                         </div>
                     </div>
                     <div class="right">
-                        <div class="butn2" v-if="item.receive==1">
+                        <div class="butn1" v-if="item.receive==1">
                             已完成
                         </div>
                         <div class="butn2" v-else-if="item.isSign==0">
@@ -90,12 +84,10 @@
                         <div class="butn1" @click="lingqv(item)" v-else-if="item.isSign==1">
                             领取
                         </div>
-                        
                     </div>
                 </div>
             </div>
         </div>
-      </div>
     </div>
 </template>
 
@@ -203,221 +195,201 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.white-box2{
-    margin: 10px 0 0 0;
+.content{
+    background: rgb(249,249,249);
+}
+.white-box{
+    margin: 15px;
+    border-radius: 12px;
+    background: white;
+    box-sizing: border-box;
+    padding: 15px;
+    position: relative;
+    top: -130px;
     .title{
-        
-        margin: 5px 0 10px 0;
-        display: flex;
-        justify-content: space-between;
-        .left{
-            font-weight: bold;
-        font-size: 16px;
-        }
-        .right{
-            .butn1{
-                  color: rgb(188,40,52);
-                    border: 1px solid rgb(188,40,52);
-                    background: rgb(255,244,244);
-                      width: 60px;
-                    height: 25px;
-                    line-height: 25px;
-                    font-size: 14px;
-                    border-radius: 100px;
-                    text-align: center;
-            }
-        }
+        color: #333333;
+        font-size: 18px;
+        margin: 0 0 10px 0;
     }
     .item-box{
         .item{
-            border-bottom: 1px solid #eee;
             display: flex;
-            box-sizing: border-box;
-            padding: 10px 0;
+            margin: 0 0 23px 0;
+            justify-content: space-between;
             .left{
-                line-height: 25px;
-                flex: 1;
-            }
-            .text1{
-                font-size: 14px;
-                color: #000;
-            }
-            .text2{
-                font-size: 14px;
-                color: #999;
-            }
-            .text3{
-                font-size: 14px;
-                color: #999;
+                .text1{
+                    color: #555555;
+                    font-size: 15px;
+                }
+                .text2{
+                    color: #999999;
+                    font-size: 12px;
+                }
             }
             .right{
                 display: flex;
                 align-items: center;
                 div{
-                    width: 60px;
-                    height: 25px;
-                    line-height: 25px;
-                    font-size: 14px;
+                    width: 67px;
+                    height: 28px;
+                    line-height: 28px;
+                    font-size: 12px;
                     border-radius: 100px;
                     text-align: center;
                 }
                 .butn1{
-                     color: rgb(188,40,52);
-                    border: 1px solid rgb(188,40,52);
-                    background: rgb(255,244,244);
+                     color:white;
+                    background: #FF5265;
                 }
                 .butn2{
-                    color: rgb(134,134,134);
-                    border: 1px solid rgb(230,230,230);
-                    background: rgb(248,248,248);
+                    color: white;
+                    background: #D9D9D9;
                 }
             }
+
         }
     }
 }
-.rule-box{
-    display: flex;
-    margin: 20px 0 0 0;
-    justify-content: space-between;
-    font-size: 14px;
-    .iconfont{
-        color: #999;
-        margin: 0 10px 0 0;
-    }
-    .right{
-        color: #000;
-        display: flex;
-        align-items: center;
-        /deep/.van-switch{
-            margin: 0 0 0 20px;
-        }
-    }
-}
-.week_action{
-    background: rgb(249,100,94) !important;
-    color: white !important;
-    .top{
-        background: rgb(230,71,67) !important;
-    }
-}
-.white-box{
-    background: white;
-    border-radius: 3px;
+.card-box{
+    position: relative;
+    top: -100px;
+    height: 293px;
+    background: url('../assets/images/qiandao_bg.png') 0 0 no-repeat;
+    background-size: 100% 100%;
     box-sizing: border-box;
-    padding: 10px;
-}
-.white-box1{
-    .title{
-         margin: 5px 0 10px 0;
+    padding: 60px 45px 20px 45px;
+    .time-box{
         display: flex;
-        justify-content: space-between;
-        .left{
-            font-weight: bold;
-        font-size: 16px;
+        color: #000;
+        margin: 0 0 10px 0;
+        .left-box{
+            margin: -10px 10px 0 0;
+            .text1{
+                font-size: 60px;
+                font-weight: bold;
+                
+            }
         }
-        .right{
-            .butn1{
-                  color: rgb(188,40,52);
-                    border: 1px solid rgb(188,40,52);
-                    background: rgb(255,244,244);
-                      width: 60px;
-                    height: 25px;
-                    line-height: 25px;
-                    font-size: 14px;
-                    border-radius: 100px;
-                    text-align: center;
+        .right-box{
+            .text1{
+                font-size: 20px;
+                margin: 0 0 10px 0;
+            }
+            .text2{
+                font-size: 12px;
             }
         }
     }
     .item-box{
         display: flex;
-        overflow: scroll;
-            height:100px;
-            font-size: 14px;
-        .container{
-            height: 100%;
-            width: 100%;
-            box-sizing: border-box;
-            padding: 20px 0;
+        justify-content: space-between;
+        text-align: center;
+        .top{
+            margin: 0 0 15px 0;
         }
-        .item{
-            width: 80px;
-            display: flex;
-            color: #999;
-            height: 100%;
-            margin: 0 10px;
-            background: rgb(247,247,247);
-            border-radius: 3px;
-            text-align: center;
-            flex: 0 0 auto;
-            .top{
-                line-height: 40px;
-                flex: 1;
-                border-radius: 50%;
-                background: rgb(230,230,230);
-                width: 40px;
-                height: 40px;
-                margin: auto auto 15px auto;
+        .iconfont{
+            color: rgb(255,93,98);
+            font-size:  16px;
+        }
+        .dian-icon{
+            width: 6px;
+            height: 6px;
+            display: inline-block;
+            border-radius: 50%;
+            background: #D5D5D5;
+
+        }
+    }
+    .butn{
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        color: white;
+        font-size: 14px;
+        border-radius: 100px;
+        margin: 30px 0 0 0;
+background: linear-gradient(308deg, #FF5265 0%, #FF7E5B 100%);
+    }
+}
+    .header-box{
+        overflow: hidden;
+background: linear-gradient(133deg, #FF805A 0%, #FF5265 100%);
+box-shadow: 0px 3px 15px rgba(255, 57, 57, 0.07);
+height: 242px;
+.header{
+    position: relative;
+    font-size: 17px;
+    color: white;
+    text-align: center;
+    height: 40px;
+    line-height: 40px;
+    margin: 15px 0 20px 0;
+    .iconfont{
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: white;
+        font-size: 20px;
+    }
+}
+.user-box{
+    display: flex;
+    justify-content: space-between;
+    margin: 0 0 0 15px;
+    .left-box{
+        display: flex;
+        .img-box{
+            width: 54px;
+            height: 54px;
+            margin: 0 25px 0 0;
+            border-radius: 50%;
+            overflow: hidden;
+            img{
+                width: 100%;
+                height: 100%;
             }
-            .bottom{
-                
+        }
+        .text-box{
+            color: white;
+            .text1{
+                font-size: 16px;
+            }
+            .text2{
+                span{
+                    height: 30px;
+                    line-height: 30px;
+                    padding: 0 10px;
+                    border-radius: 100px;
+                    border: 1px solid white;
+                    font-size: 12px;
+                }
             }
         }
     }
+    .right-box{
+        background: rgba(255,255,255,0.3);
+        padding: 0 5px 0 10px;
+        border-radius: 100px 0 0 100px;
+        display: flex;
+        align-items: center;
+        box-sizing: border-box;
+        height: 33px;
+        width: 73px;
+        color: #9D6600;
+        position: absolute;
+        right: 0;
+
+        .xin-box{
+            background: url('../assets/images/qiandao_xin.png') 0 0 no-repeat;
+            background-size: 100% 100%;
+            width: 65px;
+            height: 25px;
+            padding: 5px 12px 0 0;
+            box-sizing: border-box;
+            text-align: right;
+        }
+    }
 }
-.content{
-    position: relative;
-    min-height: 100vh;
-    background: rgb(242,242,242);
-}
-  .red-bg{
-      background: rgb(223,37,25);
-      height: 200px;
-      width: 100%;
-  }
-  .float-box{
-      margin: -150px 0 0 0;
-      box-sizing: border-box;
-      padding: 0 10px;
-  }
-  .header{
-      position: fixed;
-      height: 50px;
-      line-height: 50px;
-      text-align: center;
-      color: white;
-      font-size: 16px;
-      left: 0;
-      top: 0;
-      width: 100%;
-      .container{
-          position: relative;
-      }
-      .iconfont{
-          color: white;
-          font-size: 26px;
-          position: absolute;
-          left: 10px;
-          top: 50%;
-          transform: translateY(-50%);
-      }
-  }
-  .chenzhang-box{
-      color: white;
-      font-size: 14px;
-      margin: 20px 0 10px 0;
-      .icon-box{
-          display: inline-block;
-          background: rgb(255,222,0);
-          border-radius: 50%;
-          width: 20px;
-          height: 20px;
-          text-align: center;
-          margin: 0 10px 0 0;
-          .iconfont{
-              color: white;
-              font-size: 12px;
-          }
-      }
-  }
+    }
 </style>

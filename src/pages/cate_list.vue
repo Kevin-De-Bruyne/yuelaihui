@@ -1,6 +1,14 @@
 <template>
     <div class="content">
-        <headers :title="title" />
+        <div class="sreach-box" >
+            <span class="iconfont icon-zuojiantou"
+            @click="$router.go(-1)" 
+            ></span>
+            <div class="ipt-box" @click.stop="$router.push('/sreach_page')">
+                <span class="iconfont icon-sousuo" ></span>
+                <input type="text" disabled placeholder="请输入关键词">
+            </div>
+        </div>
         
          <div class="shop-box">
                 
@@ -22,12 +30,12 @@
                                </div>
                            </div> -->
                            <div class="text3">
-                               <span class="text3-red">
+                               <div class="text3-red">
                                    ￥{{item.shop_price}}
-                               </span>
-                               <span class="text3-gray">
+                               </div>
+                               <div class="text3-gray">
                                    ￥{{item.market_price}}
-                               </span>
+                               </div>
                            </div>
                        </div>
                    </div>
@@ -89,6 +97,56 @@
 </script>
 
 <style lang="scss" scoped>
+ .sreach-box{
+        position: fixed;
+        width: 100%;
+        left: 0;
+        top:0;
+        background: white;
+        display: flex;
+        align-items: center;
+        box-sizing: border-box;
+        padding: 10px;
+        z-index: 3;
+        .icon-zuojiantou{
+            font-size: 24px;
+            margin: 0 20px 0 0;
+        }
+        .ipt-box{
+            flex: 1;
+            background: white;
+            box-sizing: border-box;
+            padding: 0 20px 0 20px;
+            display: flex;
+            height: 35px;
+            border: 1PX solid  rgb(255,82,101);
+            align-items: center;
+            border-radius: 100px;
+            input{
+                height: 100%;
+                color: #999;
+                font-size: 14px;
+                width: 100%;
+            }
+            .iconfont{
+                margin: 0 20px 0 0;
+                color: rgb(255,82,101);
+            }
+        }
+        .msg-box{
+            height: 50px;
+            color: white;
+            font-size: 12px;
+            text-align: center;
+            margin: 0 0  0 15px;
+            display: flex;
+            align-items: center;
+            .iconfont{
+                color: rgb(255,82,101);
+                font-size: 22px;
+            }
+        }
+    }
 .content{
     background: rgb(242,242,242);
     min-height: 100vh;
@@ -99,7 +157,7 @@
     height: calc(100vh - 50px);
     overflow: scroll;
     box-sizing: border-box;
-    padding: 10px 0 0 0;
+    padding: 15px 10px 0 10px;
     .title{
         height: 50px;
         font-size: 16px;
@@ -121,7 +179,9 @@
         box-sizing: border-box;
         padding: 0 5px;
         .item{
-            width: 49%;
+            border-radius: 12px;
+            overflow: hidden;
+            width: 48%;
             border-radius: 6px;
             overflow: hidden;
             background: white;
@@ -161,9 +221,10 @@
                 }
                 .text3{
                     .text3-red{
-                        color: rgb(223,37,25);
+                        color: rgb(223,19,19);
                         margin: 0 3px 0 0;
-                        font-size: 14px;
+                        font-size: 18px;
+                        font-weight: bold;
                     }
                     .text3-gray{
                         font-size: 12px;

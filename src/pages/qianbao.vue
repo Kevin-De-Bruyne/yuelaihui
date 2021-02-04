@@ -4,7 +4,38 @@
 
         <div class="white-box">
             <div class="card-box">
-                <div class="top">
+                <div class="tx-box" @click="$router.push('/tx_mx')">
+                    提现明细
+                </div>
+                <div class="text-box">
+                    <div class="text1">
+                        {{showpsd?sale_psd:data.money}}
+                        <span class="iconfont icon-yanjing yanj" @click="showpsd=!showpsd"></span>
+                    </div>
+                    <div class="text2">
+                        总资产(元)
+                        
+                    </div>
+                </div>
+                <div class="item-box">
+                    <div class="item">
+                        <div class="top">
+                            {{data.money}}
+                        </div>
+                        <div class="bottom">
+                            现金额度
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="top">
+                            {{data.sale}}
+                        </div>
+                        <div class="bottom">
+                            累计收益
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="top">
                     <div class="left">
                         <div class="text1-box">
                             总资产(元)
@@ -18,7 +49,7 @@
                             立即提现
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <!-- <div class="bottom">
                     <div class="left">
                         <div class="text1">
@@ -39,34 +70,59 @@
                 </div> -->
                 
             </div>
+
+            <div class="tx-butn" @click="$router.push('/tx')">
+                提现
+            </div>
+
+            <div class="title">
+                其他收益
+            </div>
+            <div class="shouyi-item-box">
+                <div class="item">
+                    <div class="top">
+                        <img src="../assets/images/qianbao_1.png" alt="">
+                        悦信分
+                    </div>
+                    <div class="bottom">
+                        {{data.trust}}
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="top">
+                        <img src="../assets/images/qianbao_2.png" alt="">
+                        直推总收益
+                    </div>
+                    <div class="bottom">
+                        {{data.push}}
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="top">
+                        <img src="../assets/images/qianbao_3.png" alt="">
+                        补贴总收益
+                    </div>
+                    <div class="bottom">
+                        {{data.divi}}
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="top">
+                        <img src="../assets/images/qianbao_4.png" alt="">
+                        悦品券额度
+                    </div>
+                    <div class="bottom">
+                        {{data.coupon}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="bottom-title" @click="password_show=true">
+                {{data.isSavePwd==1?'忘记支付密码?':'支付密码设置'}}
+            </div>
         </div>
 
-        <van-cell-group>
-            <van-cell title="我的现金可用额度" :value="data.money">
-
-            </van-cell>
-            <van-cell title="悦信分" :value="data.trust">
-                
-            </van-cell>
-            <van-cell title="店铺总收益" :value="data.sale">
-                
-            </van-cell>
-            <van-cell title="直推总收益" :value="data.push">
-                
-            </van-cell>
-            <van-cell title="补贴总收益" :value="data.divi">
-                
-            </van-cell>
-            <van-cell title="我的悦品卷可用额度" :value="data.coupon">
-                
-            </van-cell>
-            <van-cell title="提现明细" to="/tx_mx" is-link>
-                
-            </van-cell>
-            <van-cell :title="data.isSavePwd==1?'忘记支付密码':'支付密码设置'" @click="password_show=true" :value="data.isSavePwd==1?'修改密码':'设置密码'" is-link>
-                
-            </van-cell>
-        </van-cell-group>
+       
         
         <van-popup v-model="password_show" position="bottom">
             <div class="popup-box-my">
@@ -105,6 +161,7 @@ export default {
             pwd_type:'',
             pwd:'',
             pwd_old:'',
+            showpsd:false,
             nosetpwd:this.$route.query.setpwd||false
         }
     },
@@ -117,6 +174,18 @@ export default {
                     this.ipt_arr[0].focus()
                 })
             }
+        }
+    },
+    computed:{
+        sale_psd(){
+            toString
+            let s=String(this.data.money)
+            let arr=[]
+            for(let i=0;i<s.length;i++){
+                arr.push('*')
+            }
+            console.log(arr.join(''))
+           return arr.join('')
         }
     },
     mounted() {
@@ -207,6 +276,48 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.bottom-title{
+    margin: 20px 0 0 0;
+    color: #666666;
+    font-size: 14px;
+    text-align: right;
+}
+.title{
+    margin: 37px 0 15px 0;
+    font-size: 18px;
+    color: #000;
+}
+.shouyi-item-box{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    .item{
+        width: 48.5%;
+        height: 72px;
+        background: #F8F8F8;
+        box-sizing: border-box;
+        padding: 10px 0 0 15px;
+        border-radius: 10px;
+        margin: 0 0 15px 0;
+        .top{
+            margin: 0 0 10px 0;
+            font-size: 14px;
+            color: #000;
+            img{
+                margin: 0 10px 0 0;
+                width: 20px;
+                height: 20px;
+                vertical-align: middle;
+            }
+        }
+        .bottom{
+            margin: 0 0 0 30px;
+            font-size: 19px;
+            color: #000;
+        }
+    }
+}
 .popup-box-my{
     background: white;
     .title-box{
@@ -247,9 +358,12 @@ export default {
         }
     }
 }
+.van-cell-group::after{
+    border: none !important;
+}
     .content{
         min-height: 100vh;
-        background: rgb(242,242,242);
+        background:white;
         box-sizing: border-box;
         padding: 50px 0 0 0;
     }
@@ -257,64 +371,58 @@ export default {
         background: white;
         box-sizing: border-box;
         padding: 10px;
-        margin: 0 0 10px 0;
         color: white;
+        
+        .tx-butn{
+height: 40px;
+line-height: 40px;
+text-align: center;
+margin: 25px 0 0 0;
+background: linear-gradient(298deg, #FF5265 0%, #FF7F5A 100%);
+border-radius: 100px;
+font-size: 16px;
+color: white;
+        }
         .card-box{
-            height: 80px;
-            background: rgb(234,61,47);
-            border-radius: 10px;
-            .top{
-                // border-bottom: 1px solid rgba(255,255,255,0.5);
-                display: flex;
-                box-sizing: border-box;
-                padding: 0 10px;
-                .left{
-                    flex: 1;
-                    .text1-box{
-                        font-size: 14px;
-                        margin:  15px 0;
-                        color: rgb(255,198,173);
-                    }
-                    .text2-box{
-                        margin: 10px 0;
-                        font-size: 16px;
-                        font-weight: bold;
-                    }
-
+            position: relative;
+background: linear-gradient(133deg, #FF805A 0%, #FF5265 100%);
+box-shadow: 0px 3px 15px rgba(255, 57, 57, 0.07);
+            border-radius: 17px;
+             color: white;
+             padding: 30px 0 17px 20px;
+             .tx-box{
+                 position: absolute;
+                 right: 0;
+                 top: 30px;
+                 font-size: 12px;
+border-radius: 100px 0px 0px 100px;
+width: 65px;
+height: 30px;
+line-height: 30px;
+color: white;
+text-align: center;
+background: rgba(255,255,255,0.3);
+             }
+            .text-box{
+               margin: 0 0 15px 0;
+                .text1{
+                    font-size: 36px;
                 }
-                .right{
-                    display: flex;
-                    align-items: center;
-                    .butn{
-                        color: rgb(218,90,65);
-                        border-radius: 4px;
-                        background: white;
-                        padding: 0 10px;
-                        height: 35px;
-                        line-height: 35px;
-                        font-size: 16px;
-                    }
+                .text2{
+                    font-size: 12px;
+                    margin: 10px 0 0 0;
                 }
             }
-            .bottom{
+            .item-box{  
                 display: flex;
-                .left,.right{
+                .item{
                     flex: 1;
-                    box-sizing: border-box;
-                    margin: 15px 0 10px 10px;
-                    .text1{
-                        color: rgb(255,198,173);
-                        font-size: 14px;
-                    }
-                    .text2{
-                        margin: 10px 0 0 0;
-                        color: white;
-                        font-size: 16px;
-                        font-weight: bold;
-                    }
                 }
-                .left{
-                    border-right: 1px solid rgba(255,255,255,0.5);
+                .top{
+                    font-size: 19px;
+                }
+                .bottom{
+                    font-size: 12px;
                 }
             }
         }

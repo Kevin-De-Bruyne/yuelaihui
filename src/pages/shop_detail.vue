@@ -1,10 +1,14 @@
 <template>
     <div class="content">
-        <headers title="详情">
-            <div class="slot-box">
-                <span class="iconfont icon-fenxiang_2" @click="share()"></span>
+        <div class="headers">
+            <div class="left">
+                <span class="iconfont icon-zuojiantou" @click="$router.go(-1)"></span>
             </div>
-        </headers>
+            <div class="right">
+                <span class="iconfont icon-fenxiang m-r-15"></span>
+                <span class="iconfont icon-gouwuchezhengpin" @click="goshop('购物')"></span>
+            </div>
+        </div>
 
         <van-swipe class="my-swipe" :autoplay="3000" @change="onChange">
             <van-swipe-item v-for="(item,index) in data.goods_info.details_img" :key="index">
@@ -55,22 +59,111 @@
         </span>
     </div>
 
-    <van-tabs v-model="active">
-        <van-tab title="商品详情"></van-tab>
-        <van-tab title="商品评论"></van-tab>
-    </van-tabs>
-    
-    <div v-show="active==0">
-        <div class="white-box">
-        <div class="title">
+    <div class="white-box white-pl">
+        <div class="title-box">
+            <div class="left">
+                商品评论
+                
+                <span class="m-l-15">({{data.comment&&data.comment.length}})</span>
+            </div>
+            <div class="right" @click="all_detail=!all_detail">
+                {{all_detail?'查看全部':'收起'}}
+            </div>
+        </div>
+        
+        <template v-if="!all_detail&&data.comment&&data.comment.length">
+            <div class="f-t-detail"  v-for="(item,index) in data.comment" :key="index">
+                <div class="f-t-d-top">
+                    <div class="f-t-d-t-left">
+                        <div class="user-box">
+                            <img :src="item.avatar" />
+                            <div class="text-box">
+                                <div>{{item.username}}</div>
+                                <div class="f-t-d-t-right">{{item.add_time}}</div>
+                            </div>
+                        </div>
+                        <!-- <van-rate
+                            v-model="data.comment[0].goods_rank"
+                            :size="12"
+                            color="#ee0a24"
+                            void-icon="star"
+                            void-color="#eee"
+                            class="rate"
+                            readonly 
+                        /> -->
+                    </div>
+                </div>
+                <div class="f-t-d-center">
+                    <p>{{item.content}}</p>
+                    <img v-for="(Image,img_index) in item.img" :src="Image" :key="img_index" />
+                </div>
+                <div class="f-t-d-bottom">
+                    <ul>
+                        <!-- <li @click="tohref(com_index)">
+                            <van-icon name="chat-o" size="20px" class="b_icon" />
+                            <span>回复({{item.son_num}})</span>
+                        </li> -->
+                        <!-- <li @click="zan_num(data.comment[0])">
+                            <van-icon name="good-job-o" size="20px" class="b_icon" />
+                            <span>点赞({{data.comment[0].zan_num}})</span>
+                        </li> -->
+                    </ul>
+                </div>
+		</div>
+        </template>
+
+        <template v-else>
+            <div class="f-t-detail"  v-if="data.comment&&data.comment.length" :key="com_index">
+                <div class="f-t-d-top">
+                    <div class="f-t-d-t-left">
+                        <div class="user-box">
+                            <img :src="data.comment[0].avatar" />
+                            <div class="text-box">
+                                <div>{{data.comment[0].username}}</div>
+                                <div class="f-t-d-t-right">{{data.comment[0].add_time}}</div>
+                            </div>
+                        </div>
+                        <!-- <van-rate
+                            v-model="data.comment[0].goods_rank"
+                            :size="12"
+                            color="#ee0a24"
+                            void-icon="star"
+                            void-color="#eee"
+                            class="rate"
+                            readonly 
+                        /> -->
+                    </div>
+                </div>
+                <div class="f-t-d-center">
+                    <p>{{data.comment[0].content}}</p>
+                    <img v-for="(Image,img_index) in data.comment[0].img" :src="Image" :key="img_index" />
+                </div>
+                <div class="f-t-d-bottom">
+                    <ul>
+                        <!-- <li @click="tohref(com_index)">
+                            <van-icon name="chat-o" size="20px" class="b_icon" />
+                            <span>回复({{item.son_num}})</span>
+                        </li> -->
+                        <!-- <li @click="zan_num(data.comment[0])">
+                            <van-icon name="good-job-o" size="20px" class="b_icon" />
+                            <span>点赞({{data.comment[0].zan_num}})</span>
+                        </li> -->
+                    </ul>
+                </div>
+		</div>
+        </template>
+        
+    </div>
+
+    <div class="">
+        <div class="title-detail">
             商品详情
         </div>
         <div class="shop_detail" v-if="data.goods_info" v-html="data.goods_info.goods_content">
             
         </div>
     </div>
-    </div>
-    
+
     <div v-show="active==1">
         <div class="fiver-two" >
 							<p class="f-t-top">宝贝评价({{data.comment&&data.comment.length}})</p>
@@ -79,6 +172,7 @@
 									<div class="f-t-d-t-left">
 										<img :src="item.avatar" />
 										<span>{{item.username}}</span>
+                                        <span class="f-t-d-t-right">{{item.add_time}}</span>
 										<van-rate
 										  	v-model="item.goods_rank"
 										  	:size="12"
@@ -89,7 +183,6 @@
 										  	readonly 
 										/>
 									</div>
-									<span class="f-t-d-t-right">{{item.add_time}}</span>
 								</div>
 								<div class="f-t-d-center">
 									<p>{{item.content}}</p>
@@ -101,10 +194,10 @@
 											<van-icon name="chat-o" size="20px" class="b_icon" />
 											<span>回复({{item.son_num}})</span>
 										</li> -->
-										<li @click="zan_num(item)">
+										<!-- <li @click="zan_num(item)">
 											<van-icon name="good-job-o" size="20px" class="b_icon" />
 											<span>点赞({{item.zan_num}})</span>
-										</li>
+										</li> -->
 									</ul>
 								</div>
 							</div>
@@ -125,6 +218,16 @@
                 </div>
             </div>
             <div class="item"
+            @click="$router.push('/fuwu')"
+            >
+                <div class="top">
+                    <span class="iconfont icon-icon_kefu"  ></span>
+                </div>
+                <div class="bottom">
+                    客服
+                </div>
+            </div>
+            <div class="item"
             @click="bottom_click()"
             >
                 <div class="top">
@@ -135,22 +238,12 @@
                     收藏
                 </div>
             </div>
-            <div class="item"
-            @click="$router.push('/fuwu')"
-            >
-                <div class="top">
-                    <span class="iconfont icon-icon_kefu"  ></span>
-                </div>
-                <div class="bottom">
-                    客服
-                </div>
-            </div>
         </div>
         <div class="right">
-            <van-button color="rgb(241,156,76)" class=" m-r-10" @click="goshop('购物')" block round>
+            <van-button color="rgb(239,141,144)" class=" m-r-10" @click="goshop('购物')" block round>
                 加入购物车
             </van-button>
-            <van-button color="rgb(224,36,24)" block round @click="goshop('购买')">
+            <van-button color="rgb(255,82,101)" block round @click="goshop('购买')">
                 立即购买
             </van-button>
         </div>
@@ -218,9 +311,9 @@
   title="立即分享给好友"
   :options="options"
 />
-<div class="test_z">
+<!-- <div class="test_z">
     {{test_z}}
-</div>
+</div> -->
     </div>
 </template>
 
@@ -229,6 +322,7 @@ import Toast from '../../../Z付回收/WX_WeChat/vant/toast/toast'
 export default {
     data(){
         return{
+            all_detail:true,
             active:0,
             test_z:{},
             options: [
@@ -386,17 +480,18 @@ export default {
                     }
                     console.log(item)
                         item.send(msg,(z)=>{
-                            this.showtitle('分享成功')
+                            
                             this.test_z=z
                             console.log(z);
                             this.showShare=false
                             this.ajax({
-                                url:'index/task/mall_share'
+                                url:'index/task/subsidy_share',
+                                data:{
+                                    type:e.name=='微信好友'?1:e.name=='微信朋友圈'?2:0
+                                }
                             }).then(res=>{
-                                this.showtitle('分享成功2')
+                                this.showtitle('分享成功')
                             })
-                        },err=>{
-                            this.showtitle('分享失败')
                         })
                     }else{
                         this.showtitle(`手机内未安装${e.name}`)
@@ -525,6 +620,59 @@ export default {
 </script>
 
 <style lang="scss" scoped >
+.white-pl{
+    .title-box{
+
+        display: flex;
+        justify-content: space-between;
+        margin: 0 0 15px 0;
+        .left{
+            color: rgb(102,102,102);
+            font-size: 18px;
+        }
+        .right{
+            color: #e15b5b;
+            font-size: 12px;
+        }
+    }
+}
+.shop_detail{
+    box-sizing: border-box;
+    padding: 0 10px;
+}
+.headers{
+    position: fixed;
+    top: 20px;
+    left: 0;
+    width: 100%;
+    z-index: 99;
+    box-sizing: border-box;
+    padding: 0 10px;
+    display: flex;
+    justify-content: space-between;
+    .iconfont{
+        color: #000;
+    }
+    .left{
+        .iconfont{
+            font-size:30px;
+        }
+    }
+    .right{
+        display: flex;
+        align-items: center;
+        .iconfont{
+            font-size: 18px;
+        }
+    }
+}
+.title-detail{
+    text-align: center;
+    font-size: 16px;
+    color: #000;
+    line-height: 40px;
+    height: 40px;
+}
 .test_z{
     position: fixed;
     background: black;
@@ -534,7 +682,9 @@ export default {
     left: 20px;
 }
 .content{
-    padding: 50px 0 50px 0 !important;
+    padding: 0 0 50px 0 !important;
+    min-height: 100vh;
+    background: rgb(247,247,247);
 }
 
 	.fiver-two{
@@ -556,17 +706,18 @@ export default {
 		float:left;
 		width:100%;
 		padding:12px 3%;
-		border-bottom:1px solid #f6f6f6;
 	}
 	.f-t-d-top{
 		float:left;
 		width:100%;
-		line-height:42px;
+		line-height:22px;
 	}
 	.f-t-d-t-left{
 		float:left;
-		width:58%;
-	}
+    }
+    .user-box{
+        display: flex;
+    }
 	.f-t-d-t-left img{
 		float:left;
 		width:40px;
@@ -578,7 +729,7 @@ export default {
 	}
 	.f-t-d-t-left span{
 		float:left;
-		color:#999;
+		color:#000;
 	}.rate{
 		float:left;
 		margin-top:15px;
@@ -586,9 +737,12 @@ export default {
 	}
 	.f-t-d-t-right{
 		float:left;
-		width:42%;
-		text-align:right;
-	}
+        text-align:right;
+        color: #999 !important;
+    }
+    .text-box{
+        margin:0 0 0 15px;
+    }
 	.f-t-d-center{
 		float:left;
 		width:100%;
@@ -779,6 +933,9 @@ export default {
     margin: 0 0 10px 0;
     box-sizing: border-box;
     padding: 10px 10px 10px 10px;
+     margin: 7px 10px 7px 10px;
+    border-radius: 6px;
+    overflow: hidden;
     .title{
         font-weight: bold;
         font-size: 16px;
@@ -786,23 +943,25 @@ export default {
     }
 }
 .white-box1{
+   
     .text1-box{
         .text1{
-            color: rgb(224,36,24);
+            color: rgb(225,91,91);
             font-size: 16px;
             font-weight: bold;
         }
         .text2{
-            color: #999;
+            color: rgb(204,204,204);
             text-decoration: line-through;
             font-size: 12px;
         }
         .text3{
             display: inline-block;
-            border: 1px solid rgb(224,36,24);
+            border-radius: 200px;
             padding: 0 10px;
-            color: rgb(224,36,24);
-            font-size: 14px;
+            color: rgb(225,91,91);
+            font-size: 12px;
+            background: rgb(251,239,239);
         }
     }
     .text2-box{

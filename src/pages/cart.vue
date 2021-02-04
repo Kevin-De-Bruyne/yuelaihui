@@ -1,10 +1,10 @@
 <template>
     <div class="content" v-cloak>
         <headers title="购物车" noback="true">
-            <!-- <div class="slot-box" @click="bj=!bj">
+            <div class="slot-box" @click="bj=!bj">
                 <span v-if="!bj">编辑</span>
                 <span v-else>完成</span>
-            </div> -->
+            </div>
         </headers>
         <template v-if="onload">
             
@@ -29,12 +29,20 @@
                             <div class="text1-box">
                                 {{item.goods_name}}
                             </div>
+                            <div class="guige-box">
+                                {{item.spec_name}}
+                            </div>
                             <div class="text2-box">
                                 <div class="left-text">
                                     ￥{{item.goods_price}}
                                 </div>
+                                <div class="right-text1">
+                                    ￥{{item.market_price}}
+                                </div>
                                 <div class="right-text">
-                                    <van-stepper @change="countchange(item)" v-model="item.goods_num" />
+                                    <van-stepper
+                                    input-width="20" button-size="20px"
+                                     @change="countchange(item)" v-model="item.goods_num" />
                                 </div>
                             </div>
                         </div>
@@ -59,7 +67,7 @@
                 </div>
             </div>
             <div class="bj-bottom" v-if="bj">
-                <div class="left">
+                <div class="left" @click="checked=!checked">
                     <div class="icon-box icon-box2">
                         <div class="icon1">
                              <span class="iconfont icon-gouxuan2" :class="{'red':checked}"></span>
@@ -118,6 +126,13 @@ export default {
     },
     created() {
         this.getdata()
+    },
+    watch:{
+        checked(news,old){
+            this.data[0].cart.forEach((item,index)=>{
+                    item.checked=news
+                })
+        }
     },
     methods: {
         deleteshop(item){
@@ -193,6 +208,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.van-stepper{
+    background: rgb(247,247,247);
+    border-radius: 100px;
+    overflow: hidden;
+}
 .delete-button{
     height: 100%;
 }
@@ -272,9 +292,12 @@ export default {
     .item-box{
             box-sizing: border-box;
             overflow-y: scroll;
+            padding: 0 15px;
             .item{
+                margin: 10px 0 0 0;
                 background: rgb(255,255,255);
                 border-bottom: 1px solid #eee;
+                border-radius: 10px;
                 .shop-box{
                     box-sizing: border-box;
                     padding:  10px;
@@ -288,8 +311,6 @@ export default {
                             align-items: center;
                             justify-content: center;
                             margin: 0 10px 0 0;
-                            border-radius: 6px;
-                            overflow: hidden;
                             img{
                                 width: 100%;
                                 height:100%;
@@ -297,12 +318,25 @@ export default {
                         }
                         .container{
                             flex: 1;
-                            display: flex;
-                            flex-direction: column;
-                            justify-content: space-between;
+                            .guige-box{
+                                height: 24px;
+                                line-height: 24px;
+                                border-radius: 4px;
+                                padding: 0 10px;
+                                margin: 6px 0;
+                                display: inline-block;
+                                background: #F7F7F7;
+                                color: #ABABAB;
+                                font-size: 12px;
+                            }
                             .text1-box{
                                 color: #000;
                                 font-size: 14px;
+                                overflow:hidden; 
+                                text-overflow:ellipsis;
+                                display:-webkit-box; 
+                                -webkit-box-orient:vertical;
+                                -webkit-line-clamp:2; 
                             }
                             .text2-box{
                                 display: flex;
@@ -311,6 +345,13 @@ export default {
                                 .left-text{
                                     font-size: 14px;
                                     color: rgb(224,36,24);
+                                }
+                                .right-text1{
+                                    align-self: flex-end;
+                                    margin: 0 0 1px 0;
+                                    color: #999;
+                                    text-decoration: line-through;
+                                    font-size: 12px;
                                 }
                                 .right-text{
                                     font-size: 12px;

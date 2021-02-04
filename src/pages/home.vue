@@ -11,9 +11,6 @@
                 <div class="icon-box">
                     <span class="iconfont icon-xiaoxi-"></span>
                 </div>
-                <div class="text">
-                    消息
-                </div>
             </div>
         </div>
         <div class="content">
@@ -23,6 +20,20 @@
                 <img :src="item.img" alt="">
             </van-swipe-item>
         </van-swipe>
+        </div>
+        <div class="baoyou-box">
+            <div class="item">
+                <span class="iconfont icon-zhengpin"></span>
+                100%正品
+            </div>
+            <div class="item">
+                <span class="iconfont icon-tubiao_baoyou"></span>
+                全国包邮
+            </div>
+            <div class="item">
+                <span class="iconfont icon-fahuo"></span>
+                拒绝延误
+            </div>
         </div>
         <div class="nav-box" ref="nav_box">
             <div class="item" v-for="(item,index) in data.navs" :key="index"
@@ -37,20 +48,7 @@
             </div>
         </div>
 
-        <div class="baoyou-box">
-            <div class="item">
-                <span class="iconfont icon-renzheng2"></span>
-                100%正品
-            </div>
-            <div class="item">
-                <span class="iconfont icon-baoyou"></span>
-                全国包邮
-            </div>
-            <div class="item">
-                <span class="iconfont icon-fahuo"></span>
-                拒绝延误
-            </div>
-        </div>
+        
 
         <div class="gray-box" >
             <div class="white-box white-box1">
@@ -59,6 +57,9 @@
                         <div class="left">
                             快报
                             <span class="iconfont icon-laba1"></span>
+                        </div>
+                        <div class="news-neirong">
+                            春节期间全场五折...
                         </div>
                         <div class="right" @click="$router.push('/gonggao')">
                             更多
@@ -78,7 +79,7 @@
                     </div> -->
                 </div>
 
-                <div class="shop-box">
+                <!-- <div class="shop-box">
                     <div class="item" v-for="(item,index) in data.new_goods" :key="index"
                     @click="godetail(item.goods_id)"
                     >
@@ -94,6 +95,14 @@
                             </div>
                         </div>
                     </div>
+                </div> -->
+
+                <div class="shop-img">
+                    <img src="../assets/images/home-2.png" alt="">
+                </div>
+
+                <div class="yuelai-box" @click="$router.push('/cate_list?from=duihuan')">
+                    <img src="../assets/images/home3.png" alt="">
                 </div>
                     </div>
                 
@@ -107,10 +116,8 @@
                 </div>
             </div>
              -->
-            <div class="shop-box">
+            <!-- <div class="shop-box">
                 <div class="title">
-                     <!-- <span class="title-icon"></span>
-                    <span class="text">悦品卷兑换专区</span> -->
                      <img @click="$router.push('/cate_list?from=duihuan')" src="../assets/images/duihuan.jpg" alt="">
                 </div>
                
@@ -119,17 +126,12 @@
                    @click="godetail(item.goods_id)"
                    >
                        <div class="top" :style="{'backgroundImage':`url('${item.original_img}')`}">
-                           <!-- <img :src="item.original_img" alt=""> -->
                        </div>
                        <div class="bottom">
                            <div class="text1">
                                {{item.goods_name}}
                            </div>
-                           <!-- <div class="text2-box">
-                               <div class="text2-item" v-for="(item,index) in 2" :key="index">
-                                   上海推荐
-                               </div>
-                           </div> -->
+                           
                            <div class="text3">
                                <span class="text3-red">
                                    ￥{{item.shop_price}}
@@ -142,7 +144,7 @@
                    </div>
                </div>
 
-            </div>
+            </div> -->
         </div>
         </div>
         
@@ -234,13 +236,13 @@ export default {
         align-items: center;
         justify-content: center;
         height: 100%;
-        border-right: 1px solid #eee;
-        color: #AAAAAA;
+        font-size:14px;
+        color: rgb(255,82,101);
     }
     .iconfont{
-        color: red;
+        color: rgb(255,82,101);
         margin: 0 5px 0 0;
-        font-size: 24px;
+        font-size: 20px;
     }
     .item:last-child{
         border: none !important;
@@ -331,9 +333,6 @@ export default {
     }
 }
 .gray-box{
-    background: rgb(242,242,242);
-    box-sizing: border-box;
-    padding: 10px;
     .white-box{
         background: white;
         border-radius: 3px;
@@ -366,6 +365,9 @@ export default {
                 justify-content:space-between;
                 box-sizing: border-box;
                 padding: 0 10px;
+                background: rgb(242,242,242);
+                border-radius: 6px;
+                margin: 0 10px;
                 .left{
                     display: flex;
                     align-items: center;
@@ -376,6 +378,9 @@ export default {
                         margin: 0 0 0 10px;
                         font-size: 12px;
                     }
+                }
+                .news-neirong{
+                    color: #999;
                 }
                 .right{
                     font-size: 12px;
@@ -473,11 +478,12 @@ export default {
     }
 }
     .red-bg{
-        background: rgb(224,36,24);
+        background: linear-gradient( rgb(252,234,233),rgb(245,244,244));
         position: fixed;
         height: 200px;
         width: 100%;
         z-index: 1;
+
         left: 0;
         top: 0;
     }
@@ -486,7 +492,7 @@ export default {
         width: 100%;
         left: 0;
         top:0;
-        background: rgb(224,36,24);
+        background: rgb(253,232,231);
         display: flex;
         align-items: center;
         box-sizing: border-box;
@@ -498,7 +504,8 @@ export default {
             box-sizing: border-box;
             padding: 0 20px 0 20px;
             display: flex;
-            height: 40px;
+            height: 35px;
+            border: 1PX solid  rgb(255,82,101);
             align-items: center;
             border-radius: 100px;
             input{
@@ -509,7 +516,7 @@ export default {
             }
             .iconfont{
                 margin: 0 20px 0 0;
-                color: #999;
+                color: rgb(255,82,101);
             }
         }
         .msg-box{
@@ -518,20 +525,25 @@ export default {
             font-size: 12px;
             text-align: center;
             margin: 0 0  0 15px;
+            display: flex;
+            align-items: center;
             .iconfont{
-                color: white;
+                color: rgb(255,82,101);
                 font-size: 22px;
             }
         }
     }
     .content{
         box-sizing: border-box;
-        padding: 60px 0 0 0;
+        padding: 70px 0 0 0;
     }
     .swiper_box{
         box-sizing: border-box;
         position: relative;
         z-index: 2;
+        margin: 0 10px;
+        border-radius: 6px;
+        overflow: hidden;
          .top_swipe{
         // height: 200px;
         width: 100%;

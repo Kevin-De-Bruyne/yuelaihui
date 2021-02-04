@@ -1,65 +1,53 @@
 <template>
     <div class="content">
-        <headers title="店铺等级" />
-
-        
-        <div class="top-box">
-            <div class="title-vip">
-                {{data.now_name}}
+        <div class="header-box">
+            <div class="header">
+                <span class="iconfont icon-zuojiantou"
+                @click="$router.go(-1)"
+                ></span>
+                店铺等级
             </div>
-            <div class="riqi-box">
-                <!-- <div class="left">
-                    有效期至2021.08.10
+        </div>
+
+        <div class="card-box">
+            <div class="title">
+                钻石特权
+            </div>
+            <div class="item-box">
+                <div class="item" >
+
+                </div>
+            </div>
+        </div>
+
+        <div class="chenzhang-box">
+            <div class="title">
+                成长轨迹
+            </div>
+            <div class="jindu-box">
+                <!-- <div class="item" v-for="(item,index) in lv_arr" :key="index"
+                :style="{width:item==1?'100%':item==0?'0%':`${item}%`}"
+                >
                 </div> -->
-                <div class="right">
-                    下一等级&nbsp;
-                    <span class="jiacu">{{data.new_name}}</span>
-                </div>
+                <van-progress :percentage="jindu" color="rgb(237,184,141)"  :show-pivot="false" />
+                
             </div>
-
-            <van-progress :percentage="jindu" color="rgb(237,184,141)"  :show-pivot="false" />
-
-            <div class="chenzhang-box">
-                <div class="left">
-                    当前成长值
-                </div>
-                <div class="right">
-                    <span class="jiacu">{{data.now_sale}}</span>/
-                    <span class="jiacu">{{data.new_sale}}</span>
+            <div class="item-box">
+                <div class="item" v-for="(item,index) in data.level_power" :key="index">
+                    <div class="top">
+                        {{item.money}}
+                    </div>
+                    <div class="bottom">
+                        {{item.level_name}}
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="tequan-box">
-            <div class="title-box">
-                <div class="left">
-                    等级特权
-                </div>
-                <div class="right">
-                    <van-button round type="primary"
-                    @click="$router.push('/tuiguang')"
-                     color="rgb(253,176,8)">
-                        去邀请
-                    </van-button>
-                </div>
-            </div>
-
-            <div class="card-box">
-                <div class="item" v-for="(item,index) in data.level_power"
-                :style="{'background':item.color}"
-                @click="godetail(item)"
-                 :key="index">
-                    {{item.level_name}}
-                </div>
-            </div>
-        </div>
-
-        <div class="butn-box">
-            <van-button round block class="m-t-40" 
-            @click="shenji()"
-            color="rgb(234,61,47)">
-            升级店铺    
-        </van-button>
+        <div class="butn"
+        @click="shenji()"
+        >
+            升级店铺
         </div>
     </div>
 </template>
@@ -68,6 +56,7 @@
     export default{
         data(){
             return{
+                lv_arr:[],
                 card_arr:[
                     {
                         text:'青铜',
@@ -118,6 +107,16 @@
                     url:'index/my/get_user_level'
                 }).then(res=>{
                     this.data=res.data
+                    let lv_arr=[]
+                   let lv_index=0
+                   this.data.now_sale=2500
+                   let nownum=Number(this.data.now_sale)
+                  
+
+                    
+                    
+                    console.log(lv_arr);
+                    this.lv_arr=lv_arr
                     console.log(this.data)
                     for(let i in this.data.level_power){
                         console.log(i)
@@ -165,77 +164,112 @@
 </script>
 
 <style lang="scss" scoped>
-.butn-box{
-    box-sizing: border-box;
-    padding: 0 10px;
+.content{
+    background: rgb(246,246,246);
+    min-height: 100vh;
 }
-.jiacu{
-    font-weight: bold;
+    .header-box{
+        background: rgb(38,41,50);
+        height: 277px;
+        overflow: hidden;
+        .header{
+    position: relative;
+    font-size: 17px;
+    color: white;
+    text-align: center;
+    height: 40px;
+    line-height: 40px;
+    margin: 15px 0 20px 0;
+    .iconfont{
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: white;
+        font-size: 20px;
+    }
 }
-    .content{
+    }
+    .card-box{
+background: linear-gradient(314deg, #3D8CFF 0%, #76C8FA 100%);
+box-shadow: 0px 3px 15px rgba(255, 57, 57, 0.07);
+height: 132px;
+position: relative;
+top: -75px;
+margin: 0 15px;
+border-radius: 12px;
+.title{
+    line-height: 40px;
+    color: white;
+    text-align: center;
+    font-size: 16px;
+}
+    }
+    .chenzhang-box{
+        border-radius: 16px;
         box-sizing: border-box;
-        padding: 50px 10px 0 10px;
-        .top-box{
-            border-bottom: 1px solid #eee;
-            box-sizing: border-box;
-            padding: 0 0 5px 0;
-            .title-vip{
-                font-size: 24px;
-                font-weight: bold;
-                color: rgb(253,176,8);
-                margin: 15px 0 10px 0;
+        padding: 0 15px 30px 15px;
+        background: white;
+        position: relative;
+        top: -75px;
+        margin: 20px 15px 0 15px;
+        .title{
+            color: #000;
+            text-align: center;
+            line-height: 40px;
+        }
+        .jindu-box{
+            background: rgb(220,220,220);
+            height: 5px;
+            display: flex;
+            justify-content: space-between;
+            .item{
+                background: #FFCF39;
+                position: relative;
             }
-            .riqi-box{
-                display: flex;
-                justify-content: space-between;
-                line-height: 30px;
-                 font-size: 14px;
-                .left{
-                    color: #AAAAAA;
-                }
-                .right{
-                    color: #000;
-                }
+            .item:last-child{
+                width: 0 !important;
             }
-            .chenzhang-box{
-                display: flex;
-                justify-content: space-between;
-                font-size: 16px;
-                line-height: 30px;
-                .left{
+            .item::before{
+                border-radius: 50%;
+                content: '';
+                display: inline-block;
+                background: rgb(80,160,253);
+                width: 10px;
+                height:10px;
+                position: absolute;
+                left: 0;
+                top: -3px;
+            }
+        }
+        .item-box{
+            display: flex;
+            justify-content: space-between;
+            margin: 15px 0 0 0;
+            .item{
+                flex: 1;
+                font-size: 12px;
+                text-align: center;
 
+                .top{
+                    color: #8FA0BA;
+                    margin: 0 0 10px 0;
+                }
+                .bottom{
+                    font-size: 14px;
+                    color: #666;
                 }
             }
         }
     }
-    .tequan-box{
-        .title-box{
-            display: flex;
-            justify-content: space-between;
-            margin: 20px 0 10px 0;
-            .left{
-                font-size: 16px;
-                font-weight: bold;
-            }
-            .right{
-                .van-button{
-                    height: 30px;
-                    padding: 0 30px;
-                }
-            }
-        }
-        .card-box{
-            margin: 15px 0 0 0;
-            .item{
-                color: white;
-                margin: -5px 0 0 0;
-                border-radius: 10px 10px 0 0;
-                height: 60px;
-                line-height: 60px;
-                font-size: 20px;
-                box-sizing: border-box;
-                padding: 0 0 0 15px;
-            }
-        }
+    .butn{
+        background: #CBCBCB;
+        color: #000;
+        text-align: center;
+        margin: 60px 30px 0 30px;
+        line-height: 40px;
+        height: 40px;
+        font-size: 14px;
+        border-radius: 200px;
     }
 </style>

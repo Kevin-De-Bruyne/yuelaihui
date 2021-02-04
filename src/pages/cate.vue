@@ -121,17 +121,17 @@ export default {
        height: 50px;
        background: white;
        box-sizing: border-box;
-       padding: 5px 10px;
+       padding: 10px 10px;
        .ipt-box{
            display: flex;
            box-sizing: border-box;
-           padding: 0 20px;
+           padding: 0 20px 0 10px;
            height: 100%;
-           background: rgb(239,243,246);
            border-radius: 100px;
            align-items: center;
+           border: 1PX solid  rgb(255,82,101);
            .iconfont{
-               color: #aaaaaa;
+               color:  rgb(255,82,101);
                margin: 0 10px 0 0;
            }
            input{
@@ -148,15 +148,16 @@ export default {
    .cate-box{
        display: flex;
        position: absolute;
-       top: 70px;
+       top: 50px;
        bottom: 60px;
+       border-top: 1px solid #eee;
        width: 100%;
+       padding: 10px 0 0 0;
        .left{
            overflow: scroll;
            height: 100%;
            font-size: 14px;
            width: 30%;
-           background: rgb(242,242,242);
            text-align: center;
 
            .icon{
@@ -183,7 +184,7 @@ export default {
            }
            .item{
                 display: flex;
-                margin: 0 0 5px 5px;
+                margin: 0 0 10px 5px;
                 .left-box{
                     display: flex;
                     align-items: center;
@@ -192,6 +193,8 @@ export default {
                     height: 100px;
                     margin: 0 10px 0 0 ;
                     flex: 0 0 auto;
+                    border-radius: 10px;
+                    overflow: hidden;
                     img{
                         width: 100%;
                         height: 100%;
@@ -216,6 +219,8 @@ export default {
                     .text2-box{
                         .text2-1{
                             font-size: 16px;
+                            color:  rgb(255,82,101);
+                            font-weight: bold;
                         }
                         .text2-2{
                             text-decoration: line-through;

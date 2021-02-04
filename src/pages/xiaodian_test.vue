@@ -14,28 +14,22 @@
                                 <div class="lefts">
                                     {{item.goods_name}}
                                 </div>
-                                
+                                <div class="rights">
+                                    ￥{{item.goods_price}}
+                                </div>
                             </div>
                             <div class="text">
-                                    <van-progress
+                                    当前进度: <van-progress
                                     stroke-width="8px"
-                                     :percentage="jindu_num(item)" 
-                                     track-color="linear-gradient(308deg, #FF5265 0%, #FF7E5B 100%)"
-                                      color="rgb(248,222,112)"  :show-pivot="false" />
-                                     
+                                     :percentage="jindu_num(item)" track-color="rgb(251,59,44)" color="rgb(248,222,112)"  :show-pivot="false" />
                             </div>
                             <div class="text2-box">
                                 
                                 <div class="left-text">
-                                    <div class="text1">
-                                        ￥{{item.goods_price}}
-                                    </div>
+                                    
                                 </div>
                                 <div class="right-text">
-                                    <!-- 结束时间: {{item.end_time_title}} -->
-                                    <div class="text2">
-
-                                    </div>
+                                    结束时间: {{item.end_time_title}}
                                 </div>
                             </div>
                         </div>
@@ -44,7 +38,7 @@
             </div>
         </div>
         <div class="butn-box" v-if="data.length">
-            <van-button round block color="#FF5265"
+            <van-button round block color="rgb(234, 61, 47)"
             @click="$router.push('/tuiguang')"
             >
         点击加速
@@ -72,14 +66,6 @@
                 console.log((nowtime/endtime)*100)
                 return (nowtime/endtime)*100
             },
-            jindu_now(item){
-                let nowtime=item.now_time-item.start_time
-                let endtime=item.end_time-item.start_time
-                return {
-                    endtime,
-                    nowtime
-                }
-            },
             getdata(){
                 this.ajax({
                     url:'index/my/my_subsidy'
@@ -95,37 +81,27 @@
     .content{
         box-sizing: border-box;
         padding: 50px 0 0 0;
-        min-height: 100vh;
-        background: rgb(246,246,246);
     }
     .butn-box{
         box-sizing: border-box;
         padding: 0 10px;
         margin: 20px 0 0 0;
-        position: fixed;
-        left: 0;
-        bottom: 15px;
-        width: 100%;
     }
     .item-box{
             box-sizing: border-box;
             overflow-y: scroll;
-            padding: 0 15px;
             .item{
                 background: rgb(255,255,255);
                 border-bottom: 1px solid #eee;
-                margin: 15px 0 0 0;
-                border-radius: 14px;
                 .shop-box{
                     box-sizing: border-box;
-                    padding: 20px;
-                    
+                    padding:  10px;
                     .shop-item{
                         display: flex;
                        
                         .left{
-                            width: 90px;
-                            height: 90px;
+                            width: 80px;
+                            height: 80px;
                             display: flex;
                             align-items: center;
                             justify-content: center;
@@ -150,18 +126,8 @@
                             .text1-box{
                                 display: flex;
                                 justify-content: space-between;
-                                color: #333333;
-                                font-size: 15px;
-                                margin: 0 0 10px 0;
-                                overflow:hidden; 
-
-text-overflow:ellipsis;
-
-display:-webkit-box; 
-
--webkit-box-orient:vertical;
-
--webkit-line-clamp:2; 
+                                color: #000;
+                                font-size: 14px;
                             }
                             .text2-box{
                                 display: flex;
@@ -170,16 +136,10 @@ display:-webkit-box;
                                 .left-text{
                                     font-size: 14px;
                                     color:#aaa;
-                                    
                                 }
                                 .right-text{
-                                    margin: 17px 0 0 0;
-                                    box-sizing: border-box;
-                                    padding: 0 0 0 0;
-                                    .text1{
-                                        color: #999999;
-                                        font-size: 16px;
-                                    }
+                                    font-size: 12px;
+                                    color: red;
                                 }
                             }
                         }

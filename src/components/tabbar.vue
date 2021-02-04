@@ -2,7 +2,8 @@
     <div class="tabbar_bottom">
         <div class="item" v-for="item in tabbar_arr" :key="item.name" @click="gotabbar(item)">
             <div class="top">
-                <span class="iconfont" :class="[item.icon,{'red':$route.path==item.path}]"></span>
+                <img v-if="$route.path==item.path" :src="item.icon_choise" alt="">
+                <img v-else :src="item.icon" alt="">
             </div>
             <div class="text" :class="{'red':$route.path==item.path}">{{item.name}}</div>
         </div>
@@ -17,22 +18,26 @@ export default {
                 {
                     name:'首页',
                     path:'/',
-                    icon:'icon-shouye'
+                    icon:require("../assets/images/home1.png"),
+                    icon_choise:require("../assets/images/home2.png"),
                 },
                 {
                     name:'分类',
                     path:'/cate',
-                    icon:'icon-fenlei'
+                     icon:require("../assets/images/cate1.png"),
+                     icon_choise:require("../assets/images/cate2.png"),
                 },
                 {
                     name:'购物车',
                     path:'/cart',
-                    icon:'icon-gouwuche'
+                    icon:require("../assets/images/cart1.png"),
+                    icon_choise:require("../assets/images/cart2.png"),
                 },
                 {
                     name:'个人中心',
                     path:'/user',
-                    icon:'icon-yonghudianji'
+                    icon:require("../assets/images/user1.png"),
+                    icon_choise:require("../assets/images/user2.png"),
                 }
             ]
         }
@@ -68,6 +73,12 @@ export default {
     height: 60px;
     box-sizing: border-box;
     padding: 5px 0;
+    .top{
+        img{
+            width: 30px;
+            height: 30px;
+        }
+    }
     .item{
         flex: 1;
         text-align: center;

@@ -4,26 +4,32 @@
         
         <div class="pd-box">
             <div class="ipt-box">
+                <span class="iconfont icon-shouji m-r-10"></span>
             <input type="text" v-model="user.username" placeholder="请输入账号">
         </div>
         <div class="ipt-box">
-            <input type="password" v-model="user.password" placeholder="请输入密码">
+            <span class="iconfont icon-mima m-r-10"></span>
+            <input type="text" v-model="user.password" v-if="!password_show" placeholder="请输入密码">
+            <input type="password" v-model="user.password" v-else placeholder="请输入密码">
+            <span class="iconfont icon-yincang"
+            @click="password_show=!password_show"
+            ></span>
         </div>
         </div>
         
          <div class="container">
-             <van-button round color="#e02418" block @click="submit()">
+             <div class="butn2" @click="submit()">
                  登录
-             </van-button>
+             </div>
          </div>
         
 
-        <div class="bottom-fiex">
-            <div class="text1" @click.stop="$router.push('/pwd_login')">
-                忘记密码
-            </div>
+        <div class="bottom-fiex m-t-10">
             <div class="text2" @click.stop="$router.push('/reg')">
                 注册账号
+            </div>
+            <div class="text1" @click.stop="$router.push('/pwd_login')">
+                忘记密码?
             </div>
         </div>
     </div>
@@ -33,7 +39,8 @@
 export default {
     data(){
         return{
-            user:{}
+            user:{},
+            password_show:true
         }
     },
     methods: {
@@ -76,9 +83,18 @@ export default {
     padding: 0 30px;
 }
 .container{
-    flex: 1;
     box-sizing: border-box;
-    padding: 50px 20px;
+    padding: 60px 15px 0 15px;
+    .butn2{
+        
+    height: 40px;
+    background: linear-gradient(308deg, #FF5265 0%, #FF7E5B 100%);
+    line-height: 40px;
+    text-align: center;
+    border-radius: 200px;
+    font-size: 16px;
+    color: white;
+    }
 }
 .logo-img{
     display: block;
@@ -93,22 +109,23 @@ export default {
     // left: 50%;
     // transform: translateX(-50%);
     display: flex;
+    justify-content: space-between;
+    box-sizing: border-box;
+    padding: 0 20px;
     div{
         color: #999;
-        font-size: 16px;
+        font-size: 12px;
 
-        flex: 1;
     }
     .text1{
         box-sizing: border-box;
-        padding: 0 15px 0 0;
-       border-right: 1px solid #999;
+        padding: 0 0 0 0;
        text-align: right;
     }
     .text2{
         text-align: left;
         box-sizing: border-box;
-        padding: 0 0 0 15px;
+        padding: 0 0 0 0;
     }
 }
      .ipt-box{

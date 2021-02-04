@@ -25,7 +25,8 @@
         </div>
 
         <div class="check-box">
-            <van-checkbox v-model="checked" checked-color="#e02418"></van-checkbox>
+            <van-checkbox v-model="checked" checked-color="#FF5265"
+            ></van-checkbox>
             我已阅读并同意
             <span class="red" @click="open_xieyi(0)">《隐私协议》</span>
              及
@@ -38,10 +39,11 @@
             </div>
         </van-popup>
 
-        <van-button round color="#e02418" class="m-t-40" block @click="submit()">
-            注册
-        </van-button>
-
+        <div class="butn-box">
+            <div class="butn2" @click="submit()">
+                注册
+            </div>
+        </div>
     </div>
 </template>
 
@@ -119,6 +121,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.butn-box{
+    margin: 40px 0 0 0;
+    .butn2{
+        text-align: center;
+        line-height: 40px;
+        height: 40px;
+        color: white;
+        font-size: 18px;
+        text-align: center;
+        border-radius: 200px;
+background: linear-gradient(308deg, #FF5265 0%, #FF7E5B 100%);
+    }
+}
 .pop-box{
     box-sizing: border-box;
     padding: 15px;

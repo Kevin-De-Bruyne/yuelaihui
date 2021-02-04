@@ -1,9 +1,6 @@
 <template>
     <div class="user">
         <div class="header">
-            <span class="title">
-                个人中心
-            </span>
             <span class="iconfont icon-shezhi" @click="$router.push('/set')"></span>
         </div>
 
@@ -18,7 +15,7 @@
                         {{data.name}}
                     </div>
                     <div class="text1 m-t-5 m-b-5">
-                        等级：{{data.level}}
+                        <img :src="lv_img" alt="">
                     </div>
                     <div class="text2" @click="data.is_certification<=0&&$router.push('/shimin')">
                         <span class="iconfont icon-renzheng1"></span>
@@ -36,7 +33,7 @@
             </div>
 
             <div class="item-box">
-                <div class="item left" @click="$router.push('/qianbao')">
+                <div class="item left" @click.stop="$router.push('/qianbao')">
                     <div class="top">
                         ￥{{data.money}}
                     </div>
@@ -44,7 +41,7 @@
                         我的钱包
                     </div>
                 </div>
-                <div class="item" @click="$router.push('/xiaodian')">
+                <div class="item" @click.stop="$router.push('/xiaodian')">
                     <div class="top">
                         {{data.coupon_count}}
                     </div>
@@ -61,7 +58,7 @@
                     我的订单
                 </div>
                 <div class="right" @click="$router.push('/order')">
-                    查看全部订单
+                    查看全部
                     <span class="iconfont icon-youjiantou-01"></span>
                 </div>
             </div>
@@ -120,38 +117,9 @@
             </div>
         </div> -->
         <div class="qiandao-box">
-            <div class="title-box">
-                <div class="left">
-                    <div class="text1">
-                        签到领悦信分
-                    </div>
-                    <div class="text2">
-                        连续签到有大额奖励，快去签到吧~
-                    </div>
-                </div>
-                <div class="right" @click="$router.push('/qiandao')">
-                    立即领取
-                    <span class="iconfont icon-youjiantou-01"></span>
-                </div>
-            </div>
-            <div class="item-box" >
-                <div class="item left" @click="$router.push('/qiandao')">
-                    <div class="text1">
-                        {{data.has_sign?'今日已签到':'今日待签到'}}
-                    </div>
-                    <div class="text2">
-                        签到七天可获得更多的悦信分
-                    </div>
-                </div>
-                <div class="item right" @click="$router.push('/renwu')">
-                    <div class="text1">
-                        可完成的任务
-                    </div>
-                    <div class="text2">
-                        有{{data.task_count}}项待完成任务
-                    </div>
-                </div>
-            </div>
+            <img src="../assets/images/qiandao.png" alt=""
+            @click="$router.push('/qiandao')"
+            >
         </div>
         <div class="fuwu-box">
             <div class="title">
@@ -162,7 +130,8 @@
                 @click="gourl(item)"
                 >
                     <div class="top">
-                        <span class="iconfont" :class="item.icon"></span>
+                        <img :src="item.icon" alt="">
+                        <!-- <span class="iconfont" :class="item.icon"></span> -->
                     </div>
                     <div class="bottom">
                         {{item.name}}
@@ -178,6 +147,7 @@
 export default {
     data(){
         return{
+            lv_img:'',
             data:{},
             order_arr:[
                 {
@@ -203,37 +173,37 @@ export default {
             ],
             fuwu_arr:[
                 {
-                    icon:'icon-xiaoxi-',
+                    icon:require('../assets/images/fuwu_4.png'),
                     name:'我的消息',
                     path:'/msg'
                 },
                 {
-                    icon:'icon-icon_coupon',
+                    icon:require('../assets/images/fuwu_6.png'),
                     name:'悦品券',
                     path:'/youhuijuan'
                 },
                 {
-                    icon:'icon-shouhuodizhi',
+                    icon:require('../assets/images/fuwu_2.png'),
                     name:'收货地址',
                     path:'/addres_list'
                 },
                 {
-                    icon:'icon-fuwuerji',
+                    icon:require('../assets/images/fuwu_3.png'),
                     name:'客服与帮助',
                     path:'/fuwu'
                 },
                 {
-                    icon:'icon-yijianfankui',
+                    icon:require('../assets/images/fuwu_7.png'),
                     name:'意见与反馈',
                     path:'/fankui'
                 },
                 {
-                    icon:'icon-tuiguangshouyi',
+                    icon:require('../assets/images/fuwu_1.png'),
                     name:'我的推广',
                     path:'/tuiguang'
                 },
                 {
-                    icon:'icon-tubiao-',
+                    icon:require('../assets/images/fuwu_5.png'),
                     name:'商品收藏',
                     path:'shoucang'
                 },
@@ -253,6 +223,37 @@ export default {
                 url:'index/my/get_user_info'
             }).then(res=>{
                 this.data=res.data
+                let obj_arr=[
+                    {
+                        test:'游客',
+                    img:'youke.jpg'
+                    },
+                    {
+                        test:'青铜',
+                    img:'qintong.png'
+                    },
+                    {
+                        test:'白银',
+                    img:'baiyin.png'
+                    },
+                    {
+                        test:'黄金',
+                    img:'huanjin.png'
+                    },
+                    {
+                        test:'钻石',
+                    img:'zuanshi.png'
+                    },
+                    {
+                        test:'王者',
+                    img:'huanguan.png'
+                    }
+                ]
+                obj_arr.forEach(item=>{
+                    if(this.data.level==item.test){
+                        this.lv_img=require(`../assets/images/${item.img}`)
+                    }
+                })
             })
         },
         gourl(item){
@@ -285,24 +286,30 @@ export default {
 .fuwu-box{
     background: white;
     box-sizing: border-box;
-    padding: 10px;
+    padding: 0 10px 20px 10px;
+    margin: 0 15px;
+    border-radius: 12px;
     .title{
         font-weight: bold;
         font-size: 16px;
         color: #000;
-        height: 40px;
-        line-height: 40px;
+        height: 45px;
+        line-height: 45px;
+        border-bottom: 1px solid #eee;
     }
     .item-box{
         display: flex;
         flex-wrap: wrap;
         .item{
             width: 25%;
-            margin: 20px 0;
+            margin: 20px 0 0 0;
              text-align: center;
             .top{
                 margin: 0 auto 10px auto;
-               
+               img{
+                   width: 25px;
+                   height: 25px;
+               }
                 .iconfont{
                     font-size: 24px;
                     color: #000;
@@ -316,8 +323,6 @@ export default {
     }
 }
 .qiandao-box{
-    background: white;
-    margin: 10px 0 10px 0;
     box-sizing: border-box;
     padding: 10px;
     .title-box{
@@ -361,6 +366,7 @@ export default {
                 font-size: 14px;
             }
             .text2{
+                
                 font-size: 12px;
             }
         }
@@ -374,7 +380,7 @@ export default {
 }
 
 .user{
-    background: rgb(242,242,242);
+    background: rgb(245,244,244);
     padding: 0 0 70px 0;
 }
 .car-box{
@@ -415,17 +421,19 @@ export default {
 }
 .order-box{
     background: white;
+    margin: 0 15px;
+    border-radius: 12px;
+    padding: 0 10px 0 10px;
     .title-box{
         display: flex;
         justify-content: space-between;
-        font-size: 16px;
+        font-size: 18px;
         box-sizing: border-box;
         padding: 0 10px;
-        height: 40px;
-        line-height: 40px;
+        height: 46px;
+        line-height: 46px;
         border-bottom: 1px solid #eee;
         .left{
-            font-weight: bold;
             color: #000;
         }
         .right{
@@ -456,47 +464,52 @@ export default {
 }
 
 .user-box{
-    background:  linear-gradient(to top, rgb(250,89,56),rgb(237,46,51));
+    background:  linear-gradient(to top, rgb(245,244,244),rgb(254,232,230));
       overflow: hidden;
        position: relative;
     .userh-box{
-        margin: 20px 0 50px 10px ;
+        margin: 0 0 0 10px ;
         display: flex;
        
       
         .left{
             border-radius: 50%;
-            background: rgb(255,255,255);
             display: flex;
-            width: 65px;
-            height: 65px;
-            line-height: 55px;
+            width: 46px;
+            height: 46px;
+            background: white;
             color: rgb(206,206,206);
-            overflow: hidden;
             justify-content: center;
             align-items: center;
             margin: 0 10px 0 0;
+            border: 2PX solid rgba(0,0,0,1);
+            box-sizing: border-box;
             .iconfont{
                 font-size: 40px;
             }
             img{
+                border-radius: 50%;
                 width: 100%;
                 height: 100%;
             }
         }
         .right{
             .text1{
-                color: white;
-                font-size: 14px;
+                color: #000;
+                font-size: 16px;
+                font-weight: bold;
+                img{
+                    height: 20px;
+                }
             }
             .text2{
-                color: rgb(247,240,200);
+                color: #B28E74;
                 font-size: 14px;
                 display: flex;
                 align-items: center;
                 .iconfont{
                     font-size: 20px;
-                    color: rgb(247,240,200);
+                   color: #B28E74;
                     margin: 0 5px 0 0;
                 }
             }
@@ -517,16 +530,15 @@ export default {
     }
     .right-cz{
             position: absolute;
-            background: rgb(253,219,178);
-            color: rgb(186,53,44);
+            background:white;
+            color:#D3830D;
             height: 30px;
             line-height: 30px;
-            top: 50%;
-            right: 0;
-            transform: translateY(-50%);
+            top: 0;
+            right: 15px;
             font-size: 12px;
             padding: 0 10px;
-            border-radius: 100px 0  0 100px;
+            border-radius: 100px;
         }
         .item-box{
             display: flex;
@@ -541,12 +553,12 @@ export default {
                 text-align: center;
                 .top{
                     flex: 1;
-                    color: white;
+                    color: #333333;
                     font-size: 16px;
                 }
                 .bottom{
                     flex: 1;
-                    color:rgb(255,190,154);
+                    color:#333333;
                     font-size: 14px;
                 }
             }
@@ -556,20 +568,21 @@ export default {
         }
 }
    .header{
-       background: rgb(235,44,52);
+       background: rgb(253,233,231);
        position: relative;
        height: 50px;
        text-align: center;
        color: white;
        font-size: 16px;
        line-height: 50px;
+       padding: 15px 0 0 0;
        .iconfont{
            position: absolute;
            right:  10px;
             top: 50%;
             transform: translateY(-50%);
-            color: white;
-            font-size: 20px;
+            color: #000;
+            font-size: 24px;
        }
    }
 </style>
