@@ -15,10 +15,14 @@
         </div>
         <div class="content">
             <div class="swiper_box">
-            <van-swipe class="top_swipe" indicator-color="white">
+            <van-swipe class="top_swipe" indicator-color="white" :autoplay="3000" ref="swiper" :show-indicators="true">
+                
             <van-swipe-item v-for="(item,index) in data.slideshows" :key="index">
+                <!-- <div class="left" @click="prev">dsd</div> -->
                 <img :src="item.img" alt="">
+                <!-- <div class="right"  @click="next">dsd</div> -->
             </van-swipe-item>
+            
         </van-swipe>
         </div>
         <div class="baoyou-box">
@@ -55,11 +59,10 @@
                 <!-- @click="$router.push('/cate_list?title=精品推荐')" -->
                 <div class="new-box">
                         <div class="left">
-                            快报
-                            <span class="iconfont icon-laba1"></span>
+                            <div class="kuaibao"><img src="../assets/images/kuaibao.png" alt=""></div>
                         </div>
                         <div class="news-neirong">
-                            春节期间全场五折...
+                            春节期间全场五折起，欢迎抢购...
                         </div>
                         <div class="right" @click="$router.push('/gonggao')">
                             更多
@@ -71,7 +74,13 @@
                     <div class="left">
                         <!-- <span class="red m-r-20 text1">百亿大补贴</span>
                         <span class="text2">最新上架商品优先推荐</span> -->
-                        <img @click="$router.push('/cate_list?from=baiyi')" src="../assets/images/baiyi.jpg" alt="">
+                        <img  src="../assets/images/baiyi.png" alt="">
+                        <div class="baiyiwhole">
+                            <div class="baiyiList" v-for="(item,index) in 4" :key="index">
+                                <div class="baiyiList_a"></div>
+                            </div>
+                            
+                        </div>
                     </div>
                     <!-- <div class="right">
                         <span class="iconfont icon-youjiantou-01">
@@ -79,7 +88,32 @@
                     </div> -->
                 </div>
 
-                <!-- <div class="shop-box">
+   
+
+                <!-- <div class="shop-img">
+                    <img src="../assets/images/home-2.png" alt="">
+                </div> -->
+
+                <div class="yuelai-box" @click="$router.push('/cate_list?from=duihuan')">
+                <div class="alen">
+                     <span class="yuelai-box-header">
+                    悦品卷兑换区
+                </span>
+                <span class="dui">兑得开心,用得放心</span>
+                </div>
+               
+                    <img src="../assets/images/yuepin.png" alt="">
+                    <div class="yy">
+                        <div class="yuelaiWhole">
+                        <div class="yuelaiList" v-for="(item,index) in data.convert" :key="index">
+                            <div class="yuelaiList_aa" @click.stop="godetail(item.goods_id)"><img :src="item.original_img" alt=""></div>
+                        </div>
+                    </div>
+                    </div>
+                    
+                </div>
+                    </div>
+                                 <div class="shop-box">
                     <div class="item" v-for="(item,index) in data.new_goods" :key="index"
                     @click="godetail(item.goods_id)"
                     >
@@ -95,16 +129,7 @@
                             </div>
                         </div>
                     </div>
-                </div> -->
-
-                <div class="shop-img">
-                    <img src="../assets/images/home-2.png" alt="">
                 </div>
-
-                <div class="yuelai-box" @click="$router.push('/cate_list?from=duihuan')">
-                    <img src="../assets/images/home3.png" alt="">
-                </div>
-                    </div>
                 
             </div>
             <!-- <div class="white-box white-box2">
@@ -114,15 +139,27 @@
                 <div class="right">
                     <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=" alt="">
                 </div>
-            </div>
-             -->
-            <!-- <div class="shop-box">
-                <div class="title">
+            </div> -->
+            <!-- <div class="shop-img">
+                    <img src="../assets/images/home-2.png" alt="">
+                </div> -->
+            <div class="shop-box">
+                <!-- <div class="title">
                      <img @click="$router.push('/cate_list?from=duihuan')" src="../assets/images/duihuan.jpg" alt="">
-                </div>
-               
+                </div> -->
+                    <div class="new-box">
+                        <div class="left">
+                           普通商品
+                        </div>
+                        <div class="news-neirong">
+                            <!-- 春节期间全场五折起，欢迎抢购... -->
+                        </div>
+                        <div class="right">
+                            
+                        </div>
+                    </div>
                <div class="item-box">
-                   <div class="item" v-for="(item,index) in data.convert" :key="index"
+                   <div class="item" v-for="(item,index) in data.goods" :key="index"
                    @click="godetail(item.goods_id)"
                    >
                        <div class="top" :style="{'backgroundImage':`url('${item.original_img}')`}">
@@ -144,7 +181,7 @@
                    </div>
                </div>
 
-            </div> -->
+            </div>
         </div>
         </div>
         
@@ -160,7 +197,8 @@ export default {
         return{
             red_height:200,
             red_offheight:'',
-            data:{}
+            data:{},
+            index:0
         }
     },
     created() {
@@ -176,6 +214,16 @@ export default {
         box.removeEventListener('scroll',this.add_scroll)
     },
     methods: {
+        prev(){
+            // console.log('向左')
+            // this.index+=1
+            this.$refs.swiper.prev();
+        },
+         next(){
+            // console.log('向左')
+            // this.index+=1
+            this.$refs.swiper.next();
+        },
         gourl(item){
             if(!item.menu_url){
                 return
@@ -225,6 +273,78 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.yuelai-box{
+    margin-top: 15px;
+    position: relative;
+    // justify-content: center;
+    // display: flex;
+    img{
+        width: 100%;
+        height: 100%;
+    }
+    .alen{
+          position: absolute;
+        top: 10px;
+        left: 20px;
+        display: flex;
+        flex-direction: row;
+        .yuelai-box-header{
+        font-size: 20px;
+        font-weight: 600;
+        color: white;
+    }
+    .dui{
+        color: white;
+        line-height: 32px;
+        margin-left: 15px;
+    }
+    }
+    
+        .yuelaiWhole{
+        margin: 0px 0px;
+        // width: 94%;
+        width: 95%;
+        display: flex;
+        height: 80%;
+        justify-content: space-between;
+        // align-items: center;
+        flex-wrap: wrap;
+        position: absolute;
+        
+        bottom: 5%;
+        left: 2%;
+        .yuelaiList{
+            width: 30%;
+            height: 41%;
+            margin: 5px 2px 5px 4px;
+            border-radius: 15px;
+              display: flex;
+                justify-content: center;
+                align-items: center;
+            // z-index: 1000;
+            background-color: rgb(249,223,201);
+            .yuelaiList_aa{
+                width: 90%;
+                height: 90%;
+              border-radius: 15px;
+                background-color: #fff;
+                img{
+                    width: 100%;
+                      border-radius: 15px;
+                    height: 100%;
+                }
+            }
+        }
+    }
+    
+    
+}
+.kuaibao{
+    width: 50px;
+    height: 39px;
+    // display: flex;
+    // align-items: center;
+}
 .baoyou-box{
     display: flex;
     height: 30px;
@@ -249,6 +369,49 @@ export default {
     }
 }
 .shop-box{
+                    .new-box{
+                display: flex;
+                border-bottom: 1px solid #eee;
+                line-height: 40px;
+                justify-content:space-between;
+                box-sizing: border-box;
+                padding: 0 10px;
+                background: rgb(242,242,242);
+                border-radius: 6px;
+                margin: 0 10px;
+                .left{
+                    display: flex;
+                    align-items: center;
+                    font-size: 14px;
+                    font-weight: bold;
+                    .iconfont{
+                        color: rgb(224,36,24);
+                        margin: 0 0 0 10px;
+                        font-size: 12px;
+                    }
+                }
+                .news-neirong{
+                    color: #999;
+                    font-size: 14px;
+                    line-height: 39px;
+                }
+                .right{
+                    font-size: 12px;
+                    color: #AAAAAA;
+                    position: relative;
+                }
+                .right:before{
+                    content: '';
+                    width: 1px;
+                    height: 10px;
+                    background: #AAAAAA;
+                    position: absolute;
+                    left: -10px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                }
+            }
+              
     .title{
         font-size: 16px;
         font-weight: bold;
@@ -272,9 +435,10 @@ export default {
     .item-box{
         display: flex;
         flex-wrap: wrap;
+        margin: 10px 15px;
         justify-content: space-between;
         .item{
-            width: 49%;
+            width: 45%;
             border-radius: 6px;
             overflow: hidden;
             background: white;
@@ -381,6 +545,8 @@ export default {
                 }
                 .news-neirong{
                     color: #999;
+                    font-size: 14px;
+                    line-height: 39px;
                 }
                 .right{
                     font-size: 12px;
@@ -399,7 +565,44 @@ export default {
                 }
             }
         .title-box{
-            margin: 0 0 20px 0;
+            margin: 0 0 0px 0;
+            position: relative;
+            .left{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                img{
+                    width: 100%;
+                    height: 100%;
+                }
+                .baiyiwhole{
+                width: 90%;
+                height: 70px;
+                // background-color: black;
+                position: absolute;
+                bottom: 6%;
+                margin: 0 auto;
+                left: 5%;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                .baiyiList{
+                    width: 70px;
+                    height: 70px;
+                    border-radius: 15px;
+                    background-color:rgb(249,223,201);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    .baiyiList_a{
+                        width: 90%;
+                        border-radius: 15px;
+                        height: 90%;
+                        background-color: #fff;
+                    }
+                }
+            }
+            }
             
             .red{
                 color: rgb(224,36,24);
@@ -421,6 +624,80 @@ export default {
         .shop-box{
             overflow-x: scroll;
             display: flex;
+            margin: 0 15px;
+                       .new-box{
+                display: flex;
+                border-bottom: 1px solid #eee;
+                line-height: 40px;
+                justify-content:space-between;
+                box-sizing: border-box;
+                padding: 0 10px;
+                background: rgb(242,242,242);
+                border-radius: 6px;
+                margin: 0 10px;
+                    .new-box{
+                display: flex;
+                border-bottom: 1px solid #eee;
+                line-height: 40px;
+                justify-content:space-between;
+                box-sizing: border-box;
+                padding: 0 10px;
+                background: rgb(242,242,242);
+                border-radius: 6px;
+                margin: 0 10px;
+                .left{
+                    display: flex;
+                    align-items: center;
+                    font-size: 14px;
+                    font-weight: bold;
+                    .iconfont{
+                        color: rgb(224,36,24);
+                        margin: 0 0 0 10px;
+                        font-size: 12px;
+                    }
+                }
+                .news-neirong{
+                    color: #999;
+                    font-size: 14px;
+                    line-height: 39px;
+                }
+                .right{
+                    font-size: 12px;
+                    color: #AAAAAA;
+                    position: relative;
+                }
+                .right:before{
+                    content: '';
+                    width: 1px;
+                    height: 10px;
+                    background: #AAAAAA;
+                    position: absolute;
+                    left: -10px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                }
+            }
+                .news-neirong{
+                    color: #999;
+                    font-size: 14px;
+                    line-height: 39px;
+                }
+                .right{
+                    font-size: 12px;
+                    color: #AAAAAA;
+                    position: relative;
+                }
+                .right:before{
+                    content: '';
+                    width: 1px;
+                    height: 10px;
+                    background: #AAAAAA;
+                    position: absolute;
+                    left: -10px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                }
+            }
             .item{
                 margin: 0 15px 0 0;
                 .top{
@@ -541,20 +818,34 @@ export default {
         box-sizing: border-box;
         position: relative;
         z-index: 2;
-        margin: 0 10px;
+        margin: 0 15px;
         border-radius: 6px;
         overflow: hidden;
          .top_swipe{
-        // height: 200px;
+        height: 231px;
         width: 100%;
         .van-swipe-item{
             height: auto !important;
             display: flex;
+            height: 172px;
             align-items: center;
             justify-content: center;
+            position: relative;
+            .left{
+                position: absolute;
+                left: 10px;
+                top: 49%;
+            }
+            .right{
+                position: absolute;
+                right: 10px;
+                top: 49%;
+            }
         }
         img{
             border-radius: 6px;
+            width: 100%;
+            height: 100%;
         }
     }
     }

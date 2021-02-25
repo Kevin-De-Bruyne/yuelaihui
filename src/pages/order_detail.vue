@@ -366,7 +366,7 @@
     .right{
         display: flex;
         align-items: center;
-        /deep/ .van-button{
+        .van-button::v-deep{
             height: 100%;
         }
     }

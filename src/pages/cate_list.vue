@@ -31,10 +31,10 @@
                            </div> -->
                            <div class="text3">
                                <div class="text3-red">
-                                   ￥{{item.shop_price}}
+                                   卷{{item.shop_price}}
                                </div>
                                <div class="text3-gray">
-                                   ￥{{item.market_price}}
+                                   卷{{item.market_price}}
                                </div>
                            </div>
                        </div>

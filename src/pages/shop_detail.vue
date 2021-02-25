@@ -5,7 +5,7 @@
                 <span class="iconfont icon-zuojiantou" @click="$router.go(-1)"></span>
             </div>
             <div class="right">
-                <span class="iconfont icon-fenxiang m-r-15"></span>
+                <span class="iconfont icon-fenxiang m-r-15" @click="sharecc"></span>
                 <span class="iconfont icon-gouwuchezhengpin" @click="goshop('购物')"></span>
             </div>
         </div>
@@ -318,7 +318,7 @@
 </template>
 
 <script>
-import Toast from '../../../Z付回收/WX_WeChat/vant/toast/toast'
+// import Toast from '../../../Z付回收/WX_WeChat/vant/toast/toast'
 export default {
     data(){
         return{
@@ -445,6 +445,9 @@ export default {
         }
     },
     methods: {
+        sharecc(){
+            this.showShare=true
+        },
         zan_num(item){
             this.ajax({
                 url:'index/goods/dianzan',
@@ -784,7 +787,7 @@ export default {
 .choise-style{
     border: 1px solid rgb(223,37,25) !important;
 }
-/deep/.van-swipe__track{
+.van-swipe__track::v-deep{
     align-items: center;
     justify-content: center;
 }
@@ -920,10 +923,10 @@ export default {
     .right{
         width: 60%;
         display: flex;
-        /deep/.van-button{
+       .van-button::v-deep{
             height: 100% !important;
         }
-        /deep/.van-button--normal{
+       .van-button--normal::v-deep{
             padding: 0 !important;
         }
     }

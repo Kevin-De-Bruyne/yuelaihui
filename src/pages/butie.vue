@@ -1,7 +1,7 @@
 <template>
     <div class="content">
         <headers title="我的补贴" />
-
+        
         <div class="item-box">
             <div class="item" v-for="(item,index) in data" :key="index">
                 <div class="shop-box">
@@ -43,6 +43,13 @@
                 </div>
             </div>
         </div>
+        <van-cell title="分享微信好友或朋友圈" @click="showShare=true"></van-cell>
+            <van-share-sheet
+    @select="share_select"
+  v-model="showShare"
+  title="立即分享给好友"
+  :options="options"
+/>
         <div class="butn-box" v-if="data.length">
             <van-button round block color="#FF5265"
             @click="$router.push('/tuiguang')"
@@ -62,7 +69,18 @@
         data(){
             return{
                 jindu:50,
-                data:[]
+                data:[],
+                pic_img:'../assets/images/cart1.png',
+                   options: [
+                [
+          { name: '微信好友', icon: 'wechat',type:'微信' ,ex:'WXSceneSession' },
+          { name: '微信朋友圈', icon: 'wechat',type:'微信' ,ex:'WXSceneTimeline' },
+        //   { name: '新浪微博', icon: 'weibo',type:'新浪微博' },
+        //   { name: 'QQ', icon: 'qq',type:'QQ' },
+        ]
+        ],
+        qrcode:'',
+        showShare:false
             }
         },
         methods: {
@@ -85,13 +103,74 @@
                     url:'index/my/my_subsidy'
                 }).then(res=>{
                     this.data=res.data
+                    this.qrcode=res.data.qr_code
+                    console.log(this.qrcode)
                 })
+            },
+         share_select(e){
+          console.log(this.baseURL+'vue/#/tuiguang')
+        //   console.log(this.data.goods_info.original_img)
+           if(!plus){
+                this.showtitle('请在app内打开')
+                return 
             }
-        },
+                   plus.share.getServices(
+    res=>{
+      window.shar_arr=res
+      window.shar_arr.forEach(item=>{
+                if(e.type==item.description){
+                    if(item.nativeClient){ //如果手机内安装了对应的应用
+                    let msg={
+                        href: this.baseURL+'vue/#/xiazai',
+                            title: '悦莱惠',
+                            content: '分享二维码',
+                            thumbs: [this.qrcode],//图片
+                            pictures:[this.qrcode] ,
+                            extra: {
+                                scene: e.ex||''
+                            }
+                    }
+                    console.log(item)
+                        item.send(msg,(z)=>{
+                            
+                            this.test_z=z
+                            console.log(z);
+                            this.showShare=false
+                            this.ajax({
+                                url:'index/task/subsidy_share',
+                                data:{
+                                    type:e.name=='微信好友'?1:e.name=='微信朋友圈'?2:0
+                                }
+                            }).then(res=>{
+                                this.showtitle('分享成功')
+                            })
+                        })
+                    }else{
+                        this.showtitle(`手机内未安装${e.name}`)
+                    }
+                }
+            
+        })
+        console.log(res)
+    },err=>{
+        console.log('获取分享列表失败')
+    })
+            console.log(e,window.shar_arr)
+        
+
+            
+
+            console.log(e)
+        }
+        }
     }
 </script>
 
 <style lang="scss" scoped>
+  .van-cell{
+      position:absolute;
+      bottom:0;
+  }
     .content{
         box-sizing: border-box;
         padding: 50px 0 0 0;
@@ -111,6 +190,8 @@
             box-sizing: border-box;
             overflow-y: scroll;
             padding: 0 15px;
+            // height: 100%;
+
             .item{
                 background: rgb(255,255,255);
                 border-bottom: 1px solid #eee;
@@ -143,7 +224,7 @@
                             flex-direction: column;
                             justify-content: space-between;
                             .text{
-                                /deep/.van-progress__portion{
+                             .van-progress__portion::v-deep{
                                     max-width: 100%;
                                 }
                             }

@@ -29,7 +29,8 @@
                 </div> -->
             </div>
             <div class="right-cz" @click="$router.push('/mingxi_cz')">
-               悦信分：{{data.trust}}
+                <img src="../assets/images/money.png" />
+                <span>悦信分：{{data.trust}}</span>
             </div>
 
             <div class="item-box">
@@ -67,9 +68,8 @@
                 @click="$router.push('/order?index='+index)"
                 >
                     <div class="top">
-                        <span class="iconfont" :class="item.icon">
-
-                        </span>
+                        <img :src="item.icon" alt="">
+                        <span class="dian-icon">{{order_count(item)}}</span>
                     </div>
                     <div class="bottom">
                         {{item.name}}
@@ -131,7 +131,7 @@
                 >
                     <div class="top">
                         <img :src="item.icon" alt="">
-                        <!-- <span class="iconfont" :class="item.icon"></span> -->
+                        <span class="iconfont" :class="item.icon"></span>
                     </div>
                     <div class="bottom">
                         {{item.name}}
@@ -151,23 +151,23 @@ export default {
             data:{},
             order_arr:[
                 {
-                    icon:'icon-daifukuan',
+                    icon:require('../assets/images/order_1.png'),
                     name:'待付款'
                 },
                 {
-                    icon:'icon-daifahuo',
+                    icon:require('../assets/images/order_2.png'),
                     name:'待发货'
                 },
                 {
-                    icon:'icon-daishouhuo',
+                   icon:require('../assets/images/order_3.png'),
                     name:'待收货'
                 },
                 {
-                    icon:'icon-yiwancheng',
+                    icon:require('../assets/images/order_4.png'),
                     name:'待评价'
                 },
                 {
-                    icon:'icon-yiwancheng',
+                    icon:require('../assets/images/order_5.png'),
                     name:'已评价'
                 }
             ],
@@ -218,11 +218,31 @@ export default {
         this.getdata()
     },
     methods: {
+        order_count(item){
+            let str=''
+            if(item.name=='待付款'){
+                str=this.data.to_be_paid
+            }
+            if(item.name=='待发货'){
+                str=this.data.to_be_delivered
+            }
+            if(item.name=='待收货'){
+                str=this.data.to_be_received
+            }
+            if(item.name=='待评价'){
+                str=this.data.to_be_evaluated
+            }
+            if(item.name=='已评价'){
+                str=this.data.completed
+            }
+            return str
+        },
         getdata(){
             this.ajax({
                 url:'index/my/get_user_info'
             }).then(res=>{
                 this.data=res.data
+               console.log(res);
                 let obj_arr=[
                     {
                         test:'游客',
@@ -446,12 +466,33 @@ export default {
     }
     .order_list{
         display: flex;
-        height: 100px;
+        height: 80px;
+        align-items: center;
         box-sizing: border-box;
-        padding: 20px 0;
+        padding: 10px 0 10px 0;
         text-align: center;
         font-size: 14px;
         color: #000;
+        .top{
+            position: relative;
+        }
+        .dian-icon{
+            border-radius: 50%;
+            border: 1px solid #ff5265;
+            color: #ff5265;
+            font-size: 12px;
+            width: 15px;
+            height: 15px;
+            text-align: center;
+            line-height: 15px;
+            position: absolute;
+            right: 10px;
+            top: -10px;
+        }
+        img{
+            width: 25px;
+            height: 25px;
+        }
         .iconfont{
             color: rgb(252,89,56);
             font-size: 30px;
@@ -532,13 +573,26 @@ export default {
             position: absolute;
             background:white;
             color:#D3830D;
-            height: 30px;
-            line-height: 30px;
             top: 0;
             right: 15px;
             font-size: 12px;
             padding: 0 10px;
             border-radius: 100px;
+            display: inline-block;
+            img{
+                float:left;
+                width:26px;
+                height:26px;
+                margin:2px 5px 2px 0;
+                position: relative;
+            }
+            span{
+                float:left;
+                height: 30px;
+                line-height: 30px;
+                position: relative;
+                top:0;
+            }
         }
         .item-box{
             display: flex;

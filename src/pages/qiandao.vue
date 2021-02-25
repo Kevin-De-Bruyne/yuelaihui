@@ -31,16 +31,16 @@
             <div class="time-box">
                 <div class="left-box">
                     <div class="text1">
-                        04
+                        {{zero?'0':''}}{{date}}
                     </div>
                 </div>
                 <div class="right-box">
                     <div class="text1">
-                        周四    
+                        {{week}}    
                     </div>
                     <div class="text2">
-                        2021
-                        <span class="">二月</span>
+                        {{year}}
+                        <span class="">{{mon}}月</span>
                     </div>
                 </div>
             </div>
@@ -50,8 +50,16 @@
                         {{item.week}}
                     </div>
                     <div class="bottom">
-                        <span class="iconfont icon-gou1" v-if="item.isSin"></span>
-                        <span class="dian-icon" v-else></span>
+                        <div v-if="item.isSin"> <span class="dian-icons" ></span><span class="iconfonts"  v-if="item.week!='周日'"></span>
+                        <span class="iconfonts"  v-if="item.week!='周日'"></span>
+                        </div>
+                       
+                        
+                        <div v-else>
+                            <span class="dian-icon"></span>
+                            <span class="iconfontss"  v-if="item.week!='周日'"></span>
+                            <span class="iconfontss"  v-if="item.week!='周日'"></span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -98,6 +106,11 @@ export default {
             qiandao_checked:false,
             week_index:0,
             data:{},
+            year:'',
+            mon:'',
+            date:'',
+            week:'',
+            zero:false,
             renwu_arr:[
                 {
                     name:'首次签到',
@@ -153,7 +166,8 @@ export default {
         }
     },
     created() {
-        this.getdata()
+        this.getdata();
+        this.daytime();
     },
     methods: {
         qiandao(){
@@ -173,6 +187,17 @@ export default {
                     this.week_arr[i].isSin=this.data.sign_status[i]
                 }
             })
+        },
+        daytime(){
+            var myDate = new Date;
+            var weeks = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
+            this.year = myDate.getFullYear(); //获取完整的年份(4位,1970-????)
+            this.mon = myDate.getMonth() + 1; //获取当前月份(0-11,0代表1月)
+            this.date = myDate.getDate(); //获取当前日(1-31)
+            this.week = weeks[myDate.getDay()];  //获取当前星期X(0-6,0代表星期天)
+            if(this.date < 10){
+                this.zero = true;
+            }
         },
         goback(){
             this.$router.go(-1)
@@ -287,9 +312,19 @@ export default {
         .top{
             margin: 0 0 15px 0;
         }
-        .iconfont{
-            color: rgb(255,93,98);
-            font-size:  16px;
+        .iconfonts{
+            width:8px;
+            height:2px;
+            margin-left: 8px;
+            background-color: rgb(255,93,98);
+            display: inline-block;
+        }
+        .iconfontss{
+            width:8px;
+            height:2px;
+            margin-left: 8px;
+            background-color: black;
+            display: inline-block;
         }
         .dian-icon{
             width: 6px;
@@ -297,6 +332,14 @@ export default {
             display: inline-block;
             border-radius: 50%;
             background: #D5D5D5;
+
+        }
+        .dian-icons{
+            width: 6px;
+            height: 6px;
+            display: inline-block;
+            border-radius: 50%;
+            background: red;
 
         }
     }

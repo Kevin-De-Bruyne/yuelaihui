@@ -114,14 +114,8 @@ import {mapState} from 'vuex'
 		},
 		computed:{
 			types(){
-				let str=''
-				if(this.data.bank[0]&&this.data.bank[0].bank_name=='支付宝'){
-					str='支付宝'
-				}else if(this.data.bank[0]&&this.data.bank[0].bank_name=='微信'){
-					str='微信'
-				}else{
-					str='银行卡'
-				}
+				let str='支付宝'
+				
 				return str
 			},
 			shouxv(){

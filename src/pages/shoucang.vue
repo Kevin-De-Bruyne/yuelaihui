@@ -85,7 +85,7 @@
             box-sizing: border-box;
             padding: 10px 0 0 0;
             overflow-y: scroll;
-            /deep/.van-button{
+          .van-button::v-deep{
                 height: 100%;
             }
             .item{

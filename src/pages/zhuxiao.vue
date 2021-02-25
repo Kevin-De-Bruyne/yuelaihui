@@ -121,7 +121,7 @@
     .checkbox-box{
         font-size: 12px;
         color: #999;
-        /deep/.van-checkbox{
+      van-checkbox::v-deep{
             display: inline-block;
         }
     }

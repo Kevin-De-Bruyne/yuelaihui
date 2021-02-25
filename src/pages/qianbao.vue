@@ -335,7 +335,7 @@ export default {
             transform: translateY(-50%);
         }
     }
-    /deep/.van-number-keyboard{
+    .van-number-keyboard::v-deep{
         position: static !important;
     }
     .pwd-box{

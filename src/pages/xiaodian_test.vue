@@ -119,7 +119,7 @@
                             flex-direction: column;
                             justify-content: space-between;
                             .text{
-                                /deep/.van-progress__portion{
+                                .van-progress__portion::v-deep{
                                     max-width: 100%;
                                 }
                             }

@@ -86,11 +86,9 @@
                       
                     </div>
                 </div>
-                <div class="item" @click="shenji()">
+                <div class="item" @click="shenji()" v-if="data.level_name != '游客'">
                     <div class="top">
-                        <img src="../assets/images/xiaodian_2.png" alt=""
-                        
-                        >
+                        <img src="../assets/images/xiaodian_2.png" alt="">
                         我的店铺
                     </div>
                     <div class="bottom">
@@ -251,6 +249,8 @@ export default {
     border-radius: 200px;
     font-size: 12px;
     text-align: center;
+    float:right;
+    margin-right:20px;
 }
 .bottom-title{
     margin: 20px 0 0 0;
@@ -272,13 +272,17 @@ export default {
         height: 72px;
         background: #F8F8F8;
         box-sizing: border-box;
-        padding: 10px 0 0 15px;
+        // padding: 10px 0 0 15px;
         border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         margin: 0 0 15px 0;
         .top{
-            margin: 0 0 10px 0;
+            margin:  0;
             font-size: 14px;
             color: #000;
+            text-align: center;
             img{
                 margin: 0 10px 0 0;
                 width: 20px;
@@ -310,7 +314,7 @@ export default {
             transform: translateY(-50%);
         }
     }
-    /deep/.van-number-keyboard{
+  .van-number-keyboard::v-deep{
         position: static !important;
     }
     .pwd-box{
@@ -401,7 +405,6 @@ background: rgba(255,255,255,0.3);
                     flex: 1;
                 }
                 .top{
-                    display: flex;
                     font-size: 19px;
                 }
                 .bottom{

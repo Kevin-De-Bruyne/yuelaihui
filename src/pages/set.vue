@@ -154,12 +154,12 @@ export default {
         margin: 0 0 10px 0;
         font-size: 16px;
     }
-    /deep/.van-uploader{
+    .van-uploader::v-deep{
         width: 60px;
         height: 60px;
         border-radius: 50%;
         overflow: hidden;
-        /deep/img{
+      img::v-deep{
             width: 100%;
             height: 100%;
             

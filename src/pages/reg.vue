@@ -139,6 +139,7 @@ background: linear-gradient(308deg, #FF5265 0%, #FF7E5B 100%);
     padding: 15px;
     height: 400px;
     overflow-y: scroll;
+    font-size:12px;
 }
 .red{
     color: rgb(224,36,24) !important;

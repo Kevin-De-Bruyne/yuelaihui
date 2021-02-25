@@ -493,7 +493,7 @@
             transform: translateY(-50%);
         }
     }
-    /deep/.van-number-keyboard{
+   .van-number-keyboard::v-deep{
         position: static !important;
     }
     .pwd-box{
@@ -608,7 +608,7 @@
     .right{
         display: flex;
         align-items: center;
-        /deep/ .van-button{
+        .van-button::v-deep{
             height: 100%;
         }
     }
