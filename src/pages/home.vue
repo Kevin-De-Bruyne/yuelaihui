@@ -71,13 +71,15 @@
                     <div class="pd-box">
                         <div class="title-box" >
                     
-                    <div class="left">
+                    <div class="left" @click="$router.push('/cate_list?from=baiyi')">
                         <!-- <span class="red m-r-20 text1">百亿大补贴</span>
                         <span class="text2">最新上架商品优先推荐</span> -->
                         <img  src="../assets/images/baiyi.png" alt="">
                         <div class="baiyiwhole">
-                            <div class="baiyiList" v-for="(item,index) in 4" :key="index">
-                                <div class="baiyiList_a"></div>
+                            <div class="baiyiList" v-for="(item,index) in data.new_goods" :key="index">
+                                <div class="baiyiList_a" @click.stop="godetail(item.goods_id)">
+                                    <img :src="item.original_img" alt="">
+                                </div>
                             </div>
                             
                         </div>
@@ -113,7 +115,7 @@
                     
                 </div>
                     </div>
-                                 <div class="shop-box">
+                                 <!-- <div class="shop-box">
                     <div class="item" v-for="(item,index) in data.new_goods" :key="index"
                     @click="godetail(item.goods_id)"
                     >
@@ -129,7 +131,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 
             </div>
             <!-- <div class="white-box white-box2">
@@ -316,7 +318,7 @@ export default {
         .yuelaiList{
             width: 30%;
             height: 41%;
-            margin: 5px 2px 5px 4px;
+            margin: 17px 2px 5px 4px;
             border-radius: 15px;
               display: flex;
                 justify-content: center;
@@ -575,30 +577,46 @@ export default {
                     width: 100%;
                     height: 100%;
                 }
+                .baiyiwhole::-webkit-scrollbar{
+                    display: none;
+                }
                 .baiyiwhole{
-                width: 90%;
+                width: 96%;
                 height: 70px;
                 // background-color: black;
                 position: absolute;
                 bottom: 6%;
                 margin: 0 auto;
-                left: 5%;
+                left: 2%;
+                right: 2%;
                 display: flex;
                 justify-content: space-between;
+                overflow-x:scroll;
+                flex-wrap: nowrap;
                 align-items: center;
+            //    overflow:hidden;
                 .baiyiList{
                     width: 70px;
                     height: 70px;
+                    padding: 0 5px;
                     border-radius: 15px;
                     background-color:rgb(249,223,201);
                     display: flex;
+                     margin: 0 5px;
                     align-items: center;
                     justify-content: center;
                     .baiyiList_a{
-                        width: 90%;
+                        // width: 90%;
                         border-radius: 15px;
-                        height: 90%;
+                        // height: 90%;
+                         width: 62px;
+                    height: 62px;
                         background-color: #fff;
+                        img{
+                            width: 100%;
+                            border-radius: 15px;
+                            height: 100%;
+                        }
                     }
                 }
             }

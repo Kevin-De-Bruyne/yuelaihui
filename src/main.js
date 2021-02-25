@@ -191,7 +191,7 @@ if (window.plus) {
 }
 // let baseurl='http://newa.com/'
 // let baseurl='http://ylh.test/'
-// let baseurl='http://yuelaihuism.com/'
+// let baseurl = 'http://ylh.com/'
 let baseurl = 'http://mall.yuelaihuism.com/'
     // let baseurl=''
 Vue.prototype.baseURL = baseurl

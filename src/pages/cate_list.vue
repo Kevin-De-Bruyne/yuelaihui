@@ -29,12 +29,20 @@
                                    上海推荐
                                </div>
                            </div> -->
-                           <div class="text3">
+                           <div class="text3" v-if="from=='duihuan'">
                                <div class="text3-red">
                                    卷{{item.shop_price}}
                                </div>
                                <div class="text3-gray">
                                    卷{{item.market_price}}
+                               </div>
+                           </div>
+                             <div class="text3" v-else>
+                               <div class="text3-red">
+                                   ¥{{item.shop_price}}
+                               </div>
+                               <div class="text3-gray">
+                                   ¥{{item.market_price}}
                                </div>
                            </div>
                        </div>

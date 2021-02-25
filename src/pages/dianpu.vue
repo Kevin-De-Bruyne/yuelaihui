@@ -11,7 +11,7 @@
         </div>
         <div class="leve-text">{{ data.now_name }}会员</div>
       </div> -->
-        <van-swipe class="top_swipe" indicator-color="white" :autoplay="3000" ref="swiper" :show-indicators="false">
+        <van-swipe class="top_swipe" indicator-color="white" :autoplay="3000" ref="swiper" :show-indicators="false" :initial-swipe="showIndex">
                 
             <van-swipe-item v-for="(item,index) in imgurl" :key="index">
                 <!-- <div class="left" @click="prev">dsd</div> -->
@@ -41,7 +41,7 @@
       </div>
       <div style="width: 100%;display: flex;justify-content:flex-end;"> 
          <div class="record">
-        <div class="record_t">本月已成长</div>
+        <div class="record_t">已成长</div>
         <div class="record_b">{{data.now_sale}}分</div>
       </div>
       </div>
@@ -139,14 +139,26 @@ export default {
           bgcolor :'#d634e8'
         }
       ],
-      bgcolor:''
+      bgcolor:'',
+      showIndex:''
     };
   },
   created() {
     
+    // if(this.imgurl[0].name==data.)
+    
   },
   mounted() {
-      this.getdata();
+    this.getdata();
+      // this.getdata().then(res=>{
+      //   this.data=res
+      //   this.imgurl.forEach((item,index)=>{
+      //     if(item.name==this.data.data.now_name){
+      //       this.showIndex=index
+      //     }
+      //   })
+      // });
+      
   },
   computed: {
     
@@ -156,11 +168,18 @@ export default {
       this.$router.push("/dengji_detail?id=" + item.level_id);
     },
     getdata() {
-      this.ajax({
+      return new Promise((resolve,reject)=>{
+              this.ajax({
         url: "index/my/get_user_level"
       }).then(res => {
+        resolve(res)
         this.data = res.data;
-        
+         this.imgurl.forEach((item,index)=>{
+          if(item.name==this.data.now_name){
+            this.showIndex=index
+          }
+        })
+        console.log(this.data.now_sale)
         for (let i in this.data.level_power) {
           let item = this.data.level_power[i];
           i = Number(i);
@@ -222,15 +241,28 @@ export default {
         //     this.bgcolor = '#d634e8'
         // }
       });
+      })
+
     },
     shenji() {
-      this.ajax({
+      if(this.data.now_sale<500){
+        this.showtitle('升级下一级需要500成长值')
+      }else if(this.data.now_sale<2000){
+        this.showtitle('升级下一级需要2000成长值')
+      }else if(this.data.now_sale<5000){
+        this.showtitle('升级下一级需要5000成长值')
+      }else if(this.data.now_sale<10000){
+        this.showtitle('升级下一级需要10000成长值')
+      }else{
+           this.ajax({
         url: "index/my/get_commission"
       }).then(res => {
         this.showtitle("操作成功").then(res => {
           this.getdata();
         });
       });
+      }
+   
     }
   }
 };
