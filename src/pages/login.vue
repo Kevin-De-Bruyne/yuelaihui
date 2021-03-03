@@ -12,7 +12,10 @@
             <input type="text" v-model="user.password" v-if="!password_show" placeholder="请输入密码">
             <input type="password" v-model="user.password" v-else placeholder="请输入密码">
             <span class="iconfont icon-yincang"
-            @click="password_show=!password_show"
+            @click="password_show=!password_show" v-if="password_show==true"
+            ></span>
+             <span class="iconfont icon-xianshi"
+            @click="password_show=!password_show" v-else
             ></span>
         </div>
         </div>

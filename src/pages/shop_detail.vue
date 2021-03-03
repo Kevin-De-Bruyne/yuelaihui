@@ -258,12 +258,28 @@
                         <div class="left">
                             <img :src="(guige_now&&guige_now.original_img)||(data.goods_info&&data.goods_info.details_img[0])" alt="">
                         </div>
-                        <div class="container">
+                        <div class="container" v-if="data.goods_info.partition_id!=4">
                             <div class="text1-box" v-if="is_guige">
                                 ￥{{guige_now.shop_price}}
                             </div>
                             <div class="text1-box" v-else>
                                 ￥{{data.goods_info.shop_price}}
+                            </div>
+                            <div class="text2-box">
+                                <div class="left-text" v-if="is_guige">
+                                    {{now_spec?'已选择：':'未选择'}}{{now_spec}}
+                                </div>
+                                <div class="right-text">
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container" v-else>
+                            <div class="text1-box" v-if="is_guige">
+                                卷{{guige_now.shop_price}}
+                            </div>
+                            <div class="text1-box" v-else>
+                                卷{{data.goods_info.shop_price}}
                             </div>
                             <div class="text2-box">
                                 <div class="left-text" v-if="is_guige">

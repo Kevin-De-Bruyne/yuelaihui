@@ -26,9 +26,9 @@
 
             </van-cell>
             
-             <van-cell title="协议" to="/xieyi" is-link >
+             <!-- <van-cell title="协议" to="/xieyi" is-link >
                 
-            </van-cell>
+            </van-cell> -->
             
              <van-cell title="账号注销" to="zhuxiao" is-link >
                 

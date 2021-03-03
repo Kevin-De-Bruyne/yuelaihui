@@ -94,6 +94,28 @@
                         </div>
                     </div>
                 </div>
+                <!-- -------------------------任务详情 -->
+                 <div class="item" v-for="(item,index) in this.taskList" :key="index">
+                    <div class="left">
+                        <div class="text1">
+                            {{item.name}}
+                        </div>
+                        <div class="text2">
+                            悦信分+{{item.reward}}
+                        </div>
+                    </div>
+                    <div class="right">
+                        <div class="butn1" v-if="item.finish==1">
+                            已完成
+                        </div>
+                        <div class="butn2" v-else-if="item.finish==0">
+                            未达标
+                        </div>
+                        <div class="butn1" @click="lingqv(item)" v-else-if="item.isSign==1">
+                            领取
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -108,6 +130,7 @@ export default {
             data:{},
             year:'',
             mon:'',
+            taskList:[],
             date:'',
             week:'',
             zero:false,
@@ -166,6 +189,7 @@ export default {
         }
     },
     created() {
+        this.getTask();
         this.getdata();
         this.daytime();
     },
@@ -176,6 +200,15 @@ export default {
                 }).then(res=>{
                     this.showtitle('今日签到成功')
                     this.getdata()
+                })
+        },
+        getTask(){
+             this.ajax({
+                    url:'index/Task/index'
+                }).then(res=>{
+                    // this.showtitle('今日签到成功')
+                    // this.getdata()
+                    this.taskList=res.data.lists
                 })
         },
         getdata(){

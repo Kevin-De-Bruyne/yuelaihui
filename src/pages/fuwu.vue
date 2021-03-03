@@ -1,7 +1,7 @@
 <template>
     <div class="content">
         <headers title="悦莱惠客服" />
-        <iframe src="https://29501.ahc.ink/chat.html" class="kefu"></iframe>
+        <iframe src="http://chat.ahcdialogchat.com/chat/h5/chatLink.html?channelId=link29501" class="kefu"></iframe>
     </div>
 </template>
 

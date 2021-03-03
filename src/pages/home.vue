@@ -204,7 +204,20 @@ export default {
         }
     },
     created() {
+        // var a=1;
+        // var obj={
+        //     a:2,
+        //     b:function(){
+        //         return a;
+        //     }
+        // }
+        // var t=obj.b
+        // console.log(t())
+        // console.log(obj.b())
+        // console.log(t()===obj.b())
+        // console.log(t===obj.b)
         this.getdata()
+        
     },
     mounted() {
         let box=this.$refs['content-box']
@@ -265,8 +278,11 @@ export default {
             }
             if(this.red_height<0){
                 this.red_height=0
-            }else if(this.red_height>200){
-                this.red_height=200
+            // }else if(this.red_height>200){
+            //     this.red_height=200
+            //     console.log(doscollTop)
+            }else if(this.red_height>67){
+                this.red_height=67
             }
             // console.log(this.$refs.nav_box.offsetTop,this.$refs.nav_box.scrollTop)
         }
@@ -275,6 +291,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
+#app::-webkit-scrollbar{
+    display: none;
+}
 .yuelai-box{
     margin-top: 15px;
     position: relative;
@@ -326,8 +345,8 @@ export default {
             // z-index: 1000;
             background-color: rgb(249,223,201);
             .yuelaiList_aa{
-                width: 90%;
-                height: 90%;
+                width: 98%;
+                height: 98%;
               border-radius: 15px;
                 background-color: #fff;
                 img{
@@ -380,7 +399,7 @@ export default {
                 padding: 0 10px;
                 background: rgb(242,242,242);
                 border-radius: 6px;
-                margin: 0 10px;
+                margin: 10px 10px;
                 .left{
                     display: flex;
                     align-items: center;
@@ -437,10 +456,11 @@ export default {
     .item-box{
         display: flex;
         flex-wrap: wrap;
-        margin: 10px 15px;
+        padding: 10px 15px;
         justify-content: space-between;
+        background-color:rgb(242,242,242);
         .item{
-            width: 45%;
+            width: 48%;
             border-radius: 6px;
             overflow: hidden;
             background: white;
@@ -573,6 +593,7 @@ export default {
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                margin-left: -5px;
                 img{
                     width: 100%;
                     height: 100%;
@@ -587,7 +608,7 @@ export default {
                 position: absolute;
                 bottom: 6%;
                 margin: 0 auto;
-                left: 2%;
+                left: 1%;
                 right: 2%;
                 display: flex;
                 justify-content: space-between;
@@ -643,16 +664,16 @@ export default {
             overflow-x: scroll;
             display: flex;
             margin: 0 15px;
-                       .new-box{
-                display: flex;
-                border-bottom: 1px solid #eee;
-                line-height: 40px;
-                justify-content:space-between;
-                box-sizing: border-box;
-                padding: 0 10px;
-                background: rgb(242,242,242);
-                border-radius: 6px;
-                margin: 0 10px;
+                //        .new-box{
+                // display: flex;
+                // border-bottom: 1px solid #eee;
+                // line-height: 40px;
+                // justify-content:space-between;
+                // box-sizing: border-box;
+                // padding: 0 10px;
+                // background: rgb(242,242,242);
+                // border-radius: 6px;
+                // margin:10px 10px;
                     .new-box{
                 display: flex;
                 border-bottom: 1px solid #eee;
@@ -715,7 +736,7 @@ export default {
                     top: 50%;
                     transform: translateY(-50%);
                 }
-            }
+            
             .item{
                 margin: 0 15px 0 0;
                 .top{
@@ -752,7 +773,7 @@ export default {
 }
 .nav-box{
     display: flex;
-    padding: 20px 0 10px 0;
+    padding: 13px 0 10px 0;
     background: white;
     flex-wrap: wrap;
     .item{
@@ -761,8 +782,8 @@ export default {
         font-size: 14px;
         margin: 0 0 10px 0;
         .top{
-            width: 40px;
-            height: 40px;
+            width: 55px;
+            height: 55px;
             margin: 0 auto 10px auto;
             img{
                 width: 100%;
@@ -836,11 +857,11 @@ export default {
         box-sizing: border-box;
         position: relative;
         z-index: 2;
-        margin: 0 15px;
+        margin: 12px 12px 0 12px;
         border-radius: 6px;
         overflow: hidden;
-         .top_swipe{
-        height: 231px;
+        .top_swipe{
+        height: 180px;
         width: 100%;
         .van-swipe-item{
             height: auto !important;

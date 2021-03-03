@@ -174,7 +174,7 @@ export default {
                     },
                     {
                         test:'青铜',
-                    img:'qintong.png'
+                    img:'qintong2.png'
                     },
                     {
                         test:'白银',
@@ -372,7 +372,7 @@ box-shadow: 0px 3px 15px rgba(255, 57, 57, 0.07);
              padding: 50px 0 17px 20px;
              .flo-img{
                  position: absolute;
-                 left: 30px;
+                 left: 20px;
                  top:10px;
                  height: 20px;
              }

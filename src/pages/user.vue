@@ -250,7 +250,7 @@ export default {
                     },
                     {
                         test:'青铜',
-                    img:'qintong.png'
+                    img:'qintong2.png'
                     },
                     {
                         test:'白银',

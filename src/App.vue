@@ -137,13 +137,18 @@ export default {
     .slide-left-leave-active{
         will-change: transform;
     } */
+    
     html{
     height: 100%;
 }
+
 body{
     height: 100%;
+    
 }
-
+::-webkit-scrollbar {
+    display: none;
+}
     #app{
       position: relative;
       height: 100%;

@@ -18,14 +18,14 @@ export default {
                 {
                     name:'首页',
                     path:'/',
-                    icon:require("../assets/images/home1.png"),
+                    icon:require("../assets/images/home4.png"),
                     icon_choise:require("../assets/images/home2.png"),
                 },
                 {
                     name:'分类',
                     path:'/cate',
-                     icon:require("../assets/images/cate1.png"),
-                     icon_choise:require("../assets/images/cate2.png"),
+                     icon:require("../assets/images/cate3.png"),
+                     icon_choise:require("../assets/images/分类.png"),
                 },
                 {
                     name:'购物车',
@@ -36,7 +36,7 @@ export default {
                 {
                     name:'个人中心',
                     path:'/user',
-                    icon:require("../assets/images/user1.png"),
+                    icon:require("../assets/images/user3.png"),
                     icon_choise:require("../assets/images/user2.png"),
                 }
             ]
