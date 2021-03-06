@@ -3,7 +3,7 @@
         <headers title="我的补贴" />
         
         <div class="item-box">
-            <div class="item" v-for="(item,index) in data" :key="index">
+            <div class="item" v-for="(item,index) in data.data" :key="index">
                 <div class="shop-box">
                     <div class="shop-item">
                         <div class="left">
@@ -43,16 +43,16 @@
                 </div>
             </div>
         </div>
-        <van-cell title="分享微信好友或朋友圈" @click="showShare=true"></van-cell>
+        <!-- <van-cell title="分享微信好友或朋友圈" @click="showShare=true"></van-cell> -->
             <van-share-sheet
     @select="share_select"
   v-model="showShare"
   title="立即分享给好友"
   :options="options"
 />
-        <div class="butn-box" v-if="data.length">
+        <div class="butn-box" v-if="data.data.length" @click="showShare=true">
             <van-button round block color="#FF5265"
-            @click="$router.push('/tuiguang')"
+            
             >
         点击加速
     </van-button>
@@ -121,11 +121,11 @@
                 if(e.type==item.description){
                     if(item.nativeClient){ //如果手机内安装了对应的应用
                     let msg={
-                        href: this.baseURL+'vue/#/xiazai',
+                        href: this.baseURL+'vue/#/tuiguang',
                             title: '悦莱惠',
                             content: '分享二维码',
-                            thumbs: [this.qrcode],//图片
-                            pictures:[this.qrcode] ,
+                            thumbs: [this.data.qr_code],//图片
+                            pictures:[this.data.qrcode] ,
                             extra: {
                                 scene: e.ex||''
                             }

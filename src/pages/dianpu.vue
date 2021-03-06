@@ -245,24 +245,34 @@ export default {
 
     },
     shenji() {
-      if(this.data.now_sale<500){
-        this.showtitle('升级下一级需要500成长值')
-      }else if(this.data.now_sale<2000){
-        this.showtitle('升级下一级需要2000成长值')
-      }else if(this.data.now_sale<5000){
-        this.showtitle('升级下一级需要5000成长值')
-      }else if(this.data.now_sale<10000){
-        this.showtitle('升级下一级需要10000成长值')
-      }else{
-           this.ajax({
+      // if(this.data.now_sale<500){
+      //   this.showtitle('升级下一级需要500成长值')
+      // }else if(this.data.now_sale<2000){
+      //   this.showtitle('升级下一级需要2000成长值')
+      // }else if(this.data.now_sale<5000){
+      //   this.showtitle('升级下一级需要5000成长值')
+      // }else if(this.data.now_sale<10000){
+      //   this.showtitle('升级下一级需要10000成长值')
+      // }else{
+      //      this.ajax({
+      //   url: "index/my/get_commission"
+      // }).then(res => {
+      //   this.showtitle("操作成功").then(res => {
+      //     this.getdata();
+      //   });
+      // });
+      // }
+    if(this.data.now_sale<this.data.new_sale){
+       this.showtitle('升级下一级需要'+this.data.new_sale+'成长值')
+    }else{
+       this.ajax({
         url: "index/my/get_commission"
       }).then(res => {
         this.showtitle("操作成功").then(res => {
           this.getdata();
         });
       });
-      }
-   
+    }
     }
   }
 };

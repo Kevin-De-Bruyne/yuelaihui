@@ -3,11 +3,11 @@
 		<!--头部-->
 		<headers :title="'添加收款方式'"  />
 
-		
 
-		<template v-if="!next">
+
+		<template v-if="next">
 			<div class="title">
-            添加到账方式
+            添加收款账号
         </div>
 			  <van-radio-group v-model="type">
   <van-cell-group>
@@ -34,7 +34,7 @@
 		</van-button>
 		</template>
 
-		<template v-if="next">
+		<template v-if="!next">
 			<template v-if="type=='1'">
 					<div class="box">
 					<div class="addcard_li">

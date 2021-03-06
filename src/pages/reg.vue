@@ -137,7 +137,7 @@ background: linear-gradient(308deg, #FF5265 0%, #FF7E5B 100%);
 .pop-box{
     box-sizing: border-box;
     padding: 15px;
-    height: 400px;
+    height: 600px;
     overflow-y: scroll;
     font-size:12px;
 }

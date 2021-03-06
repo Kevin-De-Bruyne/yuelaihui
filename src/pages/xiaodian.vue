@@ -178,19 +178,19 @@ export default {
                     },
                     {
                         test:'白银',
-                    img:'baiyin.png'
+                    img:'baiyin2.png'
                     },
                     {
                         test:'黄金',
-                    img:'huanjin.png'
+                    img:'huangjin2.png'
                     },
                     {
                         test:'钻石',
-                    img:'zuanshi.png'
+                    img:'zuanshi2.png'
                     },
                     {
                         test:'王者',
-                    img:'huanguan.png'
+                    img:'huangguan2.png'
                     }
                 ]
                 obj_arr.forEach(item=>{

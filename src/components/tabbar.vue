@@ -25,7 +25,7 @@ export default {
                     name:'分类',
                     path:'/cate',
                      icon:require("../assets/images/cate3.png"),
-                     icon_choise:require("../assets/images/分类.png"),
+                     icon_choise:require("../assets/images/fenlei.png"),
                 },
                 {
                     name:'购物车',

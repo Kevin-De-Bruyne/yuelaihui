@@ -55,10 +55,35 @@
 					<div class="title">
 						请选择到账方式
 					</div>
-					<van-cell  :title="types" to="/card?tx=true" :value="data.bank[0]&&data.bank[0].bank_num" is-link />
+					<!-- <van-cell  :title="types" to="/card?tx=true" :value="data.bank[type].bank_num" is-link /> -->
+					<van-cell  :title="types" to="/card?tx=true" value="添加账号" is-link/>
 					<!-- <van-cell v-else title="银行卡" to="/card?tx=true" :value="data.bank.bank_num" is-link /> -->
 				</template>
-
+			 	<template>
+			<div class="title">
+            请选择账号
+        </div>
+			  <van-radio-group v-model="type">
+  <van-cell-group>
+	  <!-- <van-cell title="银行卡"  @click="type = '1'">
+      <template #right-icon>
+        <van-radio name="1" />
+      </template>
+    </van-cell> -->
+    
+    <van-cell :title="item.bank_num"  @click="account_select(index)" v-for="(item,index) in data.bank" :key="index">
+      <template #right-icon>
+        <van-radio :name="index" />
+      </template>
+    </van-cell>
+    <!-- <van-cell title="微信"  @click="type = '3'">
+      <template #right-icon>
+        <van-radio name="3" />
+      </template>
+    </van-cell> -->
+  </van-cell-group>
+</van-radio-group>
+	</template>
 		<div class="xcarr">
 			<!-- <router-link to="/mine/card">
 				<div class="xcard">
@@ -108,7 +133,8 @@ import {mapState} from 'vuex'
 					bank:[]
 				},
 				tx:{},
-				tx_number:''
+				tx_number:'',
+				type:0
             }
 		},
 		created() {
@@ -143,6 +169,10 @@ import {mapState} from 'vuex'
 			}
 		},
         methods: {
+			account_select(index){
+				this.type=index
+				this.id=this.data.bank[index].bank_id
+			},
 			getdata(){
 				this.ajax({
 					url:'index/my/tx',
