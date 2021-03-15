@@ -118,7 +118,7 @@
         </div> -->
         <div class="qiandao-box">
             <img src="../assets/images/qiandao.png" alt=""
-            @click="$router.push('/qiandao')"
+            @click="$router.push({path:'/qiandao',query:{name:data.name}})"
             >
         </div>
         <div class="fuwu-box">
@@ -242,6 +242,7 @@ export default {
                 url:'index/my/get_user_info'
             }).then(res=>{
                 this.data=res.data
+                console.log(this.data.name)
                console.log(res);
                 let obj_arr=[
                     {
@@ -486,7 +487,7 @@ export default {
             text-align: center;
             line-height: 15px;
             position: absolute;
-            right: 10px;
+            right: 5px;
             top: -10px;
         }
         img{

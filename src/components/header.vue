@@ -42,11 +42,14 @@ export default {
         line-height: 50px;
         width: 100%;
         top: 0;
+        align-items: center;
         left: 0;
         font-size: 14px;
         z-index: 99;
         color: #000;
         .container{
+            height: 50px;
+            width: 100%;
             position: relative;
         }
         .back{

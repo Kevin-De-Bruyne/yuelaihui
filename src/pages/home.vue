@@ -226,7 +226,7 @@ export default {
     },
     destroyed(){
         let box=this.$refs['content-box']
-        box.removeEventListener('scroll',this.add_scroll)
+        // box.removeEventListener('scroll',this.add_scroll)
     },
     methods: {
         prev(){
@@ -361,7 +361,7 @@ export default {
     
 }
 .kuaibao{
-    width: 50px;
+    width: 4rem;
     height: 39px;
     // display: flex;
     // align-items: center;

@@ -47,8 +47,9 @@
       </div>
      
       <div class="jindu-box">
-        <div class="item" v-for="(item,index) in lv_arrs" :key="index" :style="{background:(item.type == 1 ? item.color:'')}">
-            <span :style="{border:'2px '+ 'solid '+ item.color,width:(item.jindu == 0? '6px':item.jindu+'%')}"></span>
+        <div class="item" v-for="(item,index) in lv_arrs" :key="index" :style="{background:( item.color)}">
+            <!-- <span :style="{border:'2px '+ 'solid '+ item.color,width:(item.jindu == 0? '6px':item.jindu+'%')}"></span> -->
+            <span :style="{border:'2px '+ 'solid '+ item.color}"></span>
         </div>
       </div>
       <div class="item-box">
@@ -262,6 +263,8 @@ export default {
       //   });
       // });
       // }
+      console.log(this.data.now_sale)
+      console.log(this.data.new_sale)
     if(this.data.now_sale<this.data.new_sale){
        this.showtitle('升级下一级需要'+this.data.new_sale+'成长值')
     }else{

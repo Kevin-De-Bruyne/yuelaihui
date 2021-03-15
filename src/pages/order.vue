@@ -36,6 +36,7 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- <div class="tuikuan_btn" v-if="item.msg=='待发货' && data[index].partition_id!=4 || item.msg=='待收货' && data[index].partition_id!=4" @click.stop="tuikuan"><span>退款</span></div> -->
                     </div>
                 </div>
                 <div class="bottom-butn">
@@ -50,8 +51,10 @@
                         去付款
                     </div>
                     </div>
-
                     <div class="right" v-if="item.msg=='待收货'">
+                          <div class="butn butn2 m-l-20" v-if="item.partition_id!=4" @click.stop="tuikuan">
+                            退款
+                        </div>
                         <div class="butn butn2 m-l-20" @click="shouhuo_confirm(item)">
                             确认收货
                         </div>
@@ -114,10 +117,14 @@
             pingjia(item){
                 this.$router.push(`/pinglun_submit?order_id=${item.order_id}&rec_id=${item.goods[0].rec_id}&goods_id=${item.goods[0].goods_id}&img=${item.goods[0].original_img}`)
             },
+            tuikuan(){
+                this.$router.push({path:'/tui_kuan',query:{order_id:this.data[0].order_id,total_amount:this.data[0].total_amount,mobile:this.data[0].mobile
+                ,consignee:this.data[0].consignee}})
+            },
             shouhuo_confirm(item){
                 this.$dialog.confirm({
                     title:'提示',
-                    message:'是否确认收货?'
+                    message:'确认收货后无法退款?'
                 }).then(res=>{
                     this.ajax({
                     url:'index/my/order_confirm',
@@ -277,6 +284,19 @@
             .item{
                 background: rgb(255,255,255);
                 margin: 0 0 10px 0;
+                position: relative;
+                .tuikuan_btn{
+                    position: absolute;
+                    width: 60px;
+                    height: 30px;
+                    background-color: #dd2618;
+                    bottom: 10px;
+                    right: 25px;
+                    text-align: center;
+                    color:white;
+                    line-height: 30px;
+                    border-radius: 0 100px 100px 100px;
+                }
                 .title-box{
                     box-sizing: border-box;
                     padding: 0 10px;
@@ -313,11 +333,14 @@
                                 
                             }
                         }
+                         
                         .container{
                             flex: 1;
                             display: flex;
                             flex-direction: column;
                             justify-content: space-between;
+                            position: relative;
+                           
                             .text1-box{
                                 color: #000;
                                 font-size: 14px;

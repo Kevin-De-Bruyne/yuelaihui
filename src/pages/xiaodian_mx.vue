@@ -11,18 +11,25 @@
 
         <div class="item-box">
             <div class="item" v-for="(item,index) in data" :key="index">
-                <div class="left">
+                <div>
+                     <div class="left">
                     <div class="text1">
                         {{item.desc}}
                     </div>
                     <div class="text2">
                         {{item.type_name}}
                     </div>
+                  
                 </div>
                 <div class="right">
-                    {{item.user_money}}
+                    金额：{{item.user_money}}
                 </div>
+                </div>
+               <div>补贴时间：{{item.change_time}}</div>
+                
+                 
             </div>
+           
         </div>
     </div>
 </template>
@@ -94,6 +101,7 @@
                box-sizing: border-box;
                padding: 10px;
                display: flex;
+               flex-direction: column;
                justify-content: space-between;
                color: #000;
                font-size: 14px;

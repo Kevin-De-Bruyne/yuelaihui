@@ -63,6 +63,7 @@ console.log(a = { c: 1 })
 
 import tabbar from '@/components/tabbar'
 import header from '@/components/header'
+// import 'lib-flexible'
 import nodata from '@/components/nodata'
 import swiper from '@/components/swiper/swiper'
 import SwiperItem from '@/components/swiper/swiper_item'
@@ -227,6 +228,8 @@ Vue.prototype.ajax = ({ url, data = {}, headers = {}, methods = 'post' }) => {
                     router.push('/login')
                     return
                 }
+
+
                 Toast.fail(res.message || res.msg || res.data.message || res.data.msg)
                 err(res)
             }

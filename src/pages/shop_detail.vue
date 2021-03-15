@@ -23,19 +23,19 @@
     
     <div class="white-box white-box1">
         <div class="text1-box m-t-10 m-b-10">
-            <template v-if="data.goods_info.partition_id==4">
+            <template>
                 <span class="text1 m-r-10">
-                    悦品券{{data.goods_info&&data.goods_info.shop_price}}
+                    <span>{{data.goods_info.partition_id==4?'悦品卷':'¥'}}</span>{{data.goods_info&&data.goods_info.shop_price}}
                 </span>
             </template>
-            <template v-else>
+            <!-- <template v-else>
                 <span class="text1 m-r-10">
                     ￥{{data.goods_info&&data.goods_info.shop_price}}
                 </span>
                 <span class="text2 m-r-10">
                     ￥{{data.goods_info.market_price}}
                 </span>
-            </template>
+            </template> -->
             
             <span class="text3" v-if="data.goods_info.coupon&&data.goods_info.coupon!=0">
                 赠送悦品券{{data.goods_info.coupon}}
@@ -504,7 +504,7 @@ export default {
                             console.log(z);
                             this.showShare=false
                             this.ajax({
-                                url:'index/task/subsidy_share',
+                                url:'index/task/mall_share',
                                 data:{
                                     type:e.name=='微信好友'?1:e.name=='微信朋友圈'?2:0
                                 }

@@ -14,7 +14,7 @@
                     </div>
                     <div class="text-box">
                         <div class="text1">
-                            糖小豆
+                            {{user_name}}
                         </div>
                     </div>
                 </div>
@@ -130,6 +130,7 @@ export default {
             data:{},
             year:'',
             mon:'',
+            user_name:'',
             taskList:[],
             date:'',
             week:'',
@@ -189,6 +190,7 @@ export default {
         }
     },
     created() {
+        this.user_name=this.$route.query.name
         this.getTask();
         this.getdata();
         this.daytime();

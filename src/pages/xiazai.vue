@@ -29,7 +29,7 @@ watch: {
 },
 methods:{
 	btns() {
-		window.location.href = this.baseURL+'apk/anz.apk'
+		window.location.href = this.baseURL+'apk/ank.apk'
   	},
   	btnios(){
   		// window.location.href = iosurl

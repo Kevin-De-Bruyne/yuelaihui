@@ -42,12 +42,20 @@
                             </div>
                             <div class="text2-box">
                                 <div class="left-text">
-                                    ￥{{item.shop_price}}
+                                    {{data.goods[0].goods[0].partition_id==4?'悦品卷':'¥'}}{{item.shop_price}}
                                 </div>
                                 <div class="right-text">
                                     x{{item.goods_num}}
                                 </div>
                             </div>
+                            <!-- <div class="text2-box" v-else>
+                                <div class="left-text">
+                                    悦品卷{{item.shop_price}}
+                                </div>
+                                <div class="right-text">
+                                    x{{item.goods_num}}
+                                </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -70,15 +78,18 @@
                 <div class="left">
                     商品总价
                 </div>
-                <div class="right">
+                <div class="right" v-if="data.goods[0].goods[0].partition_id!=4">
                     ￥{{data.order_amount}}
+                </div>
+                  <div class="right" v-else>
+                    悦品卷{{data.order_amount}}
                 </div>
             </div>
             <div class="item">
-                <div class="left">
+                <div class="left" v-if="data.goods[0].goods[0].partition_id!=4">
                     运费
                 </div>
-                <div class="right">
+                <div class="right" v-if="data.goods[0].goods[0].partition_id!=4">
                     ￥{{data.shipping_fee}}
                 </div>
             </div>
@@ -92,7 +103,7 @@
             <van-radio-group v-model="pay_type">
             <van-cell-group>
                
-                 <van-cell title="余额" clickable @click="pay_type = '1'">
+                 <!-- <van-cell title="余额" clickable @click="pay_type = '1'">
                     <template #right-icon>
                         <van-radio checked-color="rgb(224,36,24)" name="1" />
                     </template>
@@ -106,7 +117,7 @@
                     <template #right-icon>
                         <van-radio checked-color="rgb(224,36,24)" name="3" />
                     </template>
-                    </van-cell>
+                    </van-cell> -->
                 <van-cell title="悦品券兑换" clickable @click="pay_type = '4'">
                     <template #right-icon>
                         <van-radio checked-color="rgb(224,36,24)" name="4" />
@@ -171,8 +182,11 @@
                 <div class="left">
                     需支付
                 </div>
-                <div class="right">
+                <div class="right" v-if="data.goods[0].goods[0].partition_id!=4">
                     ￥{{data.total_amount}}
+                </div>
+                <div class="right" v-else>
+                    悦品卷{{data.total_amount}}
                 </div>
             </div>
         </div>
@@ -181,8 +195,11 @@
 
             </div>
             <div class="right">
-                <div class="text-box m-r-15">
+                <div class="text-box m-r-15" v-if="data.goods[0].goods[0].partition_id!=4">
                     共1件,合计<span class="m-l-5 red">￥{{data.total_amount}}</span>
+                </div>
+                <div class="text-box m-r-15" v-else>
+                    共1件,合计<span class="m-l-5 red">悦品卷{{data.total_amount}}</span>
                 </div>
                 <van-button round color="rgb(224,36,24)" @click="submit()">
                     提交订单

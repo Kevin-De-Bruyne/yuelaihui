@@ -93,11 +93,12 @@
 				</div>
 			</router-link> -->
 			<div class="checked-box">
-				<van-checkbox v-model="checked">使用悦信分抵扣手续费</van-checkbox>
+				<van-checkbox v-model="checked" @click="aa">使用悦信分抵扣手续费</van-checkbox>
 			</div>
 
 			<div class="checked-box m-t-10">
-				当前手续费:<span class="red">{{shouxv}}</span>
+				<!-- 当前手续费:<span class="red">{{shouxv}}</span> -->
+				当前手续费:<span class="red">{{fee}}</span>
 			</div>
 			
 			<button class="btntj" @click="submit()">提交申请</button>
@@ -134,13 +135,19 @@ import {mapState} from 'vuex'
 				},
 				tx:{},
 				tx_number:'',
-				type:0
+				type:0,
+				is_tx:'',
+				fee:''
             }
 		},
 		created() {
 			console.log(this.tx_data)
 			console.log(this.data)
-			this.getdata()
+			this.getdata().then(res=>{
+				this.id=res.bank[0].bank_id
+				console.log(this.id)
+			})
+			
 		},
 		computed:{
 			types(){
@@ -150,7 +157,9 @@ import {mapState} from 'vuex'
 			},
 			shouxv(){
 				let res=0
+				console.log(this.tx_number)
 				let shou=this.tx_number*0.2
+				console.log(shou)
 				let one=shou*0.01
 				let max=this.data.trust_score/this.data.score_deduction
 				
@@ -169,21 +178,46 @@ import {mapState} from 'vuex'
 			}
 		},
         methods: {
+			aa(){
+				if(this.tx_number!=''){
+					this.ajax({
+					url:'index/my/withdrawals',
+					data:{
+					bank_id:this.id,
+					money:this.tx_number,
+					is_deduction:this.checked?1:0,
+					is_tx:1
+					}
+				}).then(res=>{
+					// this.showtitle('申请提现成功').then(res=>{
+					// 	this.$router.push('/user')
+					// })
+					this.fee=res.fee
+				})
+			}else{
+				this.checked=false
+				this.showtitle('请填写提现金额')
+			}
+			},
 			account_select(index){
 				this.type=index
 				this.id=this.data.bank[index].bank_id
 			},
 			getdata(){
-				this.ajax({
+				return new Promise((resolve,reject)=>{
+					this.ajax({
 					url:'index/my/tx',
 					data:{
 						id:this.id
 					}
 				}).then(res=>{
+					resolve(res)
 					this.data=res
 					console.log(this.data)
 					this.tx=this.data.config
 				})
+				})
+				
 			},
             submit(){
 				console.log(this.id,this.tx_data)
@@ -192,7 +226,8 @@ import {mapState} from 'vuex'
 					data:{
 						bank_id:this.id,
 					money:this.tx_number,
-					is_deduction:this.checked?1:0
+					is_deduction:this.checked?1:0,
+					is_tx:0
 					}
 				}).then(res=>{
 					this.showtitle('申请提现成功').then(res=>{

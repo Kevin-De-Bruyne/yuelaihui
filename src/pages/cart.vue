@@ -392,11 +392,14 @@ export default {
         }
    .nodata-box{
        position: absolute;
-       top: 50px;
-       bottom: 60px;
+       top: -100px;
+       bottom: 230px;
        width: 100%;
        display: flex;
+       left: -5px;
+    //    border:1px solid rgb(242,242,242);
        align-items: center;
        justify-content: center;
+   
    }
 </style>

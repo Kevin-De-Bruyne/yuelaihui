@@ -68,7 +68,8 @@ export default {
                 form.submit()
                 console.log(form)
                 this.showtitle('提交成功').then(res=>{
-                    this.$rotuer.go(-1)
+                    // this.$rotuer.go(-1)
+                    //  this.$rotuer.push('/index')
                 })
             }).catch(err=>{
                 console.log(err)

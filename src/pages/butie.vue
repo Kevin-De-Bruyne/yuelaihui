@@ -17,20 +17,33 @@
                                 
                             </div>
                             <div class="text">
-                                    <van-progress
+                                    <!-- <van-progress
                                     stroke-width="8px"
                                      :percentage="jindu_num(item)" 
                                      track-color="linear-gradient(308deg, #FF5265 0%, #FF7E5B 100%)"
-                                      color="rgb(248,222,112)"  :show-pivot="false" />
-                                     
+                                      color="rgb(248,222,112)"  :show-pivot="false" /> -->
+                                     <van-progress :percentage="jindu_num(item)"
+                                       stroke-width="8px"
+                                       track-color="linear-gradient(308deg, #FF5265 0%, #FF7E5B 100%)"
+                                        color="rgb(248,222,112)" 
+                                        :show-pivot="show_privot"
+                                      />
                             </div>
                             <div class="text2-box">
                                 
                                 <div class="left-text">
                                     <div class="text1">
-                                        ￥{{item.goods_price}}
+                                        <span>已分红</span>
+                                        ￥{{item.divided_bonus}}
                                     </div>
                                 </div>
+                               <div class="left-text">
+                                    <div class="text1">
+                                        <span>剩余分红：</span>
+                                        ￥{{item.total_bonus-item.divided_bonus}}
+                                    </div>
+                                </div>
+                          
                                 <div class="right-text">
                                     <!-- 结束时间: {{item.end_time_title}} -->
                                     <div class="text2">
@@ -38,6 +51,12 @@
                                     </div>
                                 </div>
                             </div>
+                                  <div class="left-text">
+                                    <div class="text1">
+                                        <span>总分红：</span>
+                                        ￥{{item.total_bonus}}
+                                    </div>
+                                </div>
                         </div>
                     </div>
                 </div>
@@ -54,7 +73,7 @@
             <van-button round block color="#FF5265"
             
             >
-        点击加速
+        立即激活
     </van-button>
         </div>
     
@@ -64,12 +83,22 @@
 <script>
     export default{
         created() {
-            this.getdata()
+            this.getdata().then(res=>{
+                console.log(this.data)
+                res.data.data.forEach((item,index)=>{
+                    // console.log(now_time)
+                    if(item.now_time<item.start_time){
+                        this.show_privot=false
+                    }
+                })
+            })
+
         },
         data(){
             return{
                 jindu:50,
                 data:[],
+                show_privot:true,
                 pic_img:'../assets/images/cart1.png',
                    options: [
                 [
@@ -80,15 +109,20 @@
         ]
         ],
         qrcode:'',
-        showShare:false
+        showShare:false,
+        invite_code:''
             }
         },
         methods: {
             jindu_num(item){
                 let nowtime=item.now_time-item.start_time
                 let endtime=item.end_time-item.start_time
-                console.log((nowtime/endtime)*100)
-                return (nowtime/endtime)*100
+                console.log(nowtime)
+                console.log(nowtime/endtime)
+                console.log(((nowtime/endtime)*100).toFixed(1))
+                return ((nowtime/endtime)*100).toFixed(1)
+                
+               
             },
             jindu_now(item){
                 let nowtime=item.now_time-item.start_time
@@ -99,16 +133,23 @@
                 }
             },
             getdata(){
-                this.ajax({
+                return new Promise((resolve,reject)=>{
+                  this.ajax({
                     url:'index/my/my_subsidy'
                 }).then(res=>{
+                    
                     this.data=res.data
+                    resolve(res)
                     this.qrcode=res.data.qr_code
                     console.log(this.qrcode)
+                    this.invite_code=res.data.invite_code
                 })
+                })
+               
             },
          share_select(e){
-          console.log(this.baseURL+'vue/#/tuiguang')
+             console.log(this.invite_code)
+          console.log(this.baseURL+'vue/#/tuiguang?invite_code='+this.invite_code)
         //   console.log(this.data.goods_info.original_img)
            if(!plus){
                 this.showtitle('请在app内打开')
@@ -121,7 +162,7 @@
                 if(e.type==item.description){
                     if(item.nativeClient){ //如果手机内安装了对应的应用
                     let msg={
-                        href: this.baseURL+'vue/#/tuiguang',
+                        href: this.baseURL+'vue/#/tuiguang?invite_code='+this.invite_code,
                             title: '悦莱惠',
                             content: '分享二维码',
                             thumbs: [this.data.qr_code],//图片
@@ -249,8 +290,13 @@ display:-webkit-box;
                                 justify-content: space-between;
                                 width: 100%;
                                 .left-text{
-                                    font-size: 14px;
+                                    font-size: 10px;
                                     color:#aaa;
+                                    .text1{
+                                        font-size: 11px;
+                                        display: flex;
+                                        flex-direction: row;
+                                    }
                                     
                                 }
                                 .right-text{
@@ -262,6 +308,10 @@ display:-webkit-box;
                                         font-size: 16px;
                                     }
                                 }
+                            }
+                            .left-text{
+                                margin-top: 10px;
+                                color:#aaa;
                             }
                         }
                     }

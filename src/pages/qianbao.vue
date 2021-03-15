@@ -117,9 +117,9 @@
                 </div>
             </div>
 
-            <div class="bottom-title" @click="password_show=true">
+            <!-- <div class="bottom-title" @click="password_show=true">
                 {{data.isSavePwd==1?'忘记支付密码?':'支付密码设置'}}
-            </div>
+            </div> -->
         </div>
 
        

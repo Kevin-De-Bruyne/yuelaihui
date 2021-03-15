@@ -22,6 +22,14 @@
                 <div class="item-box">
                     <div class="item">
                         <div class="top">
+                            {{data.upgrade_perf||0}}
+                        </div>
+                        <div class="bottom">
+                            升级金额
+                        </div>
+                    </div>
+                     <div class="item">
+                        <div class="top">
                             {{data.income||0}}
                         </div>
                         <div class="bottom">
@@ -31,14 +39,15 @@
                     <div class="item">
                         <div class="top">
                             {{data.divi_per}}
-                            <div class="jh-butn m-l-20" @click="$router.push('/butie')">
-                                激活
-                            </div>
+                           
                         </div>
                         <div class="bottom">
                             补贴金额
                         </div>
                     </div>
+                     <div class="jh-butn m-l-20" @click="$router.push('/butie')">
+                                激活
+                     </div>
                 </div>
                 <!-- <div class="top">
                     <div class="left">
@@ -401,14 +410,18 @@ background: rgba(255,255,255,0.3);
             }
             .item-box{  
                 display: flex;
+                justify-content: space-between;
                 .item{
-                    flex: 1;
+                    // flex: 1;
+                    //  padding-right: 20px;
+
                 }
                 .top{
                     font-size: 19px;
                 }
                 .bottom{
                     font-size: 12px;
+                    text-align: center;
                 }
             }
         }

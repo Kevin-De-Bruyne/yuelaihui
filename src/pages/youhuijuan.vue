@@ -25,6 +25,7 @@
                 <div class="left">
                     {{item.money}}
                     <span class="min-font">元</span>
+                    <span style="font-size:0.96rem;">(已使用{{item.used}}元)</span>
                 </div>
                 <div class="right">
                     {{item.expiration_time}}
@@ -42,7 +43,7 @@
 export default{
     data(){
         return{
-            tabbar:['未使用','已使用','已过期'],
+            tabbar:['未使用','已使用'],
             tabbar_index:0,
             data:[],
             keyong:0
@@ -50,6 +51,12 @@ export default{
     },
     created() {
         this.getdata()
+    },
+    watch:{
+        tabbar_index(news,old){
+            console.log(news)
+            console.log(old)
+        }
     },
     computed: {
         checkdata(){

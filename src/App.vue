@@ -52,6 +52,7 @@ export default {
             }
    },
   mounted() {
+
     console.log(this.$axios)
     return 
     document.addEventListener('plusready', ()=> { //等待puls准备好

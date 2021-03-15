@@ -21,8 +21,8 @@
 					</ul>
 				</div>
 				<div class="com-center">
-					<textarea  placeholder="请输入备注">
-
+					<textarea  placeholder="请输入备注" v-model="content">
+						
                     </textarea>
 				</div>
 				<div class="upload-box">
@@ -55,7 +55,8 @@
             value1:0,
             value2:0,
             textarea:'',
-            dian:true,
+			dian:true,
+			content:'',
             img: this.$route.query.img,
             fileList:[],
             order_id:this.$route.query.order_id||'',
@@ -85,7 +86,7 @@
 						"service_rank":this.value, //商家服务态度评价等级
 						"deliver_rank":this.value1,  //物流评价等级
 						"goods_rank":this.value2, //商品评价等级
-						"content":this.utf16toEntities(this.textarea)  //评论内容
+						"content":this.content  //评论内容
                     }
                 }).then(res=>{
 					this.showtitle('评价成功').then(res=>{
