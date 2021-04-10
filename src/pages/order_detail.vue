@@ -38,7 +38,7 @@
                             </div>
                             <div class="text2-box">
                                 <div class="left-text">
-                                    ￥{{item.member_goods_price}}
+                                    {{data.partition_id==4?'卷':'¥'}}{{item.member_goods_price}}
                                 </div>
                                 <div class="right-text">
                                     x{{item.goods_num}}
@@ -54,7 +54,7 @@
                     商品总价
                 </div>
                 <div class="right">
-                    ￥{{data.user_money}}
+                    {{data.partition_id==4?'卷':'¥'}}{{data.user_money}}
                 </div>
             </div>
             <div class="items">
@@ -62,7 +62,7 @@
                     运费
                 </div>
                 <div class="right">
-                    ￥{{data.shipping_price}}
+                    {{data.partition_id==4?'卷':'¥'}}{{data.shipping_price}}
                 </div>
             </div>
             <div class="price-item">
@@ -70,7 +70,7 @@
                     订单总价
                 </div>
                 <div class="right">
-                    ￥{{data.total_amount}}
+                    {{data.partition_id==4?'卷':'¥'}}{{data.total_amount}}
                 </div>
             </div>
             </div>

@@ -17,10 +17,10 @@
                     <div class="text1 m-t-5 m-b-5">
                         <img :src="lv_img" alt="">
                     </div>
-                    <div class="text2" @click="data.is_certification<=0&&$router.push('/shimin')">
+                    <!-- <div class="text2" @click="data.is_certification<=0&&$router.push('/shimin')">
                         <span class="iconfont icon-renzheng1"></span>
                         {{data.is_certification<=0?'未认证':'已认证'}}
-                    </div>
+                    </div> -->
                 </div>
                 <!-- <div class="butn-box">
                     <div class="butn" @click="shenqing()">
@@ -216,6 +216,13 @@ export default {
     },
     created() {
         this.getdata()
+    },
+    computed:{
+        phone(){
+            let b=String(this.data.name).slice(4,8)
+            let c=String(this.data.name).replace(b,'****')
+            return c
+        }
     },
     methods: {
         order_count(item){

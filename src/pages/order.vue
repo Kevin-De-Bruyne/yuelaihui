@@ -29,7 +29,7 @@
                             </div>
                             <div class="text2-box">
                                 <div class="left-text">
-                                    ￥{{x.member_goods_price}}
+                                    {{item.partition_id==4?'卷':'¥'}}{{x.member_goods_price}}
                                 </div>
                                 <div class="right-text">
                                     x{{x.goods_num}}

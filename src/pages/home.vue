@@ -108,7 +108,7 @@
                     <div class="yy">
                         <div class="yuelaiWhole">
                         <div class="yuelaiList" v-for="(item,index) in data.convert" :key="index">
-                            <div class="yuelaiList_aa" @click.stop="godetail(item.goods_id)"><img :src="item.original_img" alt=""></div>
+                            <div class="yuelaiList_aa" @click.stop="godetail(item.goods_id,item.partition_id)"><img :src="item.original_img" alt=""></div>
                         </div>
                     </div>
                     </div>
@@ -151,7 +151,7 @@
                 </div> -->
                     <div class="new-box">
                         <div class="left">
-                           普通商品
+                           精选商品
                         </div>
                         <div class="news-neirong">
                             <!-- 春节期间全场五折起，欢迎抢购... -->
@@ -160,7 +160,7 @@
                             
                         </div>
                     </div>
-               <div class="item-box">
+               <!-- <div class="item-box">
                    <div class="item" v-for="(item,index) in data.goods" :key="index"
                    @click="godetail(item.goods_id)"
                    >
@@ -181,8 +181,8 @@
                            </div>
                        </div>
                    </div>
-               </div>
-
+               </div> -->
+                <goods-list  :goods="goods" @detail="godetail"/>
             </div>
         </div>
         </div>
@@ -194,15 +194,19 @@
 </template>
 
 <script>
+import goodsList from '../components/goodsList/goodsList.vue'
 export default {
+  components: { goodsList },
     data(){
         return{
             red_height:200,
             red_offheight:'',
             data:{},
-            index:0
+            index:0,
+            goods:[]
         }
     },
+
     created() {
         // var a=1;
         // var obj={
@@ -217,7 +221,10 @@ export default {
         // console.log(t()===obj.b())
         // console.log(t===obj.b)
         this.getdata()
-        
+        var a=String(18928704486)
+        let b=a.slice(4,8)
+        let c=a.replace(b,'****')
+        console.log(c)
     },
     mounted() {
         let box=this.$refs['content-box']
@@ -256,10 +263,11 @@ export default {
                 url:'index/index/index'
             }).then(res=>{
                 this.data=res.data
+                this.goods=res.data.goods
             })
         },
-        godetail(id){
-            this.$router.push('/shop_detail?id='+id)
+        godetail(id,iid){
+            this.$router.push('/shop_detail?id='+id+'&iid='+iid)
         },
         add_scroll(){
             console.log('jifjaifjiaf')
@@ -403,7 +411,7 @@ export default {
                 .left{
                     display: flex;
                     align-items: center;
-                    font-size: 14px;
+                    font-size: 16px;
                     font-weight: bold;
                     .iconfont{
                         color: rgb(224,36,24);

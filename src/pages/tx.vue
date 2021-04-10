@@ -56,7 +56,7 @@
 						请选择到账方式
 					</div>
 					<!-- <van-cell  :title="types" to="/card?tx=true" :value="data.bank[type].bank_num" is-link /> -->
-					<van-cell  :title="types" to="/card?tx=true" value="添加账号" is-link/>
+					<van-cell  class="van-cell" :title="types" to="/card?tx=true" value="添加账号" is-link/>
 					<!-- <van-cell v-else title="银行卡" to="/card?tx=true" :value="data.bank.bank_num" is-link /> -->
 				</template>
 			 	<template>
@@ -239,6 +239,10 @@ import {mapState} from 'vuex'
     }
 </script>
 <style scoped>
+.van-cell{
+	font-size: 13px;
+	padding: 10px 20px;
+}
 .red{
 	color: red !important;
 }

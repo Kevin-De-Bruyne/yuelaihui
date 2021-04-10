@@ -51,7 +51,7 @@
 export default {
     data(){
         return{
-            checked:true,
+            checked:false,
             codetext:'获取验证码',
             user:{
                 yaoqin_code:this.$route.query.p_id||''

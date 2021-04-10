@@ -33,14 +33,14 @@
                                 
                                 <div class="left-text">
                                     <div class="text1">
-                                        <span>已分红</span>
+                                        <span>已补贴</span>
                                         ￥{{item.divided_bonus}}
                                     </div>
                                 </div>
                                <div class="left-text">
                                     <div class="text1">
-                                        <span>剩余分红：</span>
-                                        ￥{{item.total_bonus-item.divided_bonus}}
+                                        <span>剩余补贴：</span>
+                                        ￥{{(item.total_bonus-item.divided_bonus).toFixed(2)}}
                                     </div>
                                 </div>
                           
@@ -53,7 +53,7 @@
                             </div>
                                   <div class="left-text">
                                     <div class="text1">
-                                        <span>总分红：</span>
+                                        <span>总补贴：</span>
                                         ￥{{item.total_bonus}}
                                     </div>
                                 </div>
@@ -232,7 +232,7 @@
             overflow-y: scroll;
             padding: 0 15px;
             // height: 100%;
-
+            margin-bottom: 70px;
             .item{
                 background: rgb(255,255,255);
                 border-bottom: 1px solid #eee;

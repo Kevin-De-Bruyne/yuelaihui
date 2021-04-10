@@ -41,8 +41,6 @@ Vue.directive('scroll', {
     }
 })
 
-
-
 router.beforeEach((to, from, next) => {
 
     console.log(router.history)
@@ -68,6 +66,8 @@ import nodata from '@/components/nodata'
 import swiper from '@/components/swiper/swiper'
 import SwiperItem from '@/components/swiper/swiper_item'
 import scroll from '@/components/scroll'
+import Mui from 'vue-awesome-mui';
+Vue.use(Mui);
 
 Vue.component('tabbar', tabbar)
 Vue.component('headers', header)
@@ -187,9 +187,21 @@ function plusReady() {
 
 if (window.plus) {
     plusReady();
+    // plusReadys()
 } else {
     document.addEventListener('plusready', plusReady, false);
+    // document.addEventListener('plusreadys', plusReady, false);
 }
+Vue.prototype.app_v = '0.00'
+
+document.addEventListener('plusready', () => {
+    console.log('pulse准备好了')
+    plus.runtime.getProperty(plus.runtime.appid, (wgtinfo) => {
+        var wgtStr = String(wgtinfo.version);
+        // console.log(wgtStr,'版本号多少')
+        Vue.prototype.app_v = wgtStr
+    });
+}, false);
 // let baseurl='http://newa.com/'
 // let baseurl='http://ylh.test/'
 // let baseurl = 'http://ylh.com/'

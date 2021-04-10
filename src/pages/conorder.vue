@@ -315,7 +315,7 @@
             this.ipt_arr[this.ipt_index-1].value=''
             this.ipt_index--
         },
-            submit(next){
+                    submit(next){
                 if(!this.data.user_address.city_name){
                     this.showtitle('请先填写地址').then(res=>{
                         this.$router.push('/addres_add')
@@ -363,7 +363,7 @@
                             }).then(res2=>{
                            var channel=null,
                             aliChannel=null
-                            console.log(res2)
+                            console.log(typeof(res2.data.data))
                             plus.payment.getChannels((channels)=>{
                     aliChannel=channels[0];
                     //我把这个方法放在这里面没放外面，放外面会出现aliChannel还是null 无法调用支付宝
@@ -393,7 +393,7 @@
                             order_id:res.order_id,
                             token:localStorage.getItem('token')
                         }).then(res=>{
-                            console.log(res)
+                            console.log(typeof(res.data))
                                 var channel=null,
                             aliChannel=null
                             plus.payment.getChannels((channels)=>{

@@ -20,7 +20,7 @@
     </div>
   </template>
         </van-swipe>
-    
+        <!-- 请等待<span id="dd">{{daoji_num}}</span>秒 -->
     <div class="white-box white-box1">
         <div class="text1-box m-t-10 m-b-10">
             <template>
@@ -373,10 +373,21 @@ export default {
             data:{
                 goods_info:{}
             },
-            share_arr:[]
+            share_arr:[],
+            daoji_num:11
         }
     },
+    mounted(){
+//          history.pushState(null, null, document.URL);
+//        window.addEventListener('popstate', function () {
+//     　　history.pushState(null, null, document.URL);
+// 　　 });
+        // this.run()
+
+
+    },
     created() {
+        console.log(this.$route.query.iid)
         setInterval(() => {
             this.zzz=!this.zzz
         }, 1000);
@@ -461,6 +472,18 @@ export default {
         }
     },
     methods: {
+//      run(){
+// //  var s = document.getElementById("dd");
+//  if(this.daoji_num == 0){
+// //   window.location.href='regform.shtml';
+// this.$router.go(-1)
+//   return false;
+//  }
+//  this.daoji_num = this.daoji_num * 1 - 1;
+//   setTimeout(()=>{
+//      this.run()
+//  },1000)
+// },
         sharecc(){
             this.showShare=true
         },
